@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>In Person Classes — RW Move</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f3ed;
+      --cream-deep: #ede7dc;
+      --sage: #7a9171;
+      --sage-light: #a8be9e;
+      --sage-mist: #e8efe6;
+      --sage-dark: #4d6b47;
+      --bark: #8c6e52;
+      --bark-light: #c4a882;
+      --stone: #6b6259;
+      --stone-light: #b5aca3;
+      --ink: #2e2820;
+      --white: #fff;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: #faf8f4;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sage); font-style: italic; }
+    .nav-back {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.25s;
+    }
+    .nav-back:hover { color: var(--sage-dark); }
+    .nav-back::before { content: '←'; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 45vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 8rem 3rem 5rem;
+      position: relative;
+      overflow: hidden;
+      background: #faf8f4;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 85% 40%, rgba(168,190,158,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(196,168,130,0.07) 0%, transparent 55%);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.9s 0.1s both;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.9s 0.2s both;
+    }
+    .hero-title em { font-style: italic; color: var(--sage); }
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--stone);
+      max-width: 580px;
+      line-height: 1.8;
+      animation: fadeUp 0.9s 0.35s both;
+    }
+
+    /* ── SECTION BASE ── */
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .section-title em { font-style: italic; color: var(--sage); }
+    .section-intro {
+      font-size: 0.95rem;
+      color: var(--stone);
+      max-width: 580px;
+      line-height: 1.85;
+      margin-bottom: 3rem;
+    }
+
+    /* ── CLASS BLOCKS ── */
+    .class-block {
+      background: var(--cream);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      border: 1px solid rgba(180,165,150,0.25);
+      margin-bottom: 2rem;
+    }
+    .class-block-header {
+      background: var(--sage-mist);
+      padding: 2.2rem 2.8rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+    }
+    .class-block-header.bark-header {
+      background: #f5ede3;
+      border-bottom: 1px solid rgba(140,110,82,0.15);
+    }
+    .class-icon { font-size: 2rem; margin-bottom: 0.6rem; display: block; }
+    .class-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 0.4rem;
+    }
+    .bark-header .class-tag { color: var(--bark); }
+    .class-name {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+    .class-location {
+      font-size: 0.85rem;
+      color: var(--stone);
+    }
+    .class-location strong { color: var(--ink); font-weight: 400; }
+    .btn-book {
+      display: inline-block;
+      background: var(--sage);
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      border-radius: 2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-book:hover { background: var(--sage-dark); transform: translateY(-2px); }
+    .btn-contact {
+      display: inline-block;
+      background: var(--bark);
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      border-radius: 2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-contact:hover { background: var(--bark-light); transform: translateY(-2px); }
+    .class-block-body { padding: 2.2rem 2.8rem; }
+    .class-desc {
+      font-size: 0.95rem;
+      color: var(--stone);
+      line-height: 1.85;
+      margin-bottom: 2rem;
+      max-width: 680px;
+    }
+
+    /* ── SCHEDULE CARDS ── */
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .schedule-card {
+      background: var(--sage-mist);
+      border-radius: 1rem;
+      padding: 1.4rem;
+      border-left: 3px solid var(--sage);
+    }
+    .schedule-card.bark-card {
+      background: #f5ede3;
+      border-left-color: var(--bark);
+    }
+    .schedule-day {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 0.3rem;
+    }
+    .bark-card .schedule-day { color: var(--bark); }
+    .schedule-time {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+      line-height: 1;
+    }
+    .schedule-class {
+      font-size: 0.82rem;
+      color: var(--stone);
+    }
+
+    /* ── BOOKING INFO ── */
+    .booking-info {
+      background: var(--sage-mist);
+      border-radius: 0.8rem;
+      padding: 1.2rem 1.6rem;
+      font-size: 0.85rem;
+      color: var(--stone);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+    .booking-info.bark-info { background: #f5ede3; }
+    .booking-info-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .booking-info a { color: var(--sage-dark); text-decoration: none; }
+    .booking-info a:hover { text-decoration: underline; }
+
+    /* ── TIMETABLE ── */
+    .timetable-section {
+      background: var(--sage-mist);
+      border-top: 1px solid rgba(122,145,113,0.15);
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+    }
+    .timetable-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .timetable-note {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--stone);
+      margin-top: 2rem;
+    }
+    .timetable-embed {
+      background: var(--white);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      border: 1px solid rgba(122,145,113,0.2);
+      padding: 3rem;
+      text-align: center;
+    }
+    .timetable-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .timetable-month {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--sage-dark);
+      margin-bottom: 0.5rem;
+    }
+    .timetable-year {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--stone-light);
+      margin-bottom: 2.5rem;
+    }
+    .timetable-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .timetable-table th {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--stone-light);
+      padding: 0.6rem 0.4rem;
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+      text-align: center;
+    }
+    .timetable-table td {
+      padding: 0.8rem 0.4rem;
+      vertical-align: top;
+      border-bottom: 1px solid rgba(122,145,113,0.08);
+      text-align: center;
+      min-height: 60px;
+      color: var(--stone);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .timetable-table td .date-num {
+      font-size: 0.72rem;
+      color: var(--stone-light);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .class-pill {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.4rem;
+      font-size: 0.68rem;
+      margin: 0.1rem 0;
+      line-height: 1.4;
+    }
+    .pill-sage {
+      background: var(--sage-mist);
+      color: var(--sage-dark);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .pill-sage:hover { background: var(--sage); color: var(--white); }
+    .pill-bark { background: #f5ede3; color: var(--bark); }
+
+    /* ── CTA STRIP ── */
+    .cta-strip {
+      background: var(--sage-dark);
+      padding: 5rem 3rem;
+      text-align: center;
+    }
+    .cta-strip h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .cta-strip h2 em { font-style: italic; color: var(--sage-light); }
+    .cta-strip p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-white {
+      background: var(--white);
+      color: var(--sage-dark);
+      padding: 0.85rem 2rem;
+      border-radius: 2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .btn-outline-white {
+      border: 1.5px solid rgba(255,255,255,0.4);
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      border-radius: 2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.4);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: var(--sage-light); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      .section-inner { padding: 4rem 1.5rem; }
+      .class-block-header { grid-template-columns: 1fr; }
+      .schedule-grid { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .cta-strip { padding: 4rem 1.5rem; }
+      .timetable-embed { padding: 1.5rem 1rem; }
+      .timetable-table { font-size: 0.68rem; min-width: 480px; }
+      .timetable-table th { padding: 0.4rem 0.2rem; }
+      .timetable-table td { padding: 0.5rem 0.2rem; }
+      .class-pill { font-size: 0.6rem; padding: 0.15rem 0.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Rhiannon<span>'s Way</span></a>
+    <a href="index.html" class="nav-back">Back to Home</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">RW Move</p>
+      <h1 class="hero-title">In Person <em>Classes</em></h1>
+      <p class="hero-sub">Come and move with us in real life. Whether you're throwing punches to the beat or finding your rhythm on the dance floor, there's a class here for you. No experience needed, just bring yourself and a willingness to have fun.</p>
+    </div>
+  </section>
+
+  <!-- BOX2THEBEAT -->
+  <div class="section-inner">
+    <div class="class-block reveal">
+      <div class="class-block-header">
+        <div>
+          <span class="class-icon">🥊</span>
+          <p class="class-tag">RW Move</p>
+          <h2 class="class-name">Box2theBeat</h2>
+          <p class="class-location"><strong>Motiv8 Gym, Chippenham</strong></p>
+        </div>
+        <a href="https://www.picktime.com/RWMOVE" class="btn-book" target="_blank">Book Your Spot</a>
+      </div>
+      <div class="class-block-body">
+        <p class="class-desc">Box2theBeat is a high energy, feel-good fitness class that combines boxing-inspired moves with great music to create a workout that feels more like a party than a gym session. No boxing experience needed whatsoever. You'll punch, move and groove your way through the session with a smile on your face the whole time. It's fun, it's sweaty and it's one of the most joyful ways to move your body.</p>
+        <div class="schedule-grid">
+          <div class="schedule-card">
+            <p class="schedule-day">Tuesday</p>
+            <p class="schedule-time">6:00 PM</p>
+            <p class="schedule-class">Box2theBeat</p>
+          </div>
+        </div>
+        <div class="booking-info">
+          <span class="booking-info-icon">📅</span>
+          <span>Book your spot online via <a href="https://www.picktime.com/RWMOVE" target="_blank">Picktime</a>. Spaces are limited so booking in advance is recommended.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SNAP FITNESS -->
+    <div class="class-block reveal">
+      <div class="class-block-header bark-header">
+        <div>
+          <span class="class-icon">💃</span>
+          <p class="class-tag" style="color:var(--bark);">Snap Fitness Melksham</p>
+          <h2 class="class-name">Dance Fit and Step Fit</h2>
+          <p class="class-location"><strong>Snap Fitness, Melksham</strong></p>
+        </div>
+      </div>
+      <div class="class-block-body">
+        <p class="class-desc">Dance Fit and Step Fit are energetic, feel-good classes held at Snap Fitness Melksham. Dance Fit gets you moving to great music with easy-to-follow choreography that anyone can enjoy, while Step Fit is a classic step aerobics class with a modern twist. Both classes are free for Snap Fitness members and available on a pay as you go basis for non-members. Contact the gym directly to book your PAYG spot or book through the Snap app if you're a member.</p>
+        <div class="schedule-grid">
+          <div class="schedule-card bark-card">
+            <p class="schedule-day">Monday</p>
+            <p class="schedule-time">5:30 PM</p>
+            <p class="schedule-class">Dance Fit</p>
+          </div>
+          <div class="schedule-card bark-card">
+            <p class="schedule-day">Thursday</p>
+            <p class="schedule-time">7:15 PM</p>
+            <p class="schedule-class">Dance Fit</p>
+          </div>
+          <div class="schedule-card bark-card">
+            <p class="schedule-day">Saturday</p>
+            <p class="schedule-time">8:15 AM</p>
+            <p class="schedule-class">Dance Fit</p>
+          </div>
+          <div class="schedule-card bark-card">
+            <p class="schedule-day">Saturday</p>
+            <p class="schedule-time">9:00 AM</p>
+            <p class="schedule-class">Step Fit</p>
+          </div>
+        </div>
+        <div class="booking-info bark-info">
+          <span class="booking-info-icon">ℹ️</span>
+          <span>Free for Snap Fitness members. Book via the Snap app. PAYG available for non-members. Contact the gym to arrange your spot.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMETABLE -->
+  <section class="timetable-section">
+    <div class="section-inner">
+      <div class="timetable-header reveal">
+        <p class="section-label">Updated every month</p>
+        <h2 class="section-title">May <em>Timetable</em></h2>
+        <p style="font-size:0.88rem; color:var(--stone); max-width:500px; margin:0 auto;">A full overview of all classes across both venues this month. Check back at the start of each month for the latest schedule.</p>
+      </div>
+      <div class="timetable-embed reveal">
+        <p class="timetable-month">May</p>
+        <p class="timetable-year">2026</p>
+        <div class="timetable-scroll">
+        <table class="timetable-table">
+          <thead>
+            <tr>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+              <th>Sun</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><span class="date-num">1</span></td>
+              <td><span class="date-num">2</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
+              <td><span class="date-num">3</span></td>
+            </tr>
+            <tr>
+              <td><span class="date-num">4</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
+              <td><span class="date-num">5</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
+              <td><span class="date-num">6</span></td>
+              <td><span class="date-num">7</span></td>
+              <td><span class="date-num">8</span></td>
+              <td><span class="date-num">9</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
+              <td><span class="date-num">10</span></td>
+            </tr>
+            <tr>
+              <td><span class="date-num">11</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
+              <td><span class="date-num">12</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
+              <td><span class="date-num">13</span></td>
+              <td><span class="date-num">14</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
+              <td><span class="date-num">15</span></td>
+              <td><span class="date-num">16</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
+              <td><span class="date-num">17</span></td>
+            </tr>
+            <tr>
+              <td><span class="date-num">18</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
+              <td><span class="date-num">19</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
+              <td><span class="date-num">20</span></td>
+              <td><span class="date-num">21</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
+              <td><span class="date-num">22</span></td>
+              <td><span class="date-num">23</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
+              <td><span class="date-num">24</span></td>
+            </tr>
+            <tr>
+              <td><span class="date-num">25</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
+              <td><span class="date-num">26</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
+              <td><span class="date-num">27</span></td>
+              <td><span class="date-num">28</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
+              <td><span class="date-num">29</span></td>
+              <td><span class="date-num">30</span></td>
+              <td><span class="date-num">31</span></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="timetable-note">🟢 Box2theBeat at Motiv8 Chippenham &nbsp;&nbsp; 🟤 Dance Fit and Step Fit at Snap Fitness Melksham</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-strip">
+    <h2>Ready to <em>move?</em></h2>
+    <p>Book your Box2theBeat spot online or contact Snap Fitness Melksham for Dance Fit and Step Fit. We'd love to see you in class.</p>
+    <div class="cta-btns">
+      <a href="https://www.picktime.com/RWMOVE" class="btn-white" target="_blank">Book Box2theBeat</a>
+      <a href="https://withme.so/RWMove" class="btn-outline-white" target="_blank">Try On Demand Instead</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Rhiannon's Way</p>
+    <a href="index.html">← Back to Home</a>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
