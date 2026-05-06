@@ -1,0 +1,32 @@
+backend:
+  name: github
+  repo: Rhiannonsway/rhiannons-way
+  branch: main
+
+media_folder: images
+public_folder: images
+
+collections:
+  - name: style_posts
+    label: RW Style Posts
+    folder: _posts/style
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Category, name: category, widget: select, options: [Style, Beauty, Lifestyle] }
+      - { label: Date, name: date, widget: datetime }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: fitness_posts
+    label: RW Move Posts
+    folder: _posts/fitness
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Category, name: category, widget: select, options: [Fitness, Movement] }
+      - { label: Date, name: date, widget: datetime }
+      - { label: Body, name: body, widget: markdown }
