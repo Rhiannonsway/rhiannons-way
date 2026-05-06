@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: Rhiannonsway/rhiannons-way
+  name: git-gateway
   branch: main
 
 media_folder: images
