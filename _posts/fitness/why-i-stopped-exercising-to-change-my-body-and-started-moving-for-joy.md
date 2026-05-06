@@ -1,6 +1,7 @@
 ---
 title: Why I Stopped Exercising to Change My Body and Started Moving for Joy
-description: Why I Stopped Exercising to Change My Body and Started Moving for Joy
+description: The mindset shift that changed everything and why I genuinely look
+  forward to working out now.
 category: Fitness
 date: 2026-05-06T18:26:00.000+01:00
 ---
