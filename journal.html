@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journal — Rhiannon's Way</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f3ed;
+      --cream-deep: #ede7dc;
+      --sage: #7a9171;
+      --sage-light: #a8be9e;
+      --sage-mist: #e8efe6;
+      --sage-dark: #4d6b47;
+      --bark: #8c6e52;
+      --bark-light: #c4a882;
+      --stone: #6b6259;
+      --stone-light: #b5aca3;
+      --ink: #2e2820;
+      --white: #fff;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: #faf8f4;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sage); font-style: italic; }
+    .nav-back {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.25s;
+    }
+    .nav-back:hover { color: var(--sage-dark); }
+    .nav-back::before { content: '←'; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 45vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 8rem 3rem 5rem;
+      position: relative;
+      overflow: hidden;
+      background: #faf8f4;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 85% 40%, rgba(168,190,158,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(196,168,130,0.07) 0%, transparent 55%);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.9s 0.1s both;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.9s 0.2s both;
+    }
+    .hero-title em { font-style: italic; color: var(--sage); }
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--stone);
+      max-width: 540px;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.9s 0.3s both;
+    }
+    .jump-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.9s 0.4s both;
+    }
+    .jump-link {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.5rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      transition: background 0.25s, color 0.25s, transform 0.2s;
+    }
+    .jump-link-style {
+      background: var(--sage-mist);
+      color: var(--sage-dark);
+      border: 1.5px solid rgba(122,145,113,0.3);
+    }
+    .jump-link-style:hover { background: var(--sage); color: var(--white); transform: translateY(-2px); }
+    .jump-link-fitness {
+      background: #f5ede3;
+      color: var(--bark);
+      border: 1.5px solid rgba(140,110,82,0.25);
+    }
+    .jump-link-fitness:hover { background: var(--bark); color: var(--white); transform: translateY(-2px); }
+
+    /* ── SECTIONS ── */
+    .journal-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid rgba(180,165,150,0.3);
+    }
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3.5rem;
+      gap: 2rem;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.6rem;
+    }
+    .section-label-bark { color: var(--bark); }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .section-title em { font-style: italic; color: var(--sage); }
+    .section-title-bark em { color: var(--bark); }
+
+    /* ── POST GRID ── */
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+    .post-card {
+      background: var(--cream);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      border: 1px solid rgba(180,165,150,0.25);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .post-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(46,40,32,0.1);
+      border-color: rgba(122,145,113,0.35);
+    }
+    .post-card-image {
+      height: 200px;
+      background: linear-gradient(145deg, var(--sage-mist) 0%, var(--cream-deep) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      flex-shrink: 0;
+    }
+    .bark-bg { background: linear-gradient(145deg, #f5ede3 0%, var(--cream-deep) 100%); }
+    .post-card-body {
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .post-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+    .post-tag-bark { color: var(--bark); }
+    .post-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.25;
+      margin-bottom: 0.8rem;
+    }
+    .post-desc {
+      font-size: 0.85rem;
+      color: var(--stone);
+      line-height: 1.7;
+      flex: 1;
+      margin-bottom: 1rem;
+    }
+    .post-meta {
+      font-size: 0.72rem;
+      color: var(--stone-light);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.8rem;
+    }
+    .post-cta {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.2s;
+    }
+    .post-card:hover .post-cta { gap: 0.7rem; }
+    .post-cta::after { content: '→'; }
+    .post-cta-bark { color: var(--bark); }
+
+    /* ── FEATURED ── */
+    .post-card-featured {
+      grid-column: span 2;
+      flex-direction: row;
+    }
+    .post-card-featured .post-card-image {
+      width: 280px;
+      height: auto;
+      min-height: 260px;
+      flex-shrink: 0;
+    }
+    .post-card-featured .post-title { font-size: 1.7rem; }
+
+    /* ── FITNESS BG ── */
+    .fitness-bg {
+      background: #faf5f0;
+      border-top: 1px solid rgba(140,110,82,0.12);
+      border-bottom: 1px solid rgba(140,110,82,0.12);
+    }
+
+    /* ── NEWSLETTER ── */
+    .newsletter-strip {
+      background: var(--sage-dark);
+      padding: 5rem 3rem;
+      text-align: center;
+    }
+    .newsletter-strip h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .newsletter-strip h2 em { font-style: italic; color: var(--sage-light); }
+    .newsletter-strip p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 460px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+    .newsletter-form {
+      display: flex;
+      gap: 0.8rem;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .newsletter-input {
+      flex: 1;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 2rem;
+      padding: 0.85rem 1.4rem;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--white);
+      outline: none;
+    }
+    .newsletter-input::placeholder { color: rgba(255,255,255,0.45); }
+    .btn-cream {
+      background: var(--cream);
+      color: var(--sage-dark);
+      padding: 0.85rem 1.6rem;
+      border-radius: 2rem;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: 400;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-cream:hover { background: var(--white); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.4);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: var(--sage-light); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      .journal-section { padding: 4rem 1.5rem; }
+      .posts-grid { grid-template-columns: 1fr; }
+      .post-card-featured { grid-column: span 1; flex-direction: column; }
+      .post-card-featured .post-card-image { width: 100%; min-height: 180px; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+      .newsletter-form { flex-direction: column; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .newsletter-strip { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rhiannon<span>'s Way</span></a>
+    <a href="index.html" class="nav-back">Back to Home</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Rhiannon's Way</p>
+      <h1 class="hero-title">The <em>Journal</em></h1>
+      <p class="hero-sub">Longer reads on style, beauty, lifestyle and movement. The honest conversations that Instagram captions can't quite hold.</p>
+      <div class="jump-links">
+        <a href="#style" class="jump-link jump-link-style">RW Style</a>
+        <a href="#fitness" class="jump-link jump-link-fitness">RW Move</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RW STYLE -->
+  <div id="style">
+    <div class="journal-section">
+      <div class="section-header reveal">
+        <div>
+          <p class="section-label">RW Style</p>
+          <h2 class="section-title">Style, Beauty <em>&amp; Lifestyle</em></h2>
+        </div>
+      </div>
+      <div class="posts-grid">
+        <div class="post-card post-card-featured reveal">
+          <div class="post-card-image">👗</div>
+          <div class="post-card-body">
+            <span class="post-tag">Style</span>
+            <h3 class="post-title">The Mid-Size Edit: My Favourite High Street Finds Right Now</h3>
+            <p class="post-desc">An honest roundup of the pieces I keep reaching for, where to find them and how I style them for real life.</p>
+            <p class="post-meta">Coming Soon</p>
+            <span class="post-cta">Read Post</span>
+          </div>
+        </div>
+        <div class="post-card reveal">
+          <div class="post-card-image">🪞</div>
+          <div class="post-card-body">
+            <span class="post-tag">Style</span>
+            <h3 class="post-title">Dressing for Confidence When You're Having a Bad Body Image Day</h3>
+            <p class="post-desc">Because some days are harder than others. Here's how I get dressed on the days I don't feel my best.</p>
+            <p class="post-meta">Coming Soon</p>
+            <span class="post-cta">Read Post</span>
+          </div>
+        </div>
+        <div class="post-card reveal">
+          <div class="post-card-image">💄</div>
+          <div class="post-card-body">
+            <span class="post-tag">Beauty</span>
+            <h3 class="post-title">The Products I've Actually Finished and Would Buy Again</h3>
+            <p class="post-desc">No fluff, no gifted bias. Just the products that earned a permanent spot in my routine by being genuinely brilliant.</p>
+            <p class="post-meta">Coming Soon</p>
+            <span class="post-cta">Read Post</span>
+          </div>
+        </div>
+        <div class="post-card reveal">
+          <div class="post-card-image">✨</div>
+          <div class="post-card-body">
+            <span class="post-tag">Beauty</span>
+            <h3 class="post-title">My Everyday Makeup Routine for a Natural, Polished Look</h3>
+            <p class="post-desc">Step by step, product by product. The routine I come back to when I want to look put together without trying too hard.</p>
+            <p class="post-meta">Coming Soon</p>
+            <span class="post-cta">Read Post</span>
+          </div>
+        </div>
+        <div class="post-card reveal">
+          <div class="post-card-image">🌿</div>
+          <div class="post-card-body">
+            <span class="post-tag">Lifestyle</span>
+            <h3 class="post-title">How I Stopped Feeling Guilty About Rest Days</h3>
+            <p class="post-desc">Permission to do nothing. Why rest is not the opposite of progress, it is part of it.</p>
+            <p class="post-meta">Coming Soon</p>
+            <span class="post-cta">Read Post</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider" />
+
+  <!-- RW MOVE -->
+  <div id="fitness" class="fitness-bg">
+    <div class="journal-section">
+      <div class="section-header reveal">
+        <div>
+          <p class="section-label section-label-bark">RW Move</p>
+          <h2 class="section-title section-title-bark">Fitness <em>&amp; Movement</em></h2>
+        </div>
+      </div>
+      <div class="posts-grid">
+        <div class="post-card post-card-featured reveal">
+          <div class="post-card-image bark-bg">🏋️</div>
+          <div class="post-card-body">
+            <span class="post-tag post-tag-bark">Fitness</span>
+            <h3 class="post-title">Why I Stopped Exercising to Change My Body and Started Moving for Joy</h3>
+            <p class="post-desc">The mindset shift that changed everything and why I genuinely look forward to working out now.</p>
+            <p class="post-meta">Coming Soon</p>
+            <span class="post-cta post-cta-bark">Read Post</span>
+          </div>
+        </div>
+        <div class="post-card reveal">
+          <div class="post-card-image bark-bg">🥊</div>
+          <div class="post-card-body">
+            <span class="post-tag post-tag-bark">Fitness</span>
+            <h3 class="post-title">What to Expect at Your First Box2theBeat Class</h3>
+            <p class="post-desc">Everything I wish someone had told me before I walked into my first class. No experience needed, just bring yourself.</p>
+            <p class="post-meta">Coming Soon</p>
+            <span class="post-cta post-cta-bark">Read Post</span>
+          </div>
+        </div>
+        <div class="post-card reveal">
+          <div class="post-card-image bark-bg">💃</div>
+          <div class="post-card-body">
+            <span class="post-tag post-tag-bark">Movement</span>
+            <h3 class="post-title">Finding Movement You Actually Enjoy: Where to Start</h3>
+            <p class="post-desc">A guide to ditching the gym if it doesn't work for you and finding the thing that makes your body feel good instead.</p>
+            <p class="post-meta">Coming Soon</p>
+            <span class="post-cta post-cta-bark">Read Post</span>
+          </div>
+        </div>
+        <div class="post-card reveal">
+          <div class="post-card-image bark-bg">🌟</div>
+          <div class="post-card-body">
+            <span class="post-tag post-tag-bark">Fitness</span>
+            <h3 class="post-title">The Honest Truth About Teaching Fitness as a Mid-Size Woman</h3>
+            <p class="post-desc">What it feels like to stand at the front of a class, the challenges, the joy and why representation in fitness spaces matters.</p>
+            <p class="post-meta">Coming Soon</p>
+            <span class="post-cta post-cta-bark">Read Post</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="newsletter-strip">
+    <h2>Never miss a <em>post</em></h2>
+    <p>Sign up to be the first to know when new journal posts go live, plus class updates, style finds and honest chats from behind the scenes.</p>
+    <div class="newsletter-form">
+      <input type="email" class="newsletter-input" placeholder="your@email.com" />
+      <button class="btn-cream">Subscribe</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Rhiannon's Way</p>
+    <a href="index.html">← Back to Home</a>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rhiannon's Way</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f3ed;
+      --cream-deep: #ede7dc;
+      --sage: #7a9171;
+      --sage-light: #a8be9e;
+      --sage-mist: #e8efe6;
+      --sage-dark: #4d6b47;
+      --bark: #8c6e52;
+      --bark-light: #c4a882;
+      --stone: #6b6259;
+      --stone-light: #b5aca3;
+      --ink: #2e2820;
+      --white: #fff;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.45;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+      transition: padding 0.3s ease;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sage); font-style: italic; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.4rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.25s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--sage);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--sage-dark); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--sage);
+      color: var(--white) !important;
+      padding: 0.55rem 1.3rem;
+      border-radius: 2rem;
+      font-size: 0.78rem !important;
+      letter-spacing: 0.1em;
+      transition: background 0.25s, transform 0.2s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--sage-dark) !important; transform: translateY(-1px); color: var(--white) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+      background: #faf8f4;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 15% 90%, rgba(168,190,158,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 10%, rgba(196,168,130,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 60% at 50% 50%, rgba(255,252,248,0.6) 0%, transparent 80%);
+    }
+
+    .hero-leaf {
+      position: absolute;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+    .hero-leaf-1 { top: 8%; left: 5%; width: 280px; transform: rotate(-20deg); animation: floatLeaf 12s ease-in-out infinite; }
+    .hero-leaf-2 { bottom: 10%; right: 4%; width: 220px; transform: rotate(35deg); animation: floatLeaf 15s ease-in-out infinite reverse; }
+
+    @keyframes floatLeaf {
+      0%, 100% { transform: rotate(-20deg) translateY(0); }
+      50% { transform: rotate(-20deg) translateY(-18px); }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1.4rem;
+      animation: fadeUp 0.9s 0.1s both;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 8vw, 7rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 1.6rem;
+      animation: fadeUp 0.9s 0.25s both;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--sage);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--stone);
+      max-width: 520px;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+      animation: fadeUp 0.9s 0.4s both;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.9s 0.55s both;
+    }
+
+    .btn-primary {
+      background: var(--sage);
+      color: var(--white);
+      padding: 0.85rem 2.2rem;
+      border-radius: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      box-shadow: 0 4px 20px rgba(122,145,113,0.25);
+    }
+    .btn-primary:hover { background: var(--sage-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(122,145,113,0.35); }
+
+    .btn-outline {
+      border: 1.5px solid var(--bark-light);
+      color: var(--bark);
+      padding: 0.85rem 2.2rem;
+      border-radius: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s, color 0.25s, transform 0.2s;
+    }
+    .btn-outline:hover { background: var(--bark-light); color: var(--white); transform: translateY(-2px); }
+
+    .hero-scroll { display: none; }
+    .hero-scroll span {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--stone-light);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--stone-light), transparent);
+      animation: scrollDrop 2s ease-in-out infinite;
+    }
+    @keyframes scrollDrop {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.5); opacity: 0.4; }
+    }
+
+    /* ── DIVIDER ── */
+    .divider-leaf {
+      text-align: center;
+      padding: 1rem 0;
+      opacity: 0.35;
+    }
+    .divider-leaf svg { width: 60px; }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 7rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+    }
+    .section-title em { font-style: italic; color: var(--sage); }
+
+    .section-intro {
+      font-size: 1rem;
+      color: var(--stone);
+      max-width: 500px;
+      line-height: 1.85;
+    }
+
+    /* ── ABOUT STRIP ── */
+    .about-strip {
+      background: #f0f5ee;
+      border-top: 1px solid rgba(122,145,113,0.15);
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+      padding: 5rem 2rem;
+    }
+    .about-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 0.85fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .about-photo-wrap {
+      position: relative;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      box-shadow: 0 16px 48px rgba(46,40,32,0.12);
+    }
+    .about-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .about-photo-wrap:hover .about-photo { transform: scale(1.03); }
+    .about-content { display: flex; flex-direction: column; gap: 0; }
+    .about-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--sage-dark);
+    }
+    .about-quote span { color: var(--bark); }
+    .about-text p {
+      font-size: 0.95rem;
+      color: var(--stone);
+      margin-bottom: 1rem;
+    }
+    .about-handle {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      color: var(--sage);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .about-handle:hover { color: var(--sage-dark); }
+
+    /* ── TWO WORLDS ── */
+    .two-worlds-section {
+      background: #faf8f4;
+    }
+    .two-worlds {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 7rem 2rem;
+    }
+    .two-worlds-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+    .worlds-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    /* ── TWO WORLDS NAV ── */
+    .worlds-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+    .worlds-nav-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .worlds-nav-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      font-weight: 400;
+    }
+    .worlds-nav-label-move { color: var(--bark); }
+    .worlds-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      justify-content: center;
+    }
+    .worlds-nav-btn {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      padding: 0.55rem 1.3rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      border: 1.5px solid rgba(122,145,113,0.35);
+      color: var(--sage-dark);
+      background: transparent;
+      transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.2s;
+    }
+    .worlds-nav-btn:hover {
+      background: var(--sage);
+      color: var(--white);
+      border-color: var(--sage);
+      transform: translateY(-2px);
+    }
+    .worlds-nav-btn-move {
+      border-color: rgba(140,110,82,0.3);
+      color: var(--bark);
+    }
+    .worlds-nav-btn-move:hover {
+      background: var(--bark);
+      color: var(--white);
+      border-color: var(--bark);
+    }
+    .worlds-nav-divider {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, rgba(180,165,150,0.4), transparent);
+    }
+    @media (max-width: 600px) {
+      .worlds-nav-divider { width: 60px; height: 1px; background: linear-gradient(to right, transparent, rgba(180,165,150,0.4), transparent); }
+      .worlds-nav { gap: 2rem; }
+    }
+
+    /* ── CONTENT CREATOR SECTION ── */
+    .creator-section {
+      background: var(--cream-deep);
+      border-top: 1px solid rgba(180,165,150,0.3);
+    }
+    .creator-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .creator-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      margin-bottom: 4rem;
+      gap: 2rem;
+    }
+    .creator-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem;
+    }
+    /* ── CREATOR PHOTO STRIP ── */
+    .creator-photo-strip {
+      position: relative;
+      border-radius: 1.4rem;
+      overflow: hidden;
+      height: 520px;
+      margin-bottom: 2rem;
+    }
+    .creator-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .creator-photo-strip:hover .creator-photo { transform: scale(1.02); }
+    .creator-photo-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(46,40,32,0.6) 0%, transparent 100%);
+      padding: 2.5rem 2.5rem 2rem;
+    }
+    .creator-photo-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage-light);
+      margin-bottom: 0.4rem;
+    }
+    .creator-photo-text {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.3;
+      max-width: 480px;
+    }
+    /* ── MOVE PHOTO STRIP ── */
+    .move-photo-strip {
+      position: relative;
+      border-radius: 1.4rem;
+      overflow: hidden;
+      height: 420px;
+      margin-bottom: 2rem;
+    }
+    .move-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .move-photo-strip:hover .move-photo { transform: scale(1.02); }
+    .move-photo-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(46,40,32,0.6) 0%, transparent 100%);
+      padding: 2.5rem 2.5rem 2rem;
+    }
+    .move-photo-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage-light);
+      margin-bottom: 0.4rem;
+    }
+    .move-photo-text {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.3;
+      max-width: 480px;
+    }
+    .move-featured-card {
+      background: linear-gradient(145deg, #4d6b47 0%, #7a9171 100%);
+      border-radius: 1.4rem;
+      padding: 2.5rem;
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 280px;
+    }
+    .move-featured {
+      background: linear-gradient(145deg, #4d6b47 0%, #7a9171 60%, #a8be9e 100%);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      position: relative;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .move-featured-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      opacity: 0.6;
+      transition: transform 0.6s ease;
+    }
+    .move-featured:hover .move-featured-img { transform: scale(1.03); }
+    .move-featured-content {
+      position: relative;
+      z-index: 1;
+      padding: 2.5rem;
+      background: linear-gradient(to top, rgba(46,40,32,0.65) 0%, transparent 100%);
+    }
+    @media (max-width: 900px) {
+      .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .about-photo-wrap { aspect-ratio: 4/3; max-height: 320px; }
+      .creator-photo-strip { height: 260px; }
+      .move-photo-strip { height: 260px; }
+      .move-grid { grid-template-columns: 1fr; }
+    }
+    .creator-card {
+      background: var(--cream);
+      border-radius: 1.2rem;
+      padding: 2.2rem;
+      border: 1px solid rgba(180,165,150,0.25);
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .creator-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(46,40,32,0.08);
+      border-color: rgba(122,145,113,0.35);
+    }
+    .creator-card-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+    }
+    .icon-sage { background: rgba(122,145,113,0.15); }
+    .icon-bark { background: rgba(196,168,130,0.2); }
+    .icon-stone { background: rgba(107,98,89,0.1); }
+
+    .creator-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      margin-bottom: 0.6rem;
+      color: var(--ink);
+    }
+    .creator-card p {
+      font-size: 0.88rem;
+      color: var(--stone);
+      line-height: 1.75;
+      margin-bottom: 1.4rem;
+    }
+    .card-link {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.2s;
+    }
+    .card-link:hover { gap: 0.7rem; color: var(--sage-dark); }
+    .card-link::after { content: '→'; }
+
+    /* ── MOVE SECTION ── */
+    .move-section {
+      background: var(--cream);
+    }
+    .move-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .move-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      margin-bottom: 4rem;
+      gap: 2rem;
+    }
+    .move-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem;
+    }
+    .move-featured-card {
+      background: var(--sage-mist);
+      border-radius: 1.2rem;
+      padding: 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(122,145,113,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .move-featured-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(46,40,32,0.08);
+      border-color: rgba(122,145,113,0.35);
+    }
+    .move-featured-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 0.6rem;
+    }
+    .move-featured-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+    .move-featured-title em { font-style: italic; color: var(--sage); }
+    .move-featured-desc {
+      font-size: 0.88rem;
+      color: var(--stone);
+      margin-bottom: 1.4rem;
+      line-height: 1.75;
+    }
+    .btn-white {
+      background: var(--white);
+      color: var(--sage-dark);
+      padding: 0.75rem 1.8rem;
+      border-radius: 2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-weight: 400;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+    .move-side-card {
+      background: var(--sage-mist);
+      border-radius: 1.2rem;
+      padding: 2.2rem;
+      border: 1px solid rgba(122,145,113,0.2);
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .move-side-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(122,145,113,0.12);
+      border-color: rgba(122,145,113,0.35);
+    }
+    .move-side-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      margin-bottom: 0.6rem;
+      color: var(--ink);
+    }
+    .move-side-card p {
+      font-size: 0.88rem;
+      color: var(--stone);
+      line-height: 1.75;
+      margin-bottom: 1.4rem;
+    }
+
+    /* ── TIMETABLE ── */
+    .timetable-section {
+      background: var(--sage-mist);
+      border-top: 1px solid rgba(122,145,113,0.2);
+    }
+    .timetable-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .timetable-header { text-align: center; margin-bottom: 3.5rem; }
+    .timetable-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .class-card {
+      background: var(--white);
+      border-radius: 1rem;
+      padding: 1.6rem;
+      border-left: 3px solid var(--sage);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .class-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(122,145,113,0.15); }
+    .class-day {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.3rem;
+    }
+    .class-time {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+    }
+    .class-name {
+      font-size: 0.9rem;
+      color: var(--stone);
+      margin-bottom: 0.8rem;
+    }
+    .class-type {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 1rem;
+      background: var(--sage-mist);
+      color: var(--sage-dark);
+    }
+    .timetable-note {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--stone);
+    }
+    .timetable-note a { color: var(--sage); text-decoration: none; }
+    .timetable-note a:hover { color: var(--sage-dark); }
+
+    /* ── AFFILIATE SECTION ── */
+    .affiliate-section {
+      background: var(--cream-deep);
+    }
+    .affiliate-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .affiliate-header { text-align: center; margin-bottom: 3.5rem; }
+    .affiliate-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .affiliate-card {
+      background: var(--cream);
+      border-radius: 1rem;
+      padding: 1.6rem 1.2rem;
+      text-align: center;
+      border: 1px solid rgba(180,165,150,0.3);
+      text-decoration: none;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .affiliate-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--sage-light);
+      box-shadow: 0 12px 32px rgba(122,145,113,0.12);
+    }
+    .affiliate-emoji { font-size: 1.8rem; }
+    .affiliate-brand {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+    .affiliate-code {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sage);
+      background: var(--sage-mist);
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.4rem;
+    }
+    .affiliate-cat {
+      font-size: 0.75rem;
+      color: var(--stone-light);
+    }
+    .affiliate-all {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+
+    /* ── BLOG PREVIEW ── */
+    .blog-section {
+      background: var(--cream);
+    }
+    .blog-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .blog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 1.8rem;
+    }
+    .blog-featured {
+      background: linear-gradient(155deg, var(--sage-mist) 0%, var(--cream-deep) 100%);
+      border-radius: 1.4rem;
+      padding: 3rem;
+      border: 1px solid rgba(122,145,113,0.2);
+    }
+    .blog-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    .blog-featured h3 {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+    .blog-featured p {
+      font-size: 0.9rem;
+      color: var(--stone);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .blog-meta {
+      font-size: 0.75rem;
+      color: var(--stone-light);
+      letter-spacing: 0.05em;
+    }
+    .blog-side {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .blog-mini {
+      background: var(--cream);
+      border-radius: 1rem;
+      padding: 1.4rem;
+      border: 1px solid rgba(180,165,150,0.25);
+      text-decoration: none;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .blog-mini:hover { transform: translateX(4px); box-shadow: 0 6px 20px rgba(46,40,32,0.07); }
+    .blog-mini span { display: block; }
+    .blog-mini .blog-tag { margin-bottom: 0.4rem; }
+    .blog-mini h4 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+      line-height: 1.3;
+    }
+    .blog-mini .blog-meta { font-size: 0.72rem; }
+
+    /* ── NEWSLETTER ── */
+    .newsletter-section {
+      background: var(--sage-dark);
+      padding: 6rem 2rem;
+    }
+    .newsletter-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .newsletter-inner .section-label { color: var(--sage-light); }
+    .newsletter-inner .section-title { color: var(--white); margin-bottom: 0.8rem; }
+    .newsletter-inner .section-intro { color: rgba(255,255,255,0.7); max-width: 440px; margin: 0 auto 2.5rem; }
+    .newsletter-form {
+      display: flex;
+      gap: 0.8rem;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .newsletter-input {
+      flex: 1;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 2rem;
+      padding: 0.85rem 1.4rem;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .newsletter-input::placeholder { color: rgba(255,255,255,0.45); }
+    .newsletter-input:focus { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.15); }
+    .btn-cream {
+      background: var(--cream);
+      color: var(--sage-dark);
+      padding: 0.85rem 1.6rem;
+      border-radius: 2rem;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+      white-space: nowrap;
+      font-weight: 400;
+    }
+    .btn-cream:hover { background: var(--white); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 4rem 2rem 2.5rem;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2rem;
+    }
+    .footer-brand .nav-logo { color: rgba(255,255,255,0.85); display: block; margin-bottom: 0.8rem; }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.7; }
+    .footer-col h4 {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--sage-light); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+    .social-links { display: flex; gap: 1.2rem; }
+    .social-links a {
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    .social-links a:hover { color: var(--sage-light); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      .about-inner,
+      .worlds-grid,
+      .move-grid,
+      .creator-grid,
+      .blog-grid,
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .timetable-grid { grid-template-columns: 1fr 1fr; }
+      .affiliate-grid { grid-template-columns: 1fr 1fr !important; }
+      .creator-header,
+      .move-header,
+      .blog-header { grid-template-columns: 1fr; }
+      .newsletter-form { flex-direction: column; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; gap: 1rem; }
+      .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .about-photo-wrap { aspect-ratio: 4/3; max-height: 320px; }
+      .about-photo { object-position: center 25%; }
+    }
+
+    @media (max-width: 600px) {
+      .timetable-grid { grid-template-columns: 1fr; }
+      .affiliate-grid { grid-template-columns: 1fr 1fr !important; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Rhiannon<span>'s Way</span></a>
+    <ul class="nav-links">
+      <li><a href="#content">Content</a></li>
+      <li><a href="#move">RW Move</a></li>
+      <li><a href="classes.html">Classes</a></li>
+      <li><a href="#affiliates">Links</a></li>
+      <li><a href="journal.html">Journal</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <!-- SVG leaves -->
+    <svg class="hero-leaf hero-leaf-1" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100 280 C100 280 10 200 10 120 C10 40 100 10 100 10 C100 10 190 40 190 120 C190 200 100 280 100 280Z" fill="#4d6b47"/>
+      <line x1="100" y1="280" x2="100" y2="10" stroke="#4d6b47" stroke-width="2"/>
+    </svg>
+    <svg class="hero-leaf hero-leaf-2" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100 280 C100 280 10 200 10 120 C10 40 100 10 100 10 C100 10 190 40 190 120 C190 200 100 280 100 280Z" fill="#8c6e52"/>
+      <line x1="100" y1="280" x2="100" y2="10" stroke="#8c6e52" stroke-width="2"/>
+    </svg>
+
+    <div style="position:relative; z-index:1;">
+      <p class="hero-eyebrow">Welcome to Rhiannon's Way</p>
+      <h1 class="hero-title">
+        Style. Movement.<br/><em>Your way.</em>
+      </h1>
+      <p class="hero-sub">
+        I'm Rhi, and this is my little corner of the internet. A place where confident style meets joyful movement, and everyday living is always worth celebrating. You'll find outfit inspiration, honest beauty finds and UGC content that feels like real life on one side, and feel-good fitness classes, on demand workouts and a community that moves together on the other. Whatever brought you here, I'm glad you found your way.
+      </p>
+      <div class="hero-btns">
+        <a href="#content" class="btn-primary">Explore My Style</a>
+        <a href="#move" class="btn-outline">Join RW Move</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT STRIP -->
+  <div class="about-strip">
+    <div class="about-inner">
+      <div class="about-photo-wrap">
+        <img src="images/about.jpg" alt="Rhi at a flower market" class="about-photo" />
+      </div>
+      <div class="about-content">
+        <p class="about-quote">"Confidence looks good <span>on everyone.</span>"</p>
+        <div class="about-text">
+          <p>This space was built for the women who want to feel good in their bodies, have fun with their style and move in a way that brings them joy rather than guilt. Growing up plus size, I know firsthand what it feels like to lack confidence in how you look and how you move. Finding a way to move my body that genuinely brought me joy changed everything, and it made me want to help others find that feeling too.</p>
+          <p>That's how these two worlds came together. The style side to help you dress with confidence and feel like yourself, and the movement side to show you that fitness can be fun, inclusive and something you actually look forward to. Here you'll find honest content, genuine recommendations and a community that celebrates real life in all its forms.</p>
+          <a href="https://instagram.com/rhiannons_way" class="about-handle" target="_blank">@rhiannons_way →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TWO WORLDS -->
+  <div class="two-worlds-section">
+  <div class="two-worlds reveal">
+    <div class="two-worlds-header">
+      <p class="section-label">Two worlds, one home</p>
+      <h2 class="section-title">Everything you need,<br/><em>all in one place</em></h2>
+    </div>
+    <div class="worlds-nav">
+      <div class="worlds-nav-group">
+        <p class="worlds-nav-label">✦ Rhiannon's Way</p>
+        <div class="worlds-nav-links">
+          <a href="#content" class="worlds-nav-btn">Portfolio</a>
+          <a href="#affiliates" class="worlds-nav-btn">Links & Codes</a>
+          <a href="journal.html" class="worlds-nav-btn">Journal</a>
+        </div>
+      </div>
+      <div class="worlds-nav-divider"></div>
+      <div class="worlds-nav-group">
+        <p class="worlds-nav-label worlds-nav-label-move">◎ RW Move</p>
+        <div class="worlds-nav-links">
+          <a href="#move" class="worlds-nav-btn worlds-nav-btn-move">On Demand</a>
+          <a href="classes.html" class="worlds-nav-btn worlds-nav-btn-move">In Person</a>
+          <a href="journal.html#fitness" class="worlds-nav-btn worlds-nav-btn-move">Journal</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- RW MOVE SECTION -->
+  <section class="move-section" id="move">
+    <div class="move-inner">
+      <div class="move-header reveal">
+        <div>
+          <p class="section-label">RW Move</p>
+          <h2 class="section-title">Joyful <em>Movement</em></h2>
+          <p class="section-intro">Move your body in a way that feels good. Classes, on-demand content, and a community that celebrates every body.</p>
+        </div>
+        <a href="#timetable" class="btn-primary">Book a Class</a>
+      </div>
+      <div class="move-photo-strip reveal">
+        <img src="images/move.jpg" alt="RW Move class community" class="move-photo" />
+        <div class="move-photo-overlay">
+          <p class="move-photo-tag">The RW Move Community</p>
+          <p class="move-photo-text">Movement that feels good, with people who get it.</p>
+        </div>
+      </div>
+      <div class="move-grid reveal">
+        <div class="move-featured-card">
+          <div>
+            <div class="creator-card-icon icon-stone">🎥</div>
+            <p class="move-featured-tag">RW On Demand</p>
+            <h3 class="move-featured-title">Move on <em>your schedule</em></h3>
+            <p class="move-featured-desc">Access a growing library of workouts, Dance Fit, Step and Box2theBeat, whenever and wherever suits you. Just £4.99 a month.</p>
+          </div>
+          <a href="https://withme.so/RWMove" class="card-link" target="_blank">Explore On Demand</a>
+        </div>
+        <div class="move-side-card">
+          <div class="creator-card-icon icon-sage">🥊</div>
+          <h3>In Person Classes</h3>
+          <p>Box2theBeat, Dance Fit and Step Fit classes across Chippenham and Melksham. Come and move with us in real life.</p>
+          <a href="classes.html" class="card-link">See Classes and Timetable</a>
+        </div>
+        <div class="move-side-card">
+          <div class="creator-card-icon icon-bark">📖</div>
+          <h3>Fitness Journal</h3>
+          <p>Longer reads on movement, mindset and balanced living. Honest conversations about what joyful fitness really looks like.</p>
+          <a href="journal.html#fitness" class="card-link">Read Fitness Posts</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT CREATOR SECTION -->
+  <section class="creator-section" id="content">
+    <div class="creator-inner">
+      <div class="creator-header reveal">
+        <div>
+          <p class="section-label">Rhiannon's Way</p>
+          <h2 class="section-title">Content <em>&amp; Style</em></h2>
+          <p class="section-intro">From fashion and lifestyle to honest conversations about confident living — this is where the content lives.</p>
+        </div>
+        <a href="mediakit.html" class="btn-outline">View Media Kit</a>
+      </div>
+      <div class="creator-photo-strip reveal">
+        <img src="images/creator.jpg" alt="Rhi content creator" class="creator-photo" />
+        <div class="creator-photo-overlay">
+          <p class="creator-photo-tag">Style &amp; Lifestyle</p>
+          <p class="creator-photo-text">Confident mid-size fashion, beauty finds and everyday moments worth sharing.</p>
+        </div>
+      </div>
+      <div class="creator-grid">
+        <div class="creator-card reveal">
+          <div class="creator-card-icon icon-sage">🖼</div>
+          <h3>Portfolio & Media Kit</h3>
+          <p>Brand collaborations, content examples, engagement stats, and everything you need to work with me.</p>
+          <a href="mediakit.html" class="card-link">View Portfolio</a>
+        </div>
+        <div class="creator-card reveal">
+          <div class="creator-card-icon icon-bark">🔗</div>
+          <h3>Affiliate Links & Codes</h3>
+          <p>All my current favourite finds, discount codes and affiliate links, organised by category for easy browsing.</p>
+          <a href="affiliates.html" class="card-link">Browse Links</a>
+        </div>
+        <div class="creator-card reveal">
+          <div class="creator-card-icon icon-stone">📖</div>
+          <h3>The Journal</h3>
+          <p>Longer reads on fashion, beauty and lifestyle. The things Instagram captions can't quite hold.</p>
+          <a href="journal.html" class="card-link">Read the Journal</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AFFILIATES -->
+  <section class="affiliate-section" id="affiliates">
+    <div class="affiliate-inner">
+      <div class="affiliate-header reveal">
+        <p class="section-label">Links & Codes</p>
+        <h2 class="section-title">My Favourite <em>Finds</em></h2>
+        <p class="section-intro" style="margin:0 auto;">A few of the brands I genuinely love and recommend. Use my codes where available and visit the full links page for everything I'm currently loving.</p>
+      </div>
+      <div class="affiliate-grid reveal" style="grid-template-columns: repeat(4, 1fr);">
+        <a href="https://www.abbottlyon.com/pages/shop?lc_ambassador_id=Y3VzdG9tZXI6NjQxMzU4NQ" class="affiliate-card" target="_blank">
+          <span class="affiliate-emoji">⌚</span>
+          <span class="affiliate-brand">Abbott Lyon</span>
+          <span class="affiliate-code">Code: RHIANNON</span>
+          <span class="affiliate-cat">Jewellery</span>
+        </a>
+        <a href="https://jluxefit.com/?ref=Rhiannonsway" class="affiliate-card" target="_blank">
+          <span class="affiliate-emoji">🏋️</span>
+          <span class="affiliate-brand">JLUXE</span>
+          <span class="affiliate-code">Code: RHIANNONSWAY</span>
+          <span class="affiliate-cat">Activewear</span>
+        </a>
+        <a href="https://amzlink.to/az0b2GiM9WR1r" class="affiliate-card" target="_blank">
+          <span class="affiliate-emoji">📦</span>
+          <span class="affiliate-brand">Amazon</span>
+          <span class="affiliate-code">Shop My Picks</span>
+          <span class="affiliate-cat">Everything</span>
+        </a>
+        <a href="https://www.shopltk.com/explore/Rhiannons_Way" class="affiliate-card" target="_blank">
+          <span class="affiliate-emoji">📱</span>
+          <span class="affiliate-brand">LTK</span>
+          <span class="affiliate-code">@Rhiannons_Way</span>
+          <span class="affiliate-cat">Shop My Style</span>
+        </a>
+      </div>
+      <div class="affiliate-all reveal">
+        <a href="affiliates.html" class="btn-outline">View All Links & Codes</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG / JOURNAL -->
+  <section class="blog-section" id="blog">
+    <div class="blog-inner">
+      <div class="blog-header reveal">
+        <div>
+          <p class="section-label">The Journal</p>
+          <h2 class="section-title">Longer <em>Reads</em></h2>
+        </div>
+        <a href="#" class="card-link">All Posts</a>
+      </div>
+      <div class="blog-grid reveal">
+        <div class="blog-featured">
+          <span class="blog-tag">Confident Style</span>
+          <h3>How I Found My Style Identity as a Mid-Size Woman</h3>
+          <p>Fashion isn't about fitting a mould. It's about finding what makes you feel most yourself. Here's my honest journey from dressing to hide to dressing to be seen.</p>
+          <p class="blog-meta">April 2025 &nbsp;·&nbsp; 6 min read</p>
+        </div>
+        <div class="blog-side">
+          <a href="#" class="blog-mini">
+            <span class="blog-tag">Fashion</span>
+            <h4>The Pieces I Wear on Repeat Every Single Week</h4>
+            <span class="blog-meta">March 2025 · 4 min</span>
+          </a>
+          <a href="#" class="blog-mini">
+            <span class="blog-tag">Fitness</span>
+            <h4>Why I Stopped Exercising for the Wrong Reasons</h4>
+            <span class="blog-meta">March 2025 · 4 min</span>
+          </a>
+          <a href="#" class="blog-mini">
+            <span class="blog-tag">Lifestyle</span>
+            <h4>How to Feel Good Getting Dressed When Nothing Fits Right</h4>
+            <span class="blog-meta">February 2025 · 3 min</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter-section">
+    <div class="newsletter-inner">
+      <p class="section-label">Stay Connected</p>
+      <h2 class="section-title">Stay in <em>the loop</em></h2>
+      <p class="section-intro">Sign up to be the first to know about new classes, on demand content, style finds and honest chats from behind the scenes. No spam, just the good stuff straight to your inbox.</p>
+      <div class="newsletter-form">
+        <input type="email" class="newsletter-input" placeholder="your@email.com" />
+        <button class="btn-cream">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">Rhiannon<span style="color:var(--sage-light);font-style:italic">'s Way</span></a>
+          <p>Empowered living, your way. Style, movement, and joyful everyday living — rooted in confidence and community.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Content</h4>
+          <ul>
+            <li><a href="#content">Portfolio</a></li>
+            <li><a href="#content">Media Kit</a></li>
+            <li><a href="#affiliates">Links & Codes</a></li>
+            <li><a href="journal.html">Journal</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>RW Move</h4>
+          <ul>
+            <li><a href="#move">On Demand</a></li>
+            <li><a href="#timetable">Timetable</a></li>
+            <li><a href="#timetable">Book a Class</a></li>
+            <li><a href="#move">Community</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="https://instagram.com/rhiannons_way" target="_blank">Instagram</a></li>
+            <li><a href="#" target="_blank">TikTok</a></li>
+            <li><a href="#" target="_blank">Broadcast Channel</a></li>
+            <li><a href="#">Work With Me</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Rhiannon's Way. All rights reserved.</p>
+        <div class="social-links">
+          <a href="https://instagram.com/rhiannons_way" target="_blank">Instagram</a>
+          <a href="#" target="_blank">TikTok</a>
+          <a href="#">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for scroll reveals
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, entry.target.dataset.delay || 0);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach((el, i) => {
+      el.dataset.delay = (i % 3) * 80;
+      observer.observe(el);
+    });
+
+    // Nav scroll shrink
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        nav.style.padding = '0.9rem 3rem';
+      } else {
+        nav.style.padding = '1.4rem 3rem';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Media Kit — Rhiannon's Way</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f3ed;
+      --cream-deep: #ede7dc;
+      --sage: #7a9171;
+      --sage-light: #a8be9e;
+      --sage-mist: #e8efe6;
+      --sage-dark: #4d6b47;
+      --bark: #8c6e52;
+      --bark-light: #c4a882;
+      --stone: #6b6259;
+      --stone-light: #b5aca3;
+      --ink: #2e2820;
+      --white: #fff;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #faf8f4;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sage); font-style: italic; }
+    .nav-back {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.25s;
+    }
+    .nav-back:hover { color: var(--sage-dark); }
+    .nav-back::before { content: '←'; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 60vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 8rem 3rem 5rem;
+      position: relative;
+      overflow: hidden;
+      background: #faf8f4;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 80% 50%, rgba(168,190,158,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(196,168,130,0.08) 0%, transparent 55%);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      gap: 4rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.9s 0.1s both;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.9s 0.2s both;
+    }
+    .hero-title em { font-style: italic; color: var(--sage); }
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--stone);
+      max-width: 480px;
+      line-height: 1.8;
+      animation: fadeUp 0.9s 0.35s both;
+    }
+    .hero-badge {
+      animation: fadeUp 0.9s 0.4s both;
+      text-align: center;
+    }
+    .hero-badge-inner {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(122,145,113,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+      background: rgba(232,239,230,0.4);
+    }
+    .hero-badge-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--sage-dark);
+      line-height: 1;
+    }
+    .hero-badge-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--stone);
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    /* ── SECTION BASE ── */
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 3rem;
+    }
+    .section-title em { font-style: italic; color: var(--sage); }
+
+    /* ── HERO PHOTO ── */
+    .hero-photo-wrap {
+      position: relative;
+      width: 320px;
+      flex-shrink: 0;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      box-shadow: 0 20px 60px rgba(46,40,32,0.15);
+    }
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      align-items: center;
+      gap: 4rem;
+    }
+
+    /* ── REELS ── */
+    .reels-section { background: var(--cream-deep); border-top: 1px solid rgba(180,165,150,0.25); }
+    .reels-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+    }
+    .reel-card {
+      border-radius: 1.2rem;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 9/16;
+      background: var(--ink);
+      display: block;
+      text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .reel-card:hover { transform: translateY(-5px); box-shadow: 0 20px 48px rgba(46,40,32,0.18); }
+    .reel-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+    .reel-card:hover .reel-video { opacity: 1; }
+    .reel-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+    .reel-card:hover .reel-thumb { opacity: 1; }
+    .reel-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(46,40,32,0.7) 0%, transparent 50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+    }
+    .reel-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .reel-card:hover .reel-play { transform: translate(-50%, -50%) scale(1.1); background: var(--white); }
+    .reel-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 0.3rem;
+    }
+    .reel-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.3;
+    }
+    .reel-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(155deg, var(--sage-mist) 0%, var(--cream-deep) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-photo-wrap { width: 100%; aspect-ratio: 4/3; }
+      .reels-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .reel-card { aspect-ratio: 16/9; }
+    }
+    .stats-section { background: var(--sage-mist); border-top: 1px solid rgba(122,145,113,0.15); border-bottom: 1px solid rgba(122,145,113,0.15); }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(122,145,113,0.15);
+      border-radius: 1.2rem;
+      overflow: hidden;
+      margin-bottom: 4rem;
+    }
+    .stat-card {
+      background: #faf8f4;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: background 0.25s;
+    }
+    .stat-card:hover { background: var(--white); }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--sage-dark);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .demo-card {
+      background: #faf8f4;
+      border-radius: 1.2rem;
+      padding: 2rem;
+      border: 1px solid rgba(122,145,113,0.2);
+    }
+    .demo-card h3 {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 1.5rem;
+    }
+    .gender-bar {
+      display: flex;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .gender-female { background: var(--sage); }
+    .gender-male { background: var(--bark-light); }
+    .gender-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--stone);
+    }
+    .gender-labels strong { color: var(--ink); font-weight: 400; }
+    .age-rows { display: flex; flex-direction: column; gap: 0.8rem; }
+    .age-row { display: flex; align-items: center; gap: 1rem; }
+    .age-label { font-size: 0.8rem; color: var(--stone); width: 50px; flex-shrink: 0; }
+    .age-bar-wrap { flex: 1; height: 6px; background: rgba(122,145,113,0.15); border-radius: 3px; overflow: hidden; }
+    .age-bar { height: 100%; background: var(--sage); border-radius: 3px; }
+    .age-pct { font-size: 0.8rem; color: var(--stone); width: 35px; text-align: right; }
+    .location-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(122,145,113,0.1);
+    }
+    .location-row:last-child { border-bottom: none; }
+    .location-name { font-size: 0.88rem; color: var(--ink); }
+    .location-pct { font-family: var(--font-display); font-size: 1.3rem; font-weight: 300; color: var(--sage-dark); }
+
+    /* ── PLATFORMS ── */
+    .platforms-section { background: #faf8f4; }
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem;
+    }
+    .platform-card {
+      background: var(--cream);
+      border-radius: 1.2rem;
+      padding: 2.2rem;
+      border: 1px solid rgba(180,165,150,0.25);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .platform-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(46,40,32,0.08); }
+    .platform-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .platform-name {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 0.4rem;
+    }
+    .platform-handle {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+    }
+    .platform-stats { display: flex; flex-direction: column; gap: 0.5rem; }
+    .platform-stat { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0; border-bottom: 1px solid rgba(180,165,150,0.2); }
+    .platform-stat:last-child { border-bottom: none; }
+    .platform-stat-label { font-size: 0.78rem; color: var(--stone); }
+    .platform-stat-val { font-family: var(--font-display); font-size: 1.2rem; font-weight: 400; color: var(--sage-dark); }
+
+    /* ── NICHES ── */
+    .niches-section { background: var(--cream-deep); border-top: 1px solid rgba(180,165,150,0.25); }
+    .niches-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+    }
+    .niche-card {
+      background: var(--cream);
+      border-radius: 1.2rem;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border: 1px solid rgba(180,165,150,0.25);
+      transition: transform 0.25s, border-color 0.25s;
+    }
+    .niche-card:hover { transform: translateY(-3px); border-color: var(--sage-light); }
+    .niche-icon { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
+    .niche-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    .niche-desc { font-size: 0.8rem; color: var(--stone); line-height: 1.6; }
+
+    /* ── SERVICES ── */
+    .services-section { background: #faf8f4; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    .service-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 1.8rem;
+      background: var(--cream);
+      border-radius: 0.8rem;
+      border: 1px solid rgba(180,165,150,0.25);
+      transition: border-color 0.25s, transform 0.2s;
+    }
+    .service-row:hover { border-color: var(--sage-light); transform: translateX(4px); }
+    .service-name { font-size: 0.9rem; color: var(--ink); }
+    .service-price {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--sage-dark);
+    }
+
+    /* ── BRANDS ── */
+    .brands-section { background: var(--sage-mist); border-top: 1px solid rgba(122,145,113,0.15); }
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .brand-card {
+      background: #faf8f4;
+      border-radius: 1rem;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      border: 1px solid rgba(122,145,113,0.15);
+      transition: transform 0.25s, box-shadow 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100px;
+      text-decoration: none;
+    }
+    .brand-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(46,40,32,0.1); border-color: rgba(122,145,113,0.3); }
+    .brand-logo {
+      max-width: 100%;
+      max-height: 60px;
+      object-fit: contain;
+      filter: grayscale(20%);
+      transition: filter 0.25s;
+    }
+    .brand-card:hover .brand-logo { filter: grayscale(0%); }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      background: var(--sage-dark);
+      padding: 6rem 3rem;
+    }
+    .contact-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .contact-inner .section-label { color: var(--sage-light); }
+    .contact-inner .section-title { color: var(--white); margin-bottom: 1rem; }
+    .contact-sub { font-size: 1rem; color: rgba(255,255,255,0.7); margin-bottom: 3rem; line-height: 1.8; }
+    .contact-cards {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .contact-card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 1rem;
+      padding: 1.6rem 2rem;
+      min-width: 200px;
+      transition: background 0.25s;
+    }
+    .contact-card:hover { background: rgba(255,255,255,0.15); }
+    .contact-card-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 0.4rem;
+    }
+    .contact-card-val {
+      font-size: 0.95rem;
+      color: var(--white);
+    }
+    .btn-cream {
+      display: inline-block;
+      background: var(--cream);
+      color: var(--sage-dark);
+      padding: 0.9rem 2.4rem;
+      border-radius: 2rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-weight: 400;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-cream:hover { background: var(--white); transform: translateY(-2px); }
+
+    /* ── DOWNLOAD ── */
+    .download-bar {
+      background: var(--cream-deep);
+      border-top: 1px solid rgba(180,165,150,0.3);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 100%;
+    }
+    .download-text { font-size: 0.88rem; color: var(--stone); }
+    .download-text strong { color: var(--ink); font-weight: 400; }
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--sage);
+      color: var(--white);
+      padding: 0.75rem 1.8rem;
+      border-radius: 2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-download:hover { background: var(--sage-dark); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.4);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: var(--sage-light); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-badge { display: none; }
+      .section-inner { padding: 4rem 1.5rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .demo-grid { grid-template-columns: 1fr; }
+      .platforms-grid { grid-template-columns: 1fr; }
+      .niches-grid { grid-template-columns: 1fr 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .brands-grid { grid-template-columns: repeat(3, 1fr); }
+      .reels-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .reel-card { aspect-ratio: 16/9; }
+      .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-photo-wrap { width: 100%; max-height: 360px; }
+      .download-bar { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Rhiannon<span>'s Way</span></a>
+    <a href="index.html" class="nav-back">Back to Home</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div>
+        <p class="hero-eyebrow">Rhiannon</p>
+        <h1 class="hero-title">Portfolio &amp;<br/><em>Media Kit</em></h1>
+        <p class="hero-sub">I'm Rhiannon, a UK-based lifestyle, fashion and fitness creator specialising in natural, relatable UGC. I create content that feels like real life, from styling outfits and beauty routines to wellness and movement, all captured in a warm, engaging way that blends seamlessly into social feeds. My style is confident, approachable and easy to connect with, helping brands show up in a way that feels authentic rather than overproduced.<br/><br/>I'm confident both on camera and behind it, producing talk-to-camera, voiceover and b-roll content that feels genuine and easy to watch. I understand how to communicate with a female 25+ audience in a way that feels inclusive, uplifting and useful. If you're looking for content that feels like a trusted recommendation and not a scripted ad, I'm your girl.</p>
+      </div>
+      <div class="hero-photo-wrap">
+        <img src="images/beach.jpg" alt="Rhiannon" class="hero-photo" />
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-section">
+    <div class="section-inner">
+      <p class="section-label reveal">By the numbers</p>
+      <h2 class="section-title reveal">The <em>Stats</em></h2>
+      <div class="stats-grid reveal">
+        <div class="stat-card">
+          <p class="stat-num">50K</p>
+          <p class="stat-label">Combined Followers</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-num">31K</p>
+          <p class="stat-label">Avg Impressions</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-num">2.3M</p>
+          <p class="stat-label">Unique Viewers</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-num">68%</p>
+          <p class="stat-label">UK Audience</p>
+        </div>
+      </div>
+      <div class="demo-grid reveal">
+        <div class="demo-card">
+          <h3>Gender Split</h3>
+          <div class="gender-bar">
+            <div class="gender-female" style="width:84%"></div>
+            <div class="gender-male" style="width:16%"></div>
+          </div>
+          <div class="gender-labels">
+            <span><strong>84%</strong> Female</span>
+            <span><strong>16%</strong> Male</span>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h3>Age Breakdown</h3>
+          <div class="age-rows">
+            <div class="age-row">
+              <span class="age-label">25–35</span>
+              <div class="age-bar-wrap"><div class="age-bar" style="width:62%"></div></div>
+              <span class="age-pct">62%</span>
+            </div>
+            <div class="age-row">
+              <span class="age-label">36–45</span>
+              <div class="age-bar-wrap"><div class="age-bar" style="width:24%"></div></div>
+              <span class="age-pct">24%</span>
+            </div>
+            <div class="age-row">
+              <span class="age-label">18–24</span>
+              <div class="age-bar-wrap"><div class="age-bar" style="width:14%"></div></div>
+              <span class="age-pct">14%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORMS -->
+  <section class="platforms-section">
+    <div class="section-inner">
+      <p class="section-label reveal">Where you'll find me</p>
+      <h2 class="section-title reveal">My <em>Platforms</em></h2>
+      <div class="platforms-grid reveal">
+        <div class="platform-card">
+          <span class="platform-icon">📸</span>
+          <p class="platform-name">Instagram</p>
+          <p class="platform-handle">@rhiannons_way</p>
+          <div class="platform-stats">
+            <div class="platform-stat">
+              <span class="platform-stat-label">Content Type</span>
+              <span class="platform-stat-val">Reels, Posts, Stories</span>
+            </div>
+            <div class="platform-stat">
+              <span class="platform-stat-label">Niche</span>
+              <span class="platform-stat-val">Lifestyle & Fashion</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-card">
+          <span class="platform-icon">🎵</span>
+          <p class="platform-name">TikTok</p>
+          <p class="platform-handle">@rhiannons_way</p>
+          <div class="platform-stats">
+            <div class="platform-stat">
+              <span class="platform-stat-label">Content Type</span>
+              <span class="platform-stat-val">Short Form Video</span>
+            </div>
+            <div class="platform-stat">
+              <span class="platform-stat-label">Niche</span>
+              <span class="platform-stat-val">Fitness & Lifestyle</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-card">
+          <span class="platform-icon">👥</span>
+          <p class="platform-name">Facebook</p>
+          <p class="platform-handle">Rhiannon's Way</p>
+          <div class="platform-stats">
+            <div class="platform-stat">
+              <span class="platform-stat-label">Content Type</span>
+              <span class="platform-stat-val">Posts & Community</span>
+            </div>
+            <div class="platform-stat">
+              <span class="platform-stat-label">Niche</span>
+              <span class="platform-stat-val">Wellness & Community</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NICHES -->
+  <section class="niches-section">
+    <div class="section-inner">
+      <p class="section-label reveal">What I create</p>
+      <h2 class="section-title reveal">Content <em>Specialisms</em></h2>
+      <div class="niches-grid reveal">
+        <div class="niche-card">
+          <span class="niche-icon">👗</span>
+          <p class="niche-name">Fashion & Lifestyle</p>
+          <p class="niche-desc">Confident mid-size style, outfit inspiration and everyday living.</p>
+        </div>
+        <div class="niche-card">
+          <span class="niche-icon">🏋️</span>
+          <p class="niche-name">Fitness & Wellness</p>
+          <p class="niche-desc">Joyful movement, balanced living and feel-good fitness content.</p>
+        </div>
+        <div class="niche-card">
+          <span class="niche-icon">💄</span>
+          <p class="niche-name">Beauty</p>
+          <p class="niche-desc">Honest product reviews, beauty finds and makeup inspiration.</p>
+        </div>
+        <div class="niche-card">
+          <span class="niche-icon">🍽️</span>
+          <p class="niche-name">Food & Drink</p>
+          <p class="niche-desc">Restaurant finds, recipes and food content that celebrates enjoyment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services-section">
+    <div class="section-inner">
+      <p class="section-label reveal">Working together</p>
+      <h2 class="section-title reveal">Services &amp; <em>Rates</em></h2>
+      <div class="services-grid reveal">
+        <div class="service-row">
+          <span class="service-name">Instagram Feed Post</span>
+          <span class="service-price">From £150</span>
+        </div>
+        <div class="service-row">
+          <span class="service-name">Instagram Reel</span>
+          <span class="service-price">From £250</span>
+        </div>
+        <div class="service-row">
+          <span class="service-name">Instagram Story</span>
+          <span class="service-price">From £75</span>
+        </div>
+        <div class="service-row">
+          <span class="service-name">TikTok Video</span>
+          <span class="service-price">From £250</span>
+        </div>
+        <div class="service-row">
+          <span class="service-name">UGC Content with Usage Rights</span>
+          <span class="service-price">From £400</span>
+        </div>
+        <div class="service-row" style="border-color: rgba(122,145,113,0.35); background: var(--sage-mist);">
+          <span class="service-name">Bespoke Package</span>
+          <span class="service-price" style="color:var(--sage-dark);">Let's chat</span>
+        </div>
+      </div>
+      <p style="font-size:0.82rem; color:var(--stone); text-align:center;" class="reveal">All rates are estimates. Final pricing is based on the scope and requirements of each project.</p>
+    </div>
+  </section>
+
+  <!-- BRANDS -->
+  <section class="brands-section">
+    <div class="section-inner">
+      <p class="section-label reveal">Previous collaborations</p>
+      <h2 class="section-title reveal">Brands I've <em>Worked With</em></h2>
+      <div class="brands-grid reveal">
+        <a href="https://www.instagram.com/reel/DWJevarDvCl/" class="brand-card" target="_blank">
+          <img src="images/sixstories-logo.jpeg" alt="Six Stories" class="brand-logo" />
+        </a>
+        <a href="https://www.tiktok.com/@rhiannons_way/video/7546158308818685206" class="brand-card" target="_blank">
+          <img src="images/frive-logo.jpeg" alt="Frive" class="brand-logo" />
+        </a>
+        <a href="https://www.instagram.com/reel/DVJikvQjMTk/" class="brand-card" target="_blank">
+          <img src="images/benefit-logo.jpeg" alt="Benefit" class="brand-logo" />
+        </a>
+        <a href="https://www.instagram.com/p/DXR9uZkjEeY/" class="brand-card" target="_blank">
+          <img src="images/abbottlyon-logo.jpeg" alt="Abbott Lyon" class="brand-logo" />
+        </a>
+        <a href="https://www.tiktok.com/@rhiannons_way/video/7564329214766222614" class="brand-card" target="_blank">
+          <img src="images/newlook-logo.jpeg" alt="New Look" class="brand-logo" />
+        </a>
+        <a href="https://instagram.com/rhiannons_way" class="brand-card" target="_blank">
+          <img src="images/currentbody-logo.jpeg" alt="CurrentBody" class="brand-logo" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- REELS SHOWCASE -->
+  <section class="reels-section">
+    <div class="section-inner">
+      <p class="section-label reveal">Latest content</p>
+      <h2 class="section-title reveal">Recent <em>Reels</em></h2>
+      <div class="reels-grid reveal">
+        <a href="https://www.instagram.com/reel/DXv4BJWMXO-/" class="reel-card" target="_blank">
+          <div class="reel-placeholder">🎬</div>
+          <div class="reel-overlay">
+            <div class="reel-play">▶</div>
+            <p class="reel-label">Instagram Reel</p>
+            <p class="reel-title">Latest Reel</p>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/reel/DXkMGzVDBKn/" class="reel-card" target="_blank">
+          <div class="reel-placeholder">🎬</div>
+          <div class="reel-overlay">
+            <div class="reel-play">▶</div>
+            <p class="reel-label">Instagram Reel</p>
+            <p class="reel-title">Latest Reel</p>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/reel/DXEABB2jKl6/" class="reel-card" target="_blank">
+          <div class="reel-placeholder">🎬</div>
+          <div class="reel-overlay">
+            <div class="reel-play">▶</div>
+            <p class="reel-label">Instagram Reel</p>
+            <p class="reel-title">Latest Reel</p>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/reel/DWYTfeGDGN_/" class="reel-card" target="_blank">
+          <div class="reel-placeholder">🎬</div>
+          <div class="reel-overlay">
+            <div class="reel-play">▶</div>
+            <p class="reel-label">Instagram Reel</p>
+            <p class="reel-title">Latest Reel</p>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/reel/DWCagLuiTSg/" class="reel-card" target="_blank">
+          <div class="reel-placeholder">🎬</div>
+          <div class="reel-overlay">
+            <div class="reel-play">▶</div>
+            <p class="reel-label">Instagram Reel</p>
+            <p class="reel-title">Latest Reel</p>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/reel/DU0JFZYDFFz/" class="reel-card" target="_blank">
+          <div class="reel-placeholder">🎬</div>
+          <div class="reel-overlay">
+            <div class="reel-play">▶</div>
+            <p class="reel-label">Instagram Reel</p>
+            <p class="reel-title">Latest Reel</p>
+          </div>
+        </a>
+      </div>
+      <div style="text-align:center; margin-top:2.5rem;" class="reveal">
+        <a href="https://instagram.com/rhiannons_way" class="btn-download" target="_blank">View All Reels on Instagram →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section">
+    <div class="contact-inner">
+      <p class="section-label">Work with me</p>
+      <h2 class="section-title">Let's <em>Collaborate</em></h2>
+      <p class="contact-sub">I'm open to brand partnerships, gifted collaborations, UGC content and bespoke campaigns. Get in touch and let's create something brilliant together.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <p class="contact-card-label">Email</p>
+          <p class="contact-card-val">rhiannonsway90@gmail.com</p>
+        </div>
+        <div class="contact-card">
+          <p class="contact-card-label">Location</p>
+          <p class="contact-card-val">Wiltshire, UK</p>
+        </div>
+      </div>
+      <a href="mailto:rhiannonsway90@gmail.com" class="btn-cream">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD BAR -->
+  <div class="download-bar">
+    <p class="download-text"><strong>Want a PDF version?</strong> Download my full media kit to share with your team.</p>
+    <a href="media_kit.pdf" download class="btn-download">⬇ Download Media Kit</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Rhiannon's Way</p>
+    <a href="index.html">← Back to Home</a>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
