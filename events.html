@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RW Move & Groove | Events | Rhiannon's Way</title>
+  <meta name="description" content="RW Move & Groove — a daytime fitness party where the workout is the rave. DanceFit, StepFit and Box2theBeat set to a live DJ at The Ruze, Chippenham." />
+  <link rel="canonical" href="https://www.rhiannonsway.com/events.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.rhiannonsway.com/events.html" />
+  <meta property="og:title" content="RW Move & Groove — A Daytime Fitness Party" />
+  <meta property="og:description" content="A fitness party. A live DJ. A whole vibe. 90 minutes of DanceFit, StepFit and Box2theBeat at The Ruze, Chippenham." />
+  <meta property="og:image" content="https://www.rhiannonsway.com/images/move.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://db.onlinewebfonts.com/c/30b3915fcf2263f0686f82f7bb06cfbb?family=Bernoru+Black+Ultra+Expanded" rel="stylesheet" />
+  <link href="https://db.onlinewebfonts.com/c/20e9fce1ca54ce1d7b7a7329de9bdaef?family=Gistesy" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f3ed;
+      --cream-deep: #ede7dc;
+      --sage: #7a9171;
+      --sage-light: #a8be9e;
+      --sage-mist: #e8efe6;
+      --sage-dark: #4d6b47;
+      --bark: #8c6e52;
+      --bark-light: #c4a882;
+      --stone: #6b6259;
+      --stone-light: #b5aca3;
+      --ink: #2e2820;
+      --white: #fff;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+      /* Move & Groove brand */
+      --mg-dark: #040d0a;
+      --mg-green: #3ddb6f;
+      --mg-teal: #1ec8c8;
+      --mg-mid: #2ab87a;
+      --mg-glow: rgba(61,219,111,0.45);
+      --mg-teal-glow: rgba(30,200,200,0.35);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--mg-dark);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(4,13,10,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(61,219,111,0.2);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--mg-green); font-style: italic; }
+    .nav-back {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.25s;
+    }
+    .nav-back:hover { color: var(--mg-green); }
+    .nav-back::before { content: '←'; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+      background: var(--mg-dark);
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('images/rw-move-groove.png');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      opacity: 0.75;
+    }
+    /* Dark gradient overlay so text is readable */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(4,13,10,0.3) 0%, rgba(4,13,10,0.15) 40%, rgba(4,13,10,0.5) 100%);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--mg-green);
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s 0.1s both;
+    }
+    .hero-title-rw {
+      font-family: 'Bernoru Black Ultra Expanded', var(--font-body);
+      font-size: clamp(5rem, 18vw, 13rem);
+      font-weight: 400;
+      line-height: 0.9;
+      color: var(--white);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s 0.15s both;
+      text-shadow: 0 2px 40px rgba(0,0,0,0.7);
+    }
+    .hero-title-move { display: none; }
+    .hero-ampersand {
+      font-family: 'Gistesy', var(--font-display);
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-style: normal;
+      color: var(--white);
+      display: block;
+      margin: 0.1rem 0;
+      font-weight: 400;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s 0.28s both;
+    }
+    .hero-title-groove {
+      font-family: 'Gistesy', var(--font-display);
+      font-size: clamp(3.5rem, 13vw, 9.5rem);
+      font-weight: 400;
+      font-style: normal;
+      color: var(--mg-green);
+      line-height: 1.05;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s 0.35s both;
+      text-shadow: 0 0 30px rgba(61,219,111,0.9), 0 0 80px rgba(61,219,111,0.4);
+      margin-bottom: 0.2rem;
+    }
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255,255,255,0.55);
+      margin: 1.5rem 0 0.8rem;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s 0.45s both;
+    }
+    .hero-sub {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.45);
+      max-width: 440px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s 0.5s both;
+    }
+    .hero-pills {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s 0.55s both;
+    }
+    .hero-pill {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(61,219,111,0.4);
+      color: var(--mg-green);
+      background: rgba(61,219,111,0.08);
+    }
+    .hero-cta {
+      animation: fadeUp 0.9s 0.65s both;
+    }
+    .btn-glow {
+      display: inline-block;
+      background: var(--sage);
+      color: var(--white);
+      padding: 1rem 2.8rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      box-shadow: 0 0 30px rgba(61,219,111,0.4);
+    }
+    .btn-glow:hover {
+      background: var(--mg-mid);
+      transform: translateY(-3px);
+      box-shadow: 0 0 70px var(--mg-glow);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0.4;
+      animation: fadeUp 1s 1s both;
+    }
+    .hero-scroll span { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--mg-green), transparent); animation: scrollDrop 2s ease-in-out infinite; }
+    @keyframes scrollDrop { 0%,100%{transform:scaleY(1);opacity:1} 50%{transform:scaleY(0.4);opacity:0.3} }
+
+    /* ── EVENT DETAILS STRIP ── */
+    .details-strip {
+      background: rgba(61,219,111,0.06);
+      border-top: 1px solid rgba(61,219,111,0.2);
+      border-bottom: 1px solid rgba(61,219,111,0.2);
+      padding: 3rem 2rem;
+    }
+    .details-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+    .detail-item {}
+    .detail-icon { font-size: 1.6rem; margin-bottom: 0.6rem; display: block; }
+    .detail-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mg-green);
+      margin-bottom: 0.3rem;
+    }
+    .detail-value {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.3;
+    }
+    .detail-sub { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-top: 0.2rem; }
+
+    /* ── SECTIONS ── */
+    .section-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 7rem 2rem;
+    }
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mg-green);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+    }
+    .section-title em { font-style: italic; color: var(--mg-green); }
+    .section-intro {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 580px;
+      line-height: 1.85;
+    }
+
+    /* ── FORMAT BLOCKS ── */
+    .format-section { border-top: 1px solid rgba(61,219,111,0.15); }
+    .format-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+      margin-top: 3.5rem;
+    }
+    .format-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(61,219,111,0.2);
+      border-radius: 1.4rem;
+      padding: 2.5rem 2rem;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+    .format-card:hover {
+      background: rgba(61,219,111,0.07);
+      border-color: rgba(61,219,111,0.4);
+      transform: translateY(-4px);
+    }
+    .format-num {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(61,219,111,0.25);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .format-name {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.6rem;
+    }
+    .format-name em { font-style: italic; color: var(--mg-green); }
+    .format-desc { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.75; }
+
+    /* ── TIMELINE ── */
+    .timeline-section { border-top: 1px solid rgba(61,219,111,0.15); }
+    .timeline {
+      margin-top: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      align-items: start;
+    }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-time {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: var(--mg-green);
+      padding-top: 0.2rem;
+    }
+    .timeline-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+    .timeline-content p { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+    /* ── BRANDS ── */
+    .brands-section { border-top: 1px solid rgba(61,219,111,0.15); }
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-top: 3.5rem;
+    }
+    .brand-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(61,219,111,0.15);
+      border-radius: 1rem;
+      padding: 1.8rem;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .brand-card:hover { background: rgba(61,219,111,0.07); border-color: rgba(61,219,111,0.35); }
+    .brand-cat {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mg-green);
+      margin-bottom: 0.4rem;
+    }
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+    .brand-status {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+    }
+    .brand-status.confirmed { color: var(--mg-green); }
+
+    /* ── CHARITY ── */
+    .charity-strip {
+      background: rgba(61,219,111,0.07);
+      border-top: 1px solid rgba(61,219,111,0.2);
+      border-bottom: 1px solid rgba(61,219,111,0.2);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .charity-inner { max-width: 600px; margin: 0 auto; }
+    .charity-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+    .charity-strip h2 {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .charity-strip h2 em { font-style: italic; color: var(--mg-green); }
+    .charity-strip p { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.8; }
+
+    /* ── REGISTER INTEREST ── */
+    .register-section {
+      text-align: center;
+      padding: 8rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .register-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(61,219,111,0.1) 0%, transparent 70%);
+    }
+    .btn-glow {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--mg-green), var(--mg-teal));
+      color: var(--mg-dark);
+      font-weight: 500;
+      padding: 1rem 2.8rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.25s, opacity 0.25s;
+      box-shadow: 0 0 40px var(--mg-glow);
+    }
+    .btn-glow:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 70px var(--mg-glow);
+      opacity: 0.9;
+    }
+    .register-section .section-label { justify-content: center; display: block; }
+    .register-section .section-title { margin-bottom: 1rem; }
+    .register-section .section-intro { margin: 0 auto 3rem; }
+    .register-form {
+      display: flex;
+      gap: 0.8rem;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .register-input {
+      flex: 1;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(61,219,111,0.35);
+      border-radius: 2rem;
+      padding: 0.9rem 1.4rem;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .register-input::placeholder { color: rgba(255,255,255,0.35); }
+    .register-input:focus { border-color: rgba(122,145,113,0.7); background: rgba(255,255,255,0.12); }
+    .register-note { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-top: 1rem; }
+
+    /* ── PAST EVENTS ── */
+    .past-section { border-top: 1px solid rgba(61,219,111,0.15); }
+    .past-placeholder {
+      margin-top: 3rem;
+      background: rgba(255,255,255,0.03);
+      border: 1.5px dashed rgba(122,145,113,0.25);
+      border-radius: 1.4rem;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .past-placeholder p { font-size: 0.9rem; color: rgba(255,255,255,0.3); font-style: italic; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: rgba(0,0,0,0.4);
+      border-top: 1px solid rgba(61,219,111,0.15);
+      color: rgba(255,255,255,0.3);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+    footer a { color: rgba(255,255,255,0.3); text-decoration: none; }
+    footer a:hover { color: var(--mg-green); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .details-inner { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .section-inner { padding: 5rem 1.5rem; }
+      .format-grid { grid-template-columns: 1fr; }
+      .brands-grid { grid-template-columns: 1fr 1fr; }
+      .timeline-item { grid-template-columns: 80px 1fr; gap: 1rem; }
+      .register-form { flex-direction: column; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .charity-strip { padding: 3rem 1.5rem; }
+    }
+
+    @media (max-width: 600px) {
+      .details-inner { grid-template-columns: 1fr 1fr; }
+      .brands-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rhiannon<span>'s Way</span></a>
+    <a href="index.html" class="nav-back">Back to Home</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <p class="hero-eyebrow">RW Move Presents</p>
+    <h1 class="hero-title-rw">RW MOVE</h1>
+    <span class="hero-ampersand">&amp;</span>
+    <p class="hero-title-groove">Groove</p>
+    <p class="hero-tagline">A daytime fitness party where the workout is the rave.</p>
+    <p class="hero-sub">Three formats. One live DJ. The kind of room that makes you forget you came to train.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">DanceFit</span>
+      <span class="hero-pill">StepFit</span>
+      <span class="hero-pill">Box2theBeat</span>
+      <span class="hero-pill">Live DJ</span>
+      <span class="hero-pill">Goody Bags</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#register" class="btn-glow">Register Your Interest</a>
+    </div>
+
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- DETAILS STRIP -->
+  <div class="details-strip reveal">
+    <div class="details-inner">
+      <div class="detail-item">
+        <span class="detail-icon">📅</span>
+        <p class="detail-label">Date</p>
+        <p class="detail-value">Coming Soon</p>
+        <p class="detail-sub">September / October 2026</p>
+      </div>
+      <div class="detail-item">
+        <span class="detail-icon">📍</span>
+        <p class="detail-label">Venue</p>
+        <p class="detail-value">The Ruze</p>
+        <p class="detail-sub">Chippenham</p>
+      </div>
+      <div class="detail-item">
+        <span class="detail-icon">⏱</span>
+        <p class="detail-label">Duration</p>
+        <p class="detail-value">90 Minutes</p>
+        <p class="detail-sub">Plus hang time</p>
+      </div>
+      <div class="detail-item">
+        <span class="detail-icon">👯</span>
+        <p class="detail-label">Capacity</p>
+        <p class="detail-value">30 to 40</p>
+        <p class="detail-sub">Intentionally intimate</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section-inner reveal">
+    <p class="section-label">What is it</p>
+    <h2 class="section-title">Less gym. <em>More party.</em></h2>
+    <p class="section-intro">RW Move & Groove is a 90-minute fitness experience that blends three of my signature class formats — DanceFit, StepFit and Box2theBeat — set to a live DJ set, with dance floor lighting, brand partners on site and goody bags to take home. Think rave brunch energy. A fitness experience that doesn't fit the gym, doesn't fit the night club, and lives somewhere joyfully in between. Built around community, music, movement and a celebration of women showing up for themselves on their own terms.</p>
+  </div>
+
+  <!-- FORMAT -->
+  <div class="format-section">
+    <div class="section-inner">
+      <p class="section-label reveal">The Format</p>
+      <h2 class="section-title reveal">Three formats. <em>One experience.</em></h2>
+      <div class="format-grid">
+        <div class="format-card reveal">
+          <p class="format-num">01</p>
+          <h3 class="format-name"><em>Dance</em>Fit</h3>
+          <p class="format-desc">Easy-to-follow choreography set to music that makes you want to move. No experience needed — just bring your energy and let the music do the rest.</p>
+        </div>
+        <div class="format-card reveal">
+          <p class="format-num">02</p>
+          <h3 class="format-name"><em>Step</em>Fit</h3>
+          <p class="format-desc">Classic step aerobics with a modern twist. High energy, great rhythm, and the kind of cardio that doesn't feel like cardio when you're in the room.</p>
+        </div>
+        <div class="format-card reveal">
+          <p class="format-num">03</p>
+          <h3 class="format-name"><em>Box2the</em>Beat</h3>
+          <p class="format-desc">Boxing-inspired moves set to banging music. More party than punch bag — you'll be moving, sweating and smiling the whole way through.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-section">
+    <div class="section-inner">
+      <p class="section-label reveal">The Running Order</p>
+      <h2 class="section-title reveal">How the <em>day flows</em></h2>
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <p class="timeline-time">Doors</p>
+          <div class="timeline-content">
+            <h3>Welcome & Warm Up</h3>
+            <p>Arrive, pick up your goody bag, explore the brand partners on site and ease in with a warm-up set as the DJ gets going.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">Block 1</p>
+          <div class="timeline-content">
+            <h3>DanceFit</h3>
+            <p>We kick things off on the dance floor. Easy moves, great music, instant energy.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">Transition</p>
+          <div class="timeline-content">
+            <h3>Free Dance Break</h3>
+            <p>Between blocks the class becomes a dance floor. No choreography, no instruction — just you and the music.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">Block 2</p>
+          <div class="timeline-content">
+            <h3>StepFit</h3>
+            <p>Step it up — literally. The rhythm keeps building and the energy in the room does too.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">Transition</p>
+          <div class="timeline-content">
+            <h3>Free Dance Break</h3>
+            <p>Another moment to just move however you want before the final block.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">Block 3</p>
+          <div class="timeline-content">
+            <h3>Box2theBeat</h3>
+            <p>We finish strong. Punching to the beat, full energy, best track of the set. The room will be electric.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">Hang Time</p>
+          <div class="timeline-content">
+            <h3>Cool Down, Photos & Connection</h3>
+            <p>We cool down together and then the floor is yours — photos, sampling brand partners, catching up with the community. No rush to leave.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRANDS -->
+  <div class="brands-section">
+    <div class="section-inner">
+      <p class="section-label reveal">Brand Partners</p>
+      <h2 class="section-title reveal">In your <em>goody bag</em></h2>
+      <p class="section-intro reveal">A carefully chosen selection of brands contributing to the goody bags and on-site experience across activewear, beauty, drinks and wellness.</p>
+      <div class="brands-grid">
+        <div class="brand-card reveal">
+          <p class="brand-cat">Nutrition</p>
+          <p class="brand-name">Free Soul</p>
+          <p class="brand-status confirmed">Confirmed</p>
+        </div>
+        <div class="brand-card reveal">
+          <p class="brand-cat">Activewear</p>
+          <p class="brand-name">Kanzen</p>
+          <p class="brand-status confirmed">Confirmed</p>
+        </div>
+        <div class="brand-card reveal">
+          <p class="brand-cat">Beauty</p>
+          <p class="brand-name">Trigwell Cosmetics</p>
+          <p class="brand-status confirmed">Confirmed</p>
+        </div>
+        <div class="brand-card reveal">
+          <p class="brand-cat">Wellness</p>
+          <p class="brand-name">Activit</p>
+          <p class="brand-status confirmed">In conversation</p>
+        </div>
+        <div class="brand-card reveal">
+          <p class="brand-cat">Drinks</p>
+          <p class="brand-name">Trip</p>
+          <p class="brand-status confirmed">In conversation</p>
+        </div>
+        <div class="brand-card reveal">
+          <p class="brand-cat">Activewear</p>
+          <p class="brand-name">JLUXE</p>
+          <p class="brand-status confirmed">Confirmed</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARITY -->
+  <div class="charity-strip reveal">
+    <div class="charity-inner">
+      <span class="charity-icon">💚</span>
+      <h2>Giving <em>back</em></h2>
+      <p>A portion of every ticket sold goes to a local charity. Because showing up for yourself and showing up for your community are not separate things. Details of our chosen cause coming soon.</p>
+    </div>
+  </div>
+
+  <!-- REGISTER -->
+  <div class="register-section" id="register">
+    <div class="register-bg"></div>
+    <div class="register-inner">
+      <p class="section-label">Be the first to know</p>
+      <h2 class="section-title">Register your <em>interest</em></h2>
+      <p class="section-intro">Tickets aren't on sale yet but spaces will be limited. Drop your email below and you'll be the first to hear when they go live.</p>
+      <div class="register-form">
+        <form action="https://rhiannonsway.us13.list-manage.com/subscribe/post?u=f05fbae328cac6e880038e6f4&amp;id=fbb58ef686&amp;f_id=0092c3ebf0" method="post" target="_blank" style="display:flex; gap:0.8rem; width:100%;">
+          <input type="email" name="EMAIL" class="register-input" placeholder="your@email.com" required />
+          <button type="submit" class="btn-glow" style="white-space:nowrap; border:none; cursor:pointer; font-family:var(--font-body);">Notify Me</button>
+        </form>
+      </div>
+      <p class="register-note">No spam. Just event updates and ticket news when they're ready.</p>
+    </div>
+  </div>
+
+  <!-- PAST EVENTS -->
+  <div class="past-section">
+    <div class="section-inner">
+      <p class="section-label reveal">Previous Events</p>
+      <h2 class="section-title reveal">Past <em>editions</em></h2>
+      <div class="past-placeholder reveal">
+        <p>Past event recaps and highlights will live here after the first edition. Watch this space.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Rhiannon's Way</p>
+    <a href="index.html">← Back to Home</a>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
