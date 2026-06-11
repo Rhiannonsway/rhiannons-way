@@ -429,23 +429,32 @@
 
     /* ── CHARITY ── */
     .charity-strip {
-      background: rgba(61,219,111,0.07);
+      background: rgba(255,255,255,0.97);
       border-top: 1px solid rgba(61,219,111,0.2);
       border-bottom: 1px solid rgba(61,219,111,0.2);
       padding: 4rem 2rem;
       text-align: center;
     }
     .charity-inner { max-width: 600px; margin: 0 auto; }
-    .charity-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
-    .charity-strip h2 {
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      font-weight: 300;
-      color: var(--white);
-      margin-bottom: 0.8rem;
+    .charity-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mg-mid);
+      margin-bottom: 1.5rem;
     }
-    .charity-strip h2 em { font-style: italic; color: var(--mg-green); }
-    .charity-strip p { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.8; }
+    .charity-logo {
+      max-width: 320px;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 1.8rem;
+      display: block;
+    }
+    .charity-strip p {
+      font-size: 0.95rem;
+      color: #444;
+      line-height: 1.8;
+    }
 
     /* ── REGISTER INTEREST ── */
     .register-section {
@@ -597,8 +606,8 @@
       <div class="detail-item">
         <span class="detail-icon">📅</span>
         <p class="detail-label">Date</p>
-        <p class="detail-value">Coming Soon</p>
-        <p class="detail-sub">September / October 2026</p>
+        <p class="detail-value">5th September 2026</p>
+        <p class="detail-sub">Doors open 11am</p>
       </div>
       <div class="detail-item">
         <span class="detail-icon">📍</span>
@@ -724,9 +733,9 @@
   <!-- CHARITY -->
   <div class="charity-strip reveal">
     <div class="charity-inner">
-      <span class="charity-icon">💚</span>
-      <h2>Giving <em>back</em></h2>
-      <p>A portion of every ticket sold goes to a local charity. Because showing up for yourself and showing up for your community are not separate things. Details of our chosen cause coming soon.</p>
+      <p class="charity-eyebrow">Our Charity Partner</p>
+      <img src="images/ruhx-logo.jpg" alt="In support of RUHX" class="charity-logo" />
+      <p>A portion of every ticket sold goes to RUHX, the charity supporting the Royal United Hospitals Bath. Because showing up for yourself and showing up for your community are not separate things.</p>
     </div>
   </div>
 
@@ -736,7 +745,7 @@
     <div class="register-inner">
       <p class="section-label">Be the first to know</p>
       <h2 class="section-title">Register your <em>interest</em></h2>
-      <p class="section-intro">Tickets aren't on sale yet but spaces will be limited. Drop your email below and you'll be the first to hear when they go live.</p>
+      <p class="section-intro">Tickets aren't on sale yet but spaces will be limited to 30-40 women. Drop your email below and you'll be the first to hear when they go live.</p>
       <div class="register-form">
         <form action="https://rhiannonsway.us13.list-manage.com/subscribe/post?u=f05fbae328cac6e880038e6f4&amp;id=fbb58ef686&amp;f_id=0092c3ebf0" method="post" target="_blank" style="display:flex; gap:0.8rem; width:100%;">
           <input type="email" name="EMAIL" class="register-input" placeholder="your@email.com" required />

@@ -598,67 +598,12 @@
 
       <!-- MONTH TABS -->
       <div class="month-tabs reveal">
-        <button class="month-tab active" onclick="showMonth('may')">May 2026</button>
-        <button class="month-tab" onclick="showMonth('june')">June 2026</button>
+        <button class="month-tab active" onclick="showMonth('june')">June 2026</button>
         <button class="month-tab" onclick="showMonth('july')">July 2026</button>
       </div>
 
-      <!-- MAY -->
-      <div id="timetable-may" class="timetable-embed reveal">
-        <p class="timetable-month">May</p>
-        <p class="timetable-year">2026</p>
-        <div class="timetable-scroll">
-        <table class="timetable-table">
-          <thead><tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr></thead>
-          <tbody>
-            <tr>
-              <td></td><td></td><td></td><td></td>
-              <td><span class="date-num">1</span></td>
-              <td><span class="date-num">2</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">3</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">4</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">5</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">6</span></td><td><span class="date-num">7</span></td><td><span class="date-num">8</span></td>
-              <td><span class="date-num">9</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">10</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">11</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">12</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">13</span></td>
-              <td><span class="date-num">14</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
-              <td><span class="date-num">15</span></td>
-              <td><span class="date-num">16</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">17</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">18</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">19</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">20</span></td>
-              <td><span class="date-num">21</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
-              <td><span class="date-num">22</span></td>
-              <td><span class="date-num">23</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">24</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">25</span></td>
-              <td><span class="date-num">26</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">27</span></td>
-              <td><span class="date-num">28</span><span class="class-pill pill-bark">Dance 7.15pm</span><br/><span class="class-pill pill-bark">Jessie Covering</span></td>
-              <td><span class="date-num">29</span></td>
-              <td><span class="date-num">30</span></td>
-              <td><span class="date-num">31</span></td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
-        <p class="timetable-note">🟢 Box2theBeat at Motiv8 Chippenham &nbsp;&nbsp; 🟤 Dance Fit and Step Fit at Snap Fitness Melksham</p>
-      </div>
-
       <!-- JUNE -->
-      <div id="timetable-june" class="timetable-embed reveal" style="display:none;">
+      <div id="timetable-june" class="timetable-embed reveal">
         <p class="timetable-month">June</p>
         <p class="timetable-year">2026</p>
         <div class="timetable-scroll">
@@ -793,6 +738,10 @@
       document.getElementById('timetable-' + month).style.display = 'block';
       event.target.classList.add('active');
     }
+    // Default to June
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('timetable-june').style.display = 'block';
+    });
 
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
