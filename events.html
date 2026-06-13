@@ -396,22 +396,23 @@
     .brand-photo-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1.4rem;
-      margin-top: 3rem;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      max-width: 600px;
     }
     .brand-photo-card {
       text-decoration: none;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.8rem;
+      gap: 0.4rem;
       transition: transform 0.3s;
     }
-    .brand-photo-card:hover { transform: translateY(-5px); }
+    .brand-photo-card:hover { transform: translateY(-3px); }
     .brand-photo-wrap {
       width: 100%;
       aspect-ratio: 1;
-      border-radius: 1.2rem;
+      border-radius: 0.8rem;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -421,7 +422,7 @@
     }
     .brand-photo-card:hover .brand-photo-wrap {
       border-color: rgba(61,219,111,0.5);
-      box-shadow: 0 8px 30px rgba(61,219,111,0.2);
+      box-shadow: 0 6px 20px rgba(61,219,111,0.2);
     }
     .kanzen-bg { background: #ffffff; }
     .jluxe-bg { background: #000000; }
@@ -435,15 +436,17 @@
     .kanzen-img { width: 70%; }
     .brand-photo-name {
       font-family: var(--font-display);
-      font-size: 1.1rem;
+      font-size: 0.75rem;
       font-weight: 400;
       color: var(--white);
+      text-align: center;
     }
     .brand-photo-cat {
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--mg-green);
+      text-align: center;
     }
     .brands-grid {
       display: grid;
@@ -609,7 +612,7 @@
       .section-inner { padding: 5rem 1.5rem; }
       .format-grid { grid-template-columns: 1fr; }
       .brands-grid { grid-template-columns: 1fr 1fr; }
-      .brand-photo-grid { grid-template-columns: repeat(2, 1fr); }
+      .brand-photo-grid { grid-template-columns: repeat(4, 1fr); gap: 0.6rem; max-width: 100%; }
       .timeline-item { grid-template-columns: 80px 1fr; gap: 1rem; }
       .register-form { flex-direction: column; }
       footer { flex-direction: column; gap: 0.5rem; text-align: center; }
