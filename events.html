@@ -317,6 +317,9 @@
       color: rgba(255,255,255,0.6);
       max-width: 580px;
       line-height: 1.85;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* ── FORMAT BLOCKS ── */
@@ -324,14 +327,14 @@
     .format-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.4rem;
-      margin-top: 3.5rem;
+      gap: 1rem;
+      margin-top: 2rem;
     }
     .format-card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(61,219,111,0.2);
-      border-radius: 1.4rem;
-      padding: 2.5rem 2rem;
+      border-radius: 1rem;
+      padding: 1.2rem 1.2rem;
       transition: background 0.3s, border-color 0.3s, transform 0.3s;
     }
     .format-card:hover {
@@ -341,24 +344,34 @@
     }
     .format-num {
       font-family: var(--font-display);
-      font-size: 3.5rem;
+      font-size: 2rem;
       font-weight: 300;
       font-style: italic;
       color: rgba(61,219,111,0.25);
       line-height: 1;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
     .format-name {
       font-family: var(--font-display);
-      font-size: 1.6rem;
+      font-size: 1.2rem;
       font-weight: 400;
       color: var(--white);
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.4rem;
     }
     .format-name em { font-style: italic; color: var(--mg-green); }
-    .format-desc { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.75; }
+    .format-desc { font-size: 0.78rem; color: rgba(255,255,255,0.55); line-height: 1.65; }
 
-    /* ── TIMELINE ── */
+    /* ── BRANDS ── */
+    .brands-section { border-top: 1px solid rgba(61,219,111,0.15); }
+    .brand-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
     .timeline-section { border-top: 1px solid rgba(61,219,111,0.15); }
     .timeline {
       margin-top: 3.5rem;
@@ -687,7 +700,7 @@
   </div>
 
   <!-- ABOUT -->
-  <div class="section-inner reveal">
+  <div class="section-inner reveal" style="text-align:center;">
     <p class="section-label">What is it</p>
     <h2 class="section-title">Less gym. <em>More party.</em></h2>
     <p class="section-intro">RW Move & Groove is a 90-minute fitness experience that blends three of my signature class formats - DanceFit, StepFit and Box2theBeat - set to a live DJ set, with dance floor lighting, brand partners on site and goody bags to take home. Think rave brunch energy. A fitness experience that doesn't fit the gym, doesn't fit the night club, and lives somewhere joyfully in between. Built around community, music, movement and a celebration of women showing up for themselves on their own terms.</p>
@@ -779,7 +792,7 @@
 
   <!-- BRANDS -->
   <div class="brands-section">
-    <div class="section-inner">
+    <div class="section-inner" style="text-align:center;">
       <p class="section-label reveal">Brand Partners</p>
       <h2 class="section-title reveal">In your <em>goody bag</em></h2>
       <p class="section-intro reveal">A carefully chosen selection of brands contributing to the goody bags and on-site experience across activewear, beauty, drinks and wellness.</p>
