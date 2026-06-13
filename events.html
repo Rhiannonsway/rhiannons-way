@@ -393,6 +393,58 @@
 
     /* ── BRANDS ── */
     .brands-section { border-top: 1px solid rgba(61,219,111,0.15); }
+    .brand-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.4rem;
+      margin-top: 3rem;
+    }
+    .brand-photo-card {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      transition: transform 0.3s;
+    }
+    .brand-photo-card:hover { transform: translateY(-5px); }
+    .brand-photo-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(61,219,111,0.2);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .brand-photo-card:hover .brand-photo-wrap {
+      border-color: rgba(61,219,111,0.5);
+      box-shadow: 0 8px 30px rgba(61,219,111,0.2);
+    }
+    .kanzen-bg { background: #ffffff; }
+    .jluxe-bg { background: #000000; }
+    .aquaglow-bg { background: linear-gradient(135deg, #ff6b6b, #ffa500); }
+    .freesoul-bg { background: #3d0010; }
+    .brand-photo-img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+    }
+    .kanzen-img { width: 70%; }
+    .brand-photo-name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--white);
+    }
+    .brand-photo-cat {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mg-green);
+    }
     .brands-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -557,6 +609,7 @@
       .section-inner { padding: 5rem 1.5rem; }
       .format-grid { grid-template-columns: 1fr; }
       .brands-grid { grid-template-columns: 1fr 1fr; }
+      .brand-photo-grid { grid-template-columns: repeat(2, 1fr); }
       .timeline-item { grid-template-columns: 80px 1fr; gap: 1rem; }
       .register-form { flex-direction: column; }
       footer { flex-direction: column; gap: 0.5rem; text-align: center; }
@@ -727,6 +780,36 @@
       <p class="section-label reveal">Brand Partners</p>
       <h2 class="section-title reveal">In your <em>goody bag</em></h2>
       <p class="section-intro reveal">A carefully chosen selection of brands contributing to the goody bags and on-site experience across activewear, beauty, drinks and wellness.</p>
+      <div class="brand-photo-grid reveal">
+        <a href="https://lookfantastic-uk.mtpc.se/6257650" target="_blank" class="brand-photo-card">
+          <div class="brand-photo-wrap kanzen-bg">
+            <img src="images/kanzen-logo.jpg" alt="Kanzen" class="brand-photo-img kanzen-img" />
+          </div>
+          <p class="brand-photo-name">Kanzen</p>
+          <p class="brand-photo-cat">Activewear</p>
+        </a>
+        <a href="https://jluxefit.com/?ref=Rhiannonsway" target="_blank" class="brand-photo-card">
+          <div class="brand-photo-wrap jluxe-bg">
+            <img src="images/jluxe-logo.jpeg" alt="JLUXE" class="brand-photo-img" />
+          </div>
+          <p class="brand-photo-name">JLUXE</p>
+          <p class="brand-photo-cat">Activewear</p>
+        </a>
+        <a href="https://holland-barrett.mtpc.se/6257661" target="_blank" class="brand-photo-card">
+          <div class="brand-photo-wrap aquaglow-bg">
+            <img src="images/aquaglow-logo.jpg" alt="Aqua Glow" class="brand-photo-img" />
+          </div>
+          <p class="brand-photo-name">Aqua Glow</p>
+          <p class="brand-photo-cat">Wellness</p>
+        </a>
+        <a href="https://boots.mtpc.se/6257668" target="_blank" class="brand-photo-card">
+          <div class="brand-photo-wrap freesoul-bg">
+            <img src="images/freesoul-logo.webp" alt="Free Soul" class="brand-photo-img" />
+          </div>
+          <p class="brand-photo-name">Free Soul</p>
+          <p class="brand-photo-cat">Nutrition</p>
+        </a>
+      </div>
     </div>
   </div>
 
