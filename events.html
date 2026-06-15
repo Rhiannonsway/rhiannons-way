@@ -536,28 +536,20 @@
       inset: 0;
       background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(61,219,111,0.1) 0%, transparent 70%);
     }
-    .btn-glow {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--mg-green), var(--mg-teal));
-      color: var(--mg-dark);
-      font-weight: 500;
-      padding: 1rem 2.8rem;
-      border-radius: 2rem;
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.25s, opacity 0.25s;
-      box-shadow: 0 0 40px var(--mg-glow);
-    }
-    .btn-glow:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 70px var(--mg-glow);
-      opacity: 0.9;
-    }
     .register-section .section-label { justify-content: center; display: block; }
     .register-section .section-title { margin-bottom: 1rem; }
-    .register-section .section-intro { margin: 0 auto 3rem; }
+    .register-section .section-intro { margin: 0 auto 2rem; }
+    .donate-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 0.1rem;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    .donate-link:hover { color: var(--mg-green); border-color: var(--mg-green); }
     .register-form {
       display: flex;
       gap: 0.8rem;
@@ -849,6 +841,7 @@
       <p class="section-intro">Only 30 spaces available. Grab yours before they go.</p>
       <a href="https://book.stripe.com/dRmdR95LTa9B5L0gfV6oo07" target="_blank" class="btn-glow">Book Your Ticket</a>
       <p class="register-note">Secure checkout via Stripe. A portion of every ticket goes to RUHX.</p>
+      <a href="https://www.justgiving.com/page/rwmove" target="_blank" class="donate-link">Can't make it? Donate to RUHX instead</a>
     </div>
   </div>
 
