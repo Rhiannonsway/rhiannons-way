@@ -516,6 +516,121 @@
     }
     .brand-card:hover .brand-logo { filter: grayscale(0%); }
 
+    /* ── UGC VIDEO SHOWCASE ── */
+    .ugc-section { background: var(--cream-deep); border-top: 1px solid rgba(180,165,150,0.25); }
+    .ugc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      justify-items: center;
+    }
+    .iphone-frame {
+      position: relative;
+      width: 220px;
+      border-radius: 36px;
+      background: #1a1a1a;
+      padding: 14px 10px;
+      box-shadow:
+        0 0 0 1px #4a4a4a,
+        0 0 0 2px #2a2a2a,
+        0 20px 50px rgba(0,0,0,0.28);
+    }
+    .iphone-frame::before {
+      content: '';
+      position: absolute;
+      left: -7px;
+      top: 80px;
+      width: 4px;
+      height: 28px;
+      background: #3a3a3a;
+      border-radius: 2px 0 0 2px;
+      box-shadow: 0 36px 0 #3a3a3a, 0 68px 0 #3a3a3a;
+    }
+    .iphone-frame::after {
+      content: '';
+      position: absolute;
+      right: -7px;
+      top: 100px;
+      width: 4px;
+      height: 56px;
+      background: #3a3a3a;
+      border-radius: 0 2px 2px 0;
+    }
+    .iphone-notch {
+      width: 88px;
+      height: 26px;
+      background: #1a1a1a;
+      border-radius: 13px;
+      margin: 0 auto 8px;
+      position: relative;
+      z-index: 2;
+    }
+    .iphone-screen {
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 9/16;
+      background: #000;
+      position: relative;
+      cursor: pointer;
+    }
+    .iphone-screen video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: absolute;
+      inset: 0;
+    }
+    .ugc-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px;
+      height: 52px;
+      background: rgba(255,255,255,0.88);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: opacity 0.3s, transform 0.2s;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .iphone-screen.playing .ugc-play-btn { opacity: 0; }
+    .iphone-home-bar {
+      width: 60px;
+      height: 4px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 2px;
+      margin: 8px auto 0;
+    }
+    .ugc-label {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+    .ugc-brand {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--ink);
+      text-align: center;
+      margin-top: 0.2rem;
+    }
+    @media (max-width: 900px) {
+      .ugc-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .iphone-frame { width: 160px; }
+    }
+    @media (max-width: 560px) {
+      .ugc-grid { grid-template-columns: 1fr; }
+      .iphone-frame { width: 200px; }
+    }
+
     /* ── CONTACT ── */
     .contact-section {
       background: var(--sage-dark);
@@ -728,6 +843,101 @@
     </div>
   </section>
 
+  <!-- UGC VIDEO SHOWCASE -->
+  <section class="ugc-section">
+    <div class="section-inner">
+      <p class="section-label reveal">Content Examples</p>
+      <h2 class="section-title reveal">UGC <em>Showcase</em></h2>
+      <div class="ugc-grid reveal">
+
+        <!-- Video 1 -->
+        <div>
+          <div class="iphone-frame">
+            <div class="iphone-notch"></div>
+            <div class="iphone-screen" onclick="playVideo(this)">
+              <video src="videos/shark-beauty.mp4" playsinline loop></video>
+              <div class="ugc-play-btn">▶</div>
+            </div>
+            <div class="iphone-home-bar"></div>
+          </div>
+          <p class="ugc-label">Beauty UGC</p>
+          <p class="ugc-brand">Shark Beauty</p>
+        </div>
+
+        <!-- Video 2 -->
+        <div>
+          <div class="iphone-frame">
+            <div class="iphone-notch"></div>
+            <div class="iphone-screen" onclick="playVideo(this)">
+              <video src="videos/withings.mp4" playsinline loop></video>
+              <div class="ugc-play-btn">▶</div>
+            </div>
+            <div class="iphone-home-bar"></div>
+          </div>
+          <p class="ugc-label">Health Tech UGC</p>
+          <p class="ugc-brand">Withings</p>
+        </div>
+
+        <!-- Video 3 -->
+        <div>
+          <div class="iphone-frame">
+            <div class="iphone-notch"></div>
+            <div class="iphone-screen" onclick="playVideo(this)">
+              <video src="videos/sofa.mp4" playsinline loop></video>
+              <div class="ugc-play-btn">▶</div>
+            </div>
+            <div class="iphone-home-bar"></div>
+          </div>
+          <p class="ugc-label">Lifestyle UGC</p>
+          <p class="ugc-brand">Sofa</p>
+        </div>
+
+        <!-- Video 4 -->
+        <div>
+          <div class="iphone-frame">
+            <div class="iphone-notch"></div>
+            <div class="iphone-screen" onclick="playVideo(this)">
+              <video src="videos/jluxe.mp4" playsinline loop></video>
+              <div class="ugc-play-btn">▶</div>
+            </div>
+            <div class="iphone-home-bar"></div>
+          </div>
+          <p class="ugc-label">Fashion UGC</p>
+          <p class="ugc-brand">JLUXE</p>
+        </div>
+
+        <!-- Video 5 -->
+        <div>
+          <div class="iphone-frame">
+            <div class="iphone-notch"></div>
+            <div class="iphone-screen" onclick="playVideo(this)">
+              <video src="videos/kiehls.mp4" playsinline loop></video>
+              <div class="ugc-play-btn">▶</div>
+            </div>
+            <div class="iphone-home-bar"></div>
+          </div>
+          <p class="ugc-label">Beauty UGC</p>
+          <p class="ugc-brand">Kiehl's</p>
+        </div>
+
+        <!-- Video 6 -->
+        <div>
+          <div class="iphone-frame">
+            <div class="iphone-notch"></div>
+            <div class="iphone-screen" onclick="playVideo(this)">
+              <video src="videos/bio-kult.mp4" playsinline loop></video>
+              <div class="ugc-play-btn">▶</div>
+            </div>
+            <div class="iphone-home-bar"></div>
+          </div>
+          <p class="ugc-label">Wellness UGC</p>
+          <p class="ugc-brand">Bio-Kult</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- PLATFORMS -->
   <section class="platforms-section">
     <div class="section-inner">
@@ -925,6 +1135,16 @@
       });
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
+  function playVideo(screen) {
+    const video = screen.querySelector('video');
+    if (screen.classList.contains('playing')) {
+      video.pause();
+      screen.classList.remove('playing');
+    } else {
+      screen.classList.add('playing');
+      video.play();
+    }
+  }
   </script>
 </body>
 </html>
