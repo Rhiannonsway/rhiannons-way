@@ -312,75 +312,68 @@
     }
     .stats-section { background: var(--sage-mist); border-top: 1px solid rgba(122,145,113,0.15); border-bottom: 1px solid rgba(122,145,113,0.15); }
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: rgba(122,145,113,0.15);
-      border-radius: 1.2rem;
-      overflow: hidden;
-      margin-bottom: 4rem;
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
     }
     .stat-card {
-      background: #faf8f4;
-      padding: 2.5rem 2rem;
-      text-align: center;
-      transition: background 0.25s;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
     }
-    .stat-card:hover { background: var(--white); }
     .stat-num {
       font-family: var(--font-display);
-      font-size: 3rem;
-      font-weight: 300;
+      font-size: 1.6rem;
+      font-weight: 400;
       color: var(--sage-dark);
       line-height: 1;
-      margin-bottom: 0.4rem;
     }
     .stat-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-size: 0.78rem;
       color: var(--stone);
     }
     .demo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+      align-items: flex-start;
     }
     .demo-card {
-      background: #faf8f4;
-      border-radius: 1.2rem;
-      padding: 2rem;
-      border: 1px solid rgba(122,145,113,0.2);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
     .demo-card h3 {
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--sage-dark);
-      margin-bottom: 1.5rem;
+      color: var(--stone);
+      margin-bottom: 0;
+      white-space: nowrap;
     }
     .gender-bar {
       display: flex;
-      height: 8px;
-      border-radius: 4px;
+      height: 5px;
+      border-radius: 3px;
       overflow: hidden;
-      margin-bottom: 1rem;
+      width: 100px;
     }
     .gender-female { background: var(--sage); }
     .gender-male { background: var(--bark-light); }
     .gender-labels {
       display: flex;
-      justify-content: space-between;
-      font-size: 0.82rem;
+      gap: 0.8rem;
+      font-size: 0.75rem;
       color: var(--stone);
     }
     .gender-labels strong { color: var(--ink); font-weight: 400; }
-    .age-rows { display: flex; flex-direction: column; gap: 0.8rem; }
-    .age-row { display: flex; align-items: center; gap: 1rem; }
-    .age-label { font-size: 0.8rem; color: var(--stone); width: 50px; flex-shrink: 0; }
-    .age-bar-wrap { flex: 1; height: 6px; background: rgba(122,145,113,0.15); border-radius: 3px; overflow: hidden; }
-    .age-bar { height: 100%; background: var(--sage); border-radius: 3px; }
-    .age-pct { font-size: 0.8rem; color: var(--stone); width: 35px; text-align: right; }
+    .age-rows { display: flex; flex-direction: column; gap: 0.5rem; }
+    .age-row { display: flex; align-items: center; gap: 0.6rem; }
+    .age-label { font-size: 0.72rem; color: var(--stone); width: 44px; flex-shrink: 0; }
+    .age-bar-wrap { width: 80px; height: 4px; background: rgba(122,145,113,0.15); border-radius: 2px; overflow: hidden; }
+    .age-bar { height: 100%; background: var(--sage); border-radius: 2px; }
+    .age-pct { font-size: 0.72rem; color: var(--stone); }
     .location-row {
       display: flex;
       align-items: center;
@@ -394,43 +387,28 @@
 
     /* ── PLATFORMS ── */
     .platforms-section { background: #faf8f4; }
-    .platforms-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .platforms-row {
+      display: flex;
       gap: 1.6rem;
+      flex-wrap: wrap;
+      align-items: center;
     }
-    .platform-card {
+    .platform-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--stone);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      padding: 0.6rem 1.1rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(180,165,150,0.35);
       background: var(--cream);
-      border-radius: 1.2rem;
-      padding: 2.2rem;
-      border: 1px solid rgba(180,165,150,0.25);
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
     }
-    .platform-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(46,40,32,0.08); }
-    .platform-icon {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-    .platform-name {
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--sage-dark);
-      margin-bottom: 0.4rem;
-    }
-    .platform-handle {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 1.2rem;
-    }
-    .platform-stats { display: flex; flex-direction: column; gap: 0.5rem; }
-    .platform-stat { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0; border-bottom: 1px solid rgba(180,165,150,0.2); }
-    .platform-stat:last-child { border-bottom: none; }
-    .platform-stat-label { font-size: 0.78rem; color: var(--stone); }
-    .platform-stat-val { font-family: var(--font-display); font-size: 1.2rem; font-weight: 400; color: var(--sage-dark); }
+    .platform-link:hover { border-color: var(--sage); color: var(--sage-dark); transform: translateY(-2px); }
+    .platform-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
 
     /* ── NICHES ── */
     .niches-section { background: var(--cream-deep); border-top: 1px solid rgba(180,165,150,0.25); }
@@ -779,71 +757,12 @@
     <div class="hero-bg"></div>
     <div class="hero-inner">
       <div>
-        <p class="hero-eyebrow">Rhiannon</p>
-        <h1 class="hero-title">Portfolio &amp;<br/><em>Media Kit</em></h1>
-        <p class="hero-sub">I'm Rhiannon, a UK-based lifestyle, fashion and fitness creator specialising in natural, relatable UGC. I create content that feels like real life, from styling outfits and beauty routines to wellness and movement, all captured in a warm, engaging way that blends seamlessly into social feeds. My style is confident, approachable and easy to connect with, helping brands show up in a way that feels authentic rather than overproduced.<br/><br/>I'm confident both on camera and behind it, producing talk-to-camera, voiceover and b-roll content that feels genuine and easy to watch. I understand how to communicate with a female 25+ audience in a way that feels inclusive, uplifting and useful. If you're looking for content that feels like a trusted recommendation and not a scripted ad, I'm your girl.</p>
+        <p class="hero-eyebrow">Rhiannon Kite — UGC Creator</p>
+        <h1 class="hero-title">Content that<br/><em>Converts</em></h1>
+        <p class="hero-sub">I make content that feels like a friend telling you about something she actually loves, not a brand paying someone to say it. Polished but not staged. Real-life led but always on brief. I can work from your script, bring my own creative concept, or anywhere in between.<br/><br/>I specialise in food, fitness, lifestyle and fintech, and I have a particular knack for making complex products and specs feel genuinely interesting to a real audience. If you need content that converts because it connects, let's talk.</p>
       </div>
       <div class="hero-photo-wrap">
         <img src="images/beach.jpg" alt="Rhiannon" class="hero-photo" />
-      </div>
-    </div>
-  </section>
-
-  <!-- STATS -->
-  <section class="stats-section">
-    <div class="section-inner">
-      <p class="section-label reveal">By the numbers</p>
-      <h2 class="section-title reveal">The <em>Stats</em></h2>
-      <div class="stats-grid reveal">
-        <div class="stat-card">
-          <p class="stat-num">50K</p>
-          <p class="stat-label">Combined Followers</p>
-        </div>
-        <div class="stat-card">
-          <p class="stat-num">31K</p>
-          <p class="stat-label">Avg Impressions</p>
-        </div>
-        <div class="stat-card">
-          <p class="stat-num">2.3M</p>
-          <p class="stat-label">Unique Viewers</p>
-        </div>
-        <div class="stat-card">
-          <p class="stat-num">68%</p>
-          <p class="stat-label">UK Audience</p>
-        </div>
-      </div>
-      <div class="demo-grid reveal">
-        <div class="demo-card">
-          <h3>Gender Split</h3>
-          <div class="gender-bar">
-            <div class="gender-female" style="width:84%"></div>
-            <div class="gender-male" style="width:16%"></div>
-          </div>
-          <div class="gender-labels">
-            <span><strong>84%</strong> Female</span>
-            <span><strong>16%</strong> Male</span>
-          </div>
-        </div>
-        <div class="demo-card">
-          <h3>Age Breakdown</h3>
-          <div class="age-rows">
-            <div class="age-row">
-              <span class="age-label">25–35</span>
-              <div class="age-bar-wrap"><div class="age-bar" style="width:62%"></div></div>
-              <span class="age-pct">62%</span>
-            </div>
-            <div class="age-row">
-              <span class="age-label">36–45</span>
-              <div class="age-bar-wrap"><div class="age-bar" style="width:24%"></div></div>
-              <span class="age-pct">24%</span>
-            </div>
-            <div class="age-row">
-              <span class="age-label">18–24</span>
-              <div class="age-bar-wrap"><div class="age-bar" style="width:14%"></div></div>
-              <span class="age-pct">14%</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -852,7 +771,7 @@
   <section class="ugc-section">
     <div class="section-inner">
       <p class="section-label reveal">Content Examples</p>
-      <h2 class="section-title reveal">UGC <em>Showcase</em></h2>
+      <h2 class="section-title reveal">See the <em>Work</em></h2>
       <div class="ugc-grid reveal">
 
         <!-- Video 1 -->
@@ -957,55 +876,25 @@
 
   <!-- PLATFORMS -->
   <section class="platforms-section">
-    <div class="section-inner">
-      <p class="section-label reveal">Where you'll find me</p>
-      <h2 class="section-title reveal">My <em>Platforms</em></h2>
-      <div class="platforms-grid reveal">
-        <div class="platform-card">
-          <span class="platform-icon">📸</span>
-          <p class="platform-name">Instagram</p>
-          <p class="platform-handle">@rhiannons_way</p>
-          <div class="platform-stats">
-            <div class="platform-stat">
-              <span class="platform-stat-label">Content Type</span>
-              <span class="platform-stat-val">Reels, Posts, Stories</span>
-            </div>
-            <div class="platform-stat">
-              <span class="platform-stat-label">Niche</span>
-              <span class="platform-stat-val">Lifestyle & Fashion</span>
-            </div>
-          </div>
-        </div>
-        <div class="platform-card">
-          <span class="platform-icon">🎵</span>
-          <p class="platform-name">TikTok</p>
-          <p class="platform-handle">@rhiannons_way</p>
-          <div class="platform-stats">
-            <div class="platform-stat">
-              <span class="platform-stat-label">Content Type</span>
-              <span class="platform-stat-val">Short Form Video</span>
-            </div>
-            <div class="platform-stat">
-              <span class="platform-stat-label">Niche</span>
-              <span class="platform-stat-val">Fitness & Lifestyle</span>
-            </div>
-          </div>
-        </div>
-        <div class="platform-card">
-          <span class="platform-icon">👥</span>
-          <p class="platform-name">Facebook</p>
-          <p class="platform-handle">Rhiannon's Way</p>
-          <div class="platform-stats">
-            <div class="platform-stat">
-              <span class="platform-stat-label">Content Type</span>
-              <span class="platform-stat-val">Posts & Community</span>
-            </div>
-            <div class="platform-stat">
-              <span class="platform-stat-label">Niche</span>
-              <span class="platform-stat-val">Wellness & Community</span>
-            </div>
-          </div>
-        </div>
+    <div class="section-inner" style="padding-top:3rem; padding-bottom:3rem;">
+      <p class="section-label reveal">Find me here</p>
+      <div class="platforms-row reveal">
+        <a href="https://www.instagram.com/rhiannons_way/" class="platform-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          @rhiannons_way
+        </a>
+        <a href="https://www.tiktok.com/@rhiannons_way" class="platform-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+          @rhiannons_way
+        </a>
+        <a href="https://www.youtube.com/@Rhiannonsway" class="platform-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          @Rhiannonsway
+        </a>
+        <a href="https://www.facebook.com/RhiannonsWay" class="platform-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          RhiannonsWay
+        </a>
       </div>
     </div>
   </section>
@@ -1013,28 +902,28 @@
   <!-- NICHES -->
   <section class="niches-section">
     <div class="section-inner">
-      <p class="section-label reveal">What I create</p>
+      <p class="section-label reveal">Where I work best</p>
       <h2 class="section-title reveal">Content <em>Specialisms</em></h2>
       <div class="niches-grid reveal">
         <div class="niche-card">
-          <span class="niche-icon">👗</span>
-          <p class="niche-name">Fashion & Lifestyle</p>
-          <p class="niche-desc">Confident mid-size style, outfit inspiration and everyday living.</p>
+          <span class="niche-icon">🍽️</span>
+          <p class="niche-name">Food & Drink</p>
+          <p class="niche-desc">Restaurant finds, recipe content, product taste tests and anything that makes food look as good as it tastes.</p>
         </div>
         <div class="niche-card">
           <span class="niche-icon">🏋️</span>
           <p class="niche-name">Fitness & Wellness</p>
-          <p class="niche-desc">Joyful movement, balanced living and feel-good fitness content.</p>
+          <p class="niche-desc">Movement, wellbeing and fitness products brought to life in a way that feels motivating, not intimidating.</p>
         </div>
         <div class="niche-card">
-          <span class="niche-icon">💄</span>
-          <p class="niche-name">Beauty</p>
-          <p class="niche-desc">Honest product reviews, beauty finds and makeup inspiration.</p>
+          <span class="niche-icon">✨</span>
+          <p class="niche-name">Lifestyle</p>
+          <p class="niche-desc">Day-to-day living, home, fashion and beauty, the everyday content that audiences actually connect with.</p>
         </div>
         <div class="niche-card">
-          <span class="niche-icon">🍽️</span>
-          <p class="niche-name">Food & Drink</p>
-          <p class="niche-desc">Restaurant finds, recipes and food content that celebrates enjoyment.</p>
+          <span class="niche-icon">💳</span>
+          <p class="niche-name">Fintech</p>
+          <p class="niche-desc">Making money, saving, and financial tools feel approachable and useful, not overwhelming.</p>
         </div>
       </div>
     </div>
@@ -1044,28 +933,28 @@
   <section class="services-section">
     <div class="section-inner">
       <p class="section-label reveal">Working together</p>
-      <h2 class="section-title reveal">Services I <em>Offer</em></h2>
+      <h2 class="section-title reveal">What I <em>Deliver</em></h2>
       <div class="services-grid reveal">
         <div class="service-row">
-          <span class="service-name">Instagram Feed Post</span>
+          <span class="service-name">Edited UGC Reels (9:16, ready to use)</span>
         </div>
         <div class="service-row">
-          <span class="service-name">Instagram Reel</span>
+          <span class="service-name">Hook Variations (3-5 per video for A/B testing)</span>
         </div>
         <div class="service-row">
-          <span class="service-name">Instagram Story</span>
+          <span class="service-name">Raw Footage Files</span>
         </div>
         <div class="service-row">
-          <span class="service-name">TikTok Video</span>
+          <span class="service-name">Whitelisted & Paid Ad Content</span>
         </div>
         <div class="service-row">
-          <span class="service-name">UGC Content with Usage Rights</span>
+          <span class="service-name">Organic Usage Rights (60 days standard, extendable)</span>
         </div>
         <div class="service-row" style="border-color: rgba(122,145,113,0.35); background: var(--sage-mist);">
-          <span class="service-name">Bespoke Package</span>
+          <span class="service-name">Bespoke Packages (brief-led or concept-led)</span>
         </div>
       </div>
-      <p style="font-size:0.82rem; color:var(--stone); text-align:center;" class="reveal">Interested in working together? Get in touch to discuss your project and I'll put together a tailored proposal.</p>
+      <p style="font-size:0.82rem; color:var(--stone); text-align:center;" class="reveal">All packages are bespoke. Turnaround is typically 5-7 working days for a first draft. Get in touch and I'll put together a tailored proposal for your brief.</p>
     </div>
   </section>
 
@@ -1097,6 +986,64 @@
     </div>
   </section>
 
+  <!-- STATS -->
+  <section class="stats-section">
+    <div class="section-inner" style="padding-top:3rem; padding-bottom:3rem;">
+      <p class="section-label reveal">A little context</p>
+      <div class="stats-grid reveal">
+        <div class="stat-card">
+          <span class="stat-num">50K</span>
+          <span class="stat-label">combined followers</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">31K</span>
+          <span class="stat-label">avg impressions</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">2.3M</span>
+          <span class="stat-label">unique viewers</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">68%</span>
+          <span class="stat-label">UK audience</span>
+        </div>
+      </div>
+      <div class="demo-grid reveal">
+        <div class="demo-card">
+          <h3>Gender</h3>
+          <div class="gender-bar">
+            <div class="gender-female" style="width:84%"></div>
+            <div class="gender-male" style="width:16%"></div>
+          </div>
+          <div class="gender-labels">
+            <span><strong>84%</strong> F</span>
+            <span><strong>16%</strong> M</span>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h3>Age</h3>
+          <div class="age-rows">
+            <div class="age-row">
+              <span class="age-label">25-35</span>
+              <div class="age-bar-wrap"><div class="age-bar" style="width:62%"></div></div>
+              <span class="age-pct">62%</span>
+            </div>
+            <div class="age-row">
+              <span class="age-label">36-45</span>
+              <div class="age-bar-wrap"><div class="age-bar" style="width:24%"></div></div>
+              <span class="age-pct">24%</span>
+            </div>
+            <div class="age-row">
+              <span class="age-label">18-24</span>
+              <div class="age-bar-wrap"><div class="age-bar" style="width:14%"></div></div>
+              <span class="age-pct">14%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- REELS SHOWCASE -->
   <section class="reels-section">
     <div class="section-inner">
@@ -1114,7 +1061,7 @@
     <div class="contact-inner">
       <p class="section-label">Work with me</p>
       <h2 class="section-title">Let's <em>Collaborate</em></h2>
-      <p class="contact-sub">I'm open to brand partnerships, gifted collaborations, UGC content and bespoke campaigns. Get in touch and let's create something brilliant together.</p>
+      <p class="contact-sub">Whether you have a brief ready or you're still figuring out what you need, I'm happy to chat. I work with brands who want content that actually performs, not just something that looks good in a deck. Drop me a message and let's figure out what we can build together.</p>
       <div class="contact-cards">
         <div class="contact-card">
           <p class="contact-card-label">Email</p>
