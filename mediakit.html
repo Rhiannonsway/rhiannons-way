@@ -569,23 +569,27 @@
       border-radius: 24px;
       overflow: hidden;
       aspect-ratio: 9/16;
-      background: #000;
+      background: #111;
       position: relative;
-      cursor: pointer;
     }
     .iphone-screen video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+    .ugc-overlay {
       position: absolute;
       inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      transition: background 0.2s;
     }
+    .ugc-overlay:hover { background: rgba(0,0,0,0.08); }
     .ugc-play-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       width: 52px;
       height: 52px;
       background: rgba(255,255,255,0.88);
@@ -593,12 +597,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
-      transition: opacity 0.3s, transform 0.2s;
-      z-index: 3;
-      pointer-events: none;
+      font-size: 1.1rem;
+      padding-left: 3px;
+      transition: opacity 0.25s, transform 0.2s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
     }
-    .iphone-screen.playing .ugc-play-btn { opacity: 0; }
+    .ugc-overlay:hover .ugc-play-btn { transform: scale(1.08); }
+    .iphone-screen.playing .ugc-overlay { display: none; }
     .iphone-home-bar {
       width: 60px;
       height: 4px;
@@ -854,9 +859,11 @@
         <div>
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
-            <div class="iphone-screen" onclick="playVideo(this)">
+            <div class="iphone-screen">
               <video src="videos/shark-beauty.mp4" playsinline loop preload="metadata"></video>
-              <div class="ugc-play-btn">▶</div>
+              <div class="ugc-overlay" onclick="playVideo(this.parentElement)">
+                <div class="ugc-play-btn">&#9654;</div>
+              </div>
             </div>
             <div class="iphone-home-bar"></div>
           </div>
@@ -868,9 +875,11 @@
         <div>
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
-            <div class="iphone-screen" onclick="playVideo(this)">
+            <div class="iphone-screen">
               <video src="videos/withings.mp4" playsinline loop preload="metadata"></video>
-              <div class="ugc-play-btn">▶</div>
+              <div class="ugc-overlay" onclick="playVideo(this.parentElement)">
+                <div class="ugc-play-btn">&#9654;</div>
+              </div>
             </div>
             <div class="iphone-home-bar"></div>
           </div>
@@ -882,9 +891,11 @@
         <div>
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
-            <div class="iphone-screen" onclick="playVideo(this)">
+            <div class="iphone-screen">
               <video src="videos/sofa.mp4" playsinline loop preload="metadata"></video>
-              <div class="ugc-play-btn">▶</div>
+              <div class="ugc-overlay" onclick="playVideo(this.parentElement)">
+                <div class="ugc-play-btn">&#9654;</div>
+              </div>
             </div>
             <div class="iphone-home-bar"></div>
           </div>
@@ -896,9 +907,11 @@
         <div>
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
-            <div class="iphone-screen" onclick="playVideo(this)">
+            <div class="iphone-screen">
               <video src="videos/jluxe.mp4" playsinline loop preload="metadata"></video>
-              <div class="ugc-play-btn">▶</div>
+              <div class="ugc-overlay" onclick="playVideo(this.parentElement)">
+                <div class="ugc-play-btn">&#9654;</div>
+              </div>
             </div>
             <div class="iphone-home-bar"></div>
           </div>
@@ -910,9 +923,11 @@
         <div>
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
-            <div class="iphone-screen" onclick="playVideo(this)">
+            <div class="iphone-screen">
               <video src="videos/kiehls.mp4" playsinline loop preload="metadata"></video>
-              <div class="ugc-play-btn">▶</div>
+              <div class="ugc-overlay" onclick="playVideo(this.parentElement)">
+                <div class="ugc-play-btn">&#9654;</div>
+              </div>
             </div>
             <div class="iphone-home-bar"></div>
           </div>
@@ -924,9 +939,11 @@
         <div>
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
-            <div class="iphone-screen" onclick="playVideo(this)">
+            <div class="iphone-screen">
               <video src="videos/bio-kult.mp4" playsinline loop preload="metadata"></video>
-              <div class="ugc-play-btn">▶</div>
+              <div class="ugc-overlay" onclick="playVideo(this.parentElement)">
+                <div class="ugc-play-btn">&#9654;</div>
+              </div>
             </div>
             <div class="iphone-home-bar"></div>
           </div>
@@ -1137,20 +1154,22 @@
     reveals.forEach(el => observer.observe(el));
   function playVideo(screen) {
     const video = screen.querySelector('video');
-    if (screen.classList.contains('playing')) {
-      video.pause();
-      screen.classList.remove('playing');
-    } else {
-      // Pause any other playing videos first
-      document.querySelectorAll('.iphone-screen.playing').forEach(function(s) {
+    // Pause all others first
+    document.querySelectorAll('.iphone-screen.playing').forEach(function(s) {
+      if (s !== screen) {
         s.querySelector('video').pause();
         s.classList.remove('playing');
-      });
-      screen.classList.add('playing');
-      video.play().catch(function() {
-        screen.classList.remove('playing');
-      });
-    }
+      }
+    });
+    screen.classList.add('playing');
+    video.play().catch(function() {
+      screen.classList.remove('playing');
+    });
+    // Clicking the playing video pauses it
+    video.onclick = function() {
+      video.pause();
+      screen.classList.remove('playing');
+    };
   }
   </script>
 </body>
