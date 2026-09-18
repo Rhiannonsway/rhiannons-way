@@ -855,7 +855,7 @@
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
             <div class="iphone-screen" onclick="playVideo(this)">
-              <video src="videos/shark-beauty.mp4" playsinline loop></video>
+              <video src="videos/shark-beauty.mp4" playsinline loop preload="metadata"></video>
               <div class="ugc-play-btn">▶</div>
             </div>
             <div class="iphone-home-bar"></div>
@@ -869,7 +869,7 @@
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
             <div class="iphone-screen" onclick="playVideo(this)">
-              <video src="videos/withings.mp4" playsinline loop></video>
+              <video src="videos/withings.mp4" playsinline loop preload="metadata"></video>
               <div class="ugc-play-btn">▶</div>
             </div>
             <div class="iphone-home-bar"></div>
@@ -883,7 +883,7 @@
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
             <div class="iphone-screen" onclick="playVideo(this)">
-              <video src="videos/sofa.mp4" playsinline loop></video>
+              <video src="videos/sofa.mp4" playsinline loop preload="metadata"></video>
               <div class="ugc-play-btn">▶</div>
             </div>
             <div class="iphone-home-bar"></div>
@@ -897,7 +897,7 @@
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
             <div class="iphone-screen" onclick="playVideo(this)">
-              <video src="videos/jluxe.mp4" playsinline loop></video>
+              <video src="videos/jluxe.mp4" playsinline loop preload="metadata"></video>
               <div class="ugc-play-btn">▶</div>
             </div>
             <div class="iphone-home-bar"></div>
@@ -911,7 +911,7 @@
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
             <div class="iphone-screen" onclick="playVideo(this)">
-              <video src="videos/kiehls.mp4" playsinline loop></video>
+              <video src="videos/kiehls.mp4" playsinline loop preload="metadata"></video>
               <div class="ugc-play-btn">▶</div>
             </div>
             <div class="iphone-home-bar"></div>
@@ -925,7 +925,7 @@
           <div class="iphone-frame">
             <div class="iphone-notch"></div>
             <div class="iphone-screen" onclick="playVideo(this)">
-              <video src="videos/bio-kult.mp4" playsinline loop></video>
+              <video src="videos/bio-kult.mp4" playsinline loop preload="metadata"></video>
               <div class="ugc-play-btn">▶</div>
             </div>
             <div class="iphone-home-bar"></div>
@@ -1141,8 +1141,15 @@
       video.pause();
       screen.classList.remove('playing');
     } else {
+      // Pause any other playing videos first
+      document.querySelectorAll('.iphone-screen.playing').forEach(function(s) {
+        s.querySelector('video').pause();
+        s.classList.remove('playing');
+      });
       screen.classList.add('playing');
-      video.play();
+      video.play().catch(function() {
+        screen.classList.remove('playing');
+      });
     }
   }
   </script>
