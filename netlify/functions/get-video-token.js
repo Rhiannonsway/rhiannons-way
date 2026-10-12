@@ -20,7 +20,7 @@ exports.handler = async (event) => {
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  // 1. Verify the user JWT
+  // 1. Verify the user JWT via Supabase Auth
   const authRes = await fetch(SUPABASE_URL + '/auth/v1/user', {
     headers: { 'apikey': SERVICE_KEY, 'Authorization': 'Bearer ' + userToken },
   });
@@ -29,7 +29,7 @@ exports.handler = async (event) => {
   const userId = authUser.id;
   if (!userId) return { statusCode: 401, headers, body: JSON.stringify({ error: 'No user id' }) };
 
-  // 2. Check membership using user's JWT + anon key (RLS policy: users_read_own_profile)
+  // 2. Check membership using user's JWT + anon key (RLS: users_read_own_profile)
   const profileRes = await fetch(
     SUPABASE_URL + '/rest/v1/profiles?id=eq.' + userId + '&select=is_member&limit=1',
     { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + userToken, 'Accept': 'application/json' } }
@@ -45,12 +45,12 @@ exports.handler = async (event) => {
     })};
   }
 
-  // 3. Parse videoId
+  // 3. Parse videoId from request body
   let videoId;
   try { ({ videoId } = JSON.parse(event.body || '{}')); } catch { return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid body' }) }; }
   if (!videoId) return { statusCode: 400, headers, body: JSON.stringify({ error: 'videoId required' }) };
 
-  // 4. Verify video exists (authenticated_read_videos RLS policy allows this)
+  // 4. Verify video exists in our DB
   const videoRes = await fetch(
     SUPABASE_URL + '/rest/v1/videos?bunny_video_id=eq.' + videoId + '&select=id&limit=1',
     { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + userToken, 'Accept': 'application/json' } }
@@ -59,10 +59,11 @@ exports.handler = async (event) => {
   if (!Array.isArray(videoData) || videoData.length === 0) return { statusCode: 404, headers, body: JSON.stringify({ error: 'Video not found' }) };
 
   // 5. Generate Bunny Stream token-signed embed URL
+  // Bunny token formula: SHA256(TokenAuthKey + VideoId + Expires)
   const BUNNY_LIBRARY_ID = process.env.BUNNY_LIBRARY_ID;
   const BUNNY_TOKEN_KEY = process.env.BUNNY_TOKEN_AUTH_KEY;
   const expires = Math.floor(Date.now() / 1000) + 7200;
-  const securityToken = crypto.createHash('sha256').update(BUNNY_TOKEN_KEY + BUNNY_LIBRARY_ID + expires + videoId).digest('hex');
+  const securityToken = crypto.createHash('sha256').update(BUNNY_TOKEN_KEY + videoId + expires).digest('hex');
   const embedUrl = 'https://iframe.mediadelivery.net/embed/' + BUNNY_LIBRARY_ID + '/' + videoId + '?token=' + securityToken + '&expires=' + expires;
 
   return { statusCode: 200, headers, body: JSON.stringify({ embedUrl }) };
