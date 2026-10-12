@@ -29,20 +29,28 @@ exports.handler = async (event) => {
 
   const sb = createClient(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY  // service role key to bypass RLS for lookup
+    process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
   // Get user from token
   const { data: { user }, error: authError } = await sb.auth.getUser(token);
   if (authError || !user) {
-    return { statusCode: 401, headers, body: JSON.stringify({ error: 'Invalid token' }) };
+    return { statusCode: 401, headers, body: JSON.stringify({ error: 'Invalid token', debug_auth_error: authError?.message }) };
   }
 
   // Check membership
-  const { data: profile } = await sb.from('profiles').select('is_member').eq('id', user.id).single();
-if (!profile?.is_member) {
-  return { statusCode: 403, headers, body: JSON.stringify({ error: 'Active membership required', debug_user_id: user.id, debug_profile: profile }) };
-}
+  const { data: profile, error: profileError } = await sb.from('profiles').select('is_member').eq('id', user.id).single();
+  if (!profile?.is_member) {
+    return {
+      statusCode: 403,
+      headers,
+      body: JSON.stringify({
+        error: 'Active membership required',
+        debug_user_id: user.id,
+        debug_profile: profile,
+        debug_profile_error: profileError?.message,
+      }),
+    };
   }
 
   // ── 2. Parse and validate request body ────────────────────────────────────
@@ -56,21 +64,20 @@ if (!profile?.is_member) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'videoId required' }) };
   }
 
-  // Confirm the videoId exists in our videos table (prevent token generation for arbitrary IDs)
+  // Confirm the videoId exists in our videos table
   const { data: video } = await sb.from('videos').select('id').eq('bunny_video_id', videoId).single();
   if (!video) {
     return { statusCode: 404, headers, body: JSON.stringify({ error: 'Video not found' }) };
   }
 
   // ── 3. Generate Bunny Stream token-signed embed URL ────────────────────────
-  // Bunny Stream token signing: https://docs.bunny.net/docs/stream-embedding-tokens
   const BUNNY_LIBRARY_ID = process.env.BUNNY_LIBRARY_ID;
-  const BUNNY_TOKEN_KEY  = process.env.BUNNY_TOKEN_AUTH_KEY;  // Token Authentication Key from Bunny dashboard
+  const BUNNY_TOKEN_KEY  = process.env.BUNNY_TOKEN_AUTH_KEY;
   const expires = Math.floor(Date.now() / 1000) + 60 * 60 * 2; // 2-hour expiry
 
-  // Bunny token hash: SHA256(securityKey + videoId + expires)// CORRECT Bunny token hash: SHA256(securityKey + libraryId + expires + videoId)
-const tokenString = BUNNY_TOKEN_KEY + BUNNY_LIBRARY_ID + expires + videoId;
-const securityToken = crypto.createHash('sha256').update(tokenString).digest('hex');
+  // Bunny token hash: SHA256(securityKey + libraryId + expires + videoId)
+  const tokenString = BUNNY_TOKEN_KEY + BUNNY_LIBRARY_ID + expires + videoId;
+  const securityToken = crypto.createHash('sha256').update(tokenString).digest('hex');
 
   const embedUrl = `https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${videoId}?token=${securityToken}&expires=${expires}`;
 
