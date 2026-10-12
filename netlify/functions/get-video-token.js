@@ -16,25 +16,25 @@ exports.handler = async (event) => {
   }
 
   const authHeader = event.headers['authorization'] || '';
-  const token = authHeader.replace('Bearer ', '').trim();
-  if (!token) {
+  const userToken = authHeader.replace('Bearer ', '').trim();
+  if (!userToken) {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
+  const ANON_KEY = process.env.SUPABASE_ANON_KEY;
   const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  // Verify the user JWT via Supabase auth endpoint
+  // 1. Verify the user JWT
   const authRes = await fetch(SUPABASE_URL + '/auth/v1/user', {
     headers: {
       'apikey': SERVICE_KEY,
-      'Authorization': 'Bearer ' + token,
+      'Authorization': 'Bearer ' + userToken,
     },
   });
 
   if (!authRes.ok) {
-    const authErr = await authRes.text();
-    return { statusCode: 401, headers, body: JSON.stringify({ error: 'Invalid token', debug_auth_status: authRes.status, debug_auth_error: authErr.substring(0, 200) }) };
+    return { statusCode: 401, headers, body: JSON.stringify({ error: 'Invalid token', debug_auth_status: authRes.status }) };
   }
 
   const authUser = await authRes.json();
@@ -43,13 +43,13 @@ exports.handler = async (event) => {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'No user id in token' }) };
   }
 
-  // Check membership via plain REST fetch with service role key (bypasses JS client context issues)
+  // 2. Check membership using the USER's own JWT + anon key (uses RLS policy users_read_own_profile)
   const profileRes = await fetch(
     SUPABASE_URL + '/rest/v1/profiles?id=eq.' + userId + '&select=is_member&limit=1',
     {
       headers: {
-        'apikey': SERVICE_KEY,
-        'Authorization': 'Bearer ' + SERVICE_KEY,
+        'apikey': ANON_KEY,
+        'Authorization': 'Bearer ' + userToken,
         'Accept': 'application/json',
       },
     }
@@ -72,6 +72,7 @@ exports.handler = async (event) => {
     };
   }
 
+  // 3. Parse videoId
   let videoId;
   try {
     ({ videoId } = JSON.parse(event.body || '{}'));
@@ -82,13 +83,13 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'videoId required' }) };
   }
 
-  // Verify videoId exists in videos table
+  // 4. Verify videoId exists (use service key here since videos table uses authenticated_read_videos policy)
   const videoRes = await fetch(
     SUPABASE_URL + '/rest/v1/videos?bunny_video_id=eq.' + videoId + '&select=id&limit=1',
     {
       headers: {
-        'apikey': SERVICE_KEY,
-        'Authorization': 'Bearer ' + SERVICE_KEY,
+        'apikey': ANON_KEY,
+        'Authorization': 'Bearer ' + userToken,
         'Accept': 'application/json',
       },
     }
@@ -98,13 +99,12 @@ exports.handler = async (event) => {
     return { statusCode: 404, headers, body: JSON.stringify({ error: 'Video not found' }) };
   }
 
+  // 5. Generate Bunny token
   const BUNNY_LIBRARY_ID = process.env.BUNNY_LIBRARY_ID;
   const BUNNY_TOKEN_KEY  = process.env.BUNNY_TOKEN_AUTH_KEY;
   const expires = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
-
   const tokenString = BUNNY_TOKEN_KEY + BUNNY_LIBRARY_ID + expires + videoId;
   const securityToken = crypto.createHash('sha256').update(tokenString).digest('hex');
-
   const embedUrl = 'https://iframe.mediadelivery.net/embed/' + BUNNY_LIBRARY_ID + '/' + videoId + '?token=' + securityToken + '&expires=' + expires;
 
   return {
