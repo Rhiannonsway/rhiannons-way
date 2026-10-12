@@ -89,15 +89,15 @@ async function setMembership(stripeCustomerId, isMember) {
   }
 
   // Fallback: look up email from Stripe and match to Supabase auth user
+   // Fallback: look up email from Stripe and match to Supabase auth user
   try {
     const customer = await stripe.customers.retrieve(stripeCustomerId);
     if (customer.email) {
-      // Find Supabase user by email via admin API
-      const { data: users } = await sb.auth.admin.listUsers();
-      const match = users?.users?.find(u => u.email === customer.email);
-      if (match) {
+      // Find Supabase user by email via direct query
+      const { data: authUser } = await sb.auth.admin.getUserByEmail(customer.email);
+      if (authUser?.user) {
         await sb.from('profiles').upsert({
-          id: match.id,
+          id: authUser.user.id,
           stripe_customer_id: stripeCustomerId,
           is_member: isMember,
         });
