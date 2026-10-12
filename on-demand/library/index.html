@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class Library | RW Move On Demand</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #f7f3ed; --cream-deep: #ede7dc; --sage: #7a9171; --sage-mist: #e8efe6;
+      --sage-dark: #4d6b47; --sage-light: #a8be9e; --stone: #6b6259; --ink: #2e2820;
+      --white: #fff; --bark-light: #b4a596;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+    body { background: #faf8f4; color: var(--ink); font-family: var(--font-body); font-weight: 300; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(250,248,244,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 1.25rem; font-weight: 400; color: var(--ink); text-decoration: none; }
+    .nav-logo span { color: var(--sage); font-style: italic; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-account { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--stone); text-decoration: none; }
+    .nav-account:hover { color: var(--sage-dark); }
+    .nav-signout { background: none; border: 1px solid rgba(180,165,150,0.4); padding: 0.45rem 1rem;
+      border-radius: 2rem; font-family: var(--font-body); font-size: 0.75rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--stone); cursor: pointer; transition: color 0.2s, border-color 0.2s; }
+    .nav-signout:hover { color: var(--ink); border-color: var(--sage); }
+
+    /* HEADER */
+    .library-header { padding: 3rem 2.5rem 2rem; }
+    .library-header h1 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; }
+    .library-header h1 em { font-style: italic; color: var(--sage); }
+
+    /* FILTER TABS */
+    .filter-bar { padding: 0 2.5rem 2rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 0.5rem 1.2rem; border-radius: 2rem; border: 1px solid rgba(180,165,150,0.35);
+      background: var(--cream); font-family: var(--font-body); font-size: 0.78rem;
+      letter-spacing: 0.06em; cursor: pointer; color: var(--stone); transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--sage); color: var(--sage-dark); }
+    .filter-btn.active { background: var(--sage-dark); border-color: var(--sage-dark); color: var(--white); }
+
+    /* GRID */
+    .video-grid { padding: 0 2.5rem 4rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.4rem; }
+    .video-card {
+      background: var(--cream); border-radius: 1.2rem; overflow: hidden;
+      border: 1px solid rgba(180,165,150,0.22); cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .video-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(46,40,32,0.1); }
+    .video-thumb {
+      width: 100%; aspect-ratio: 16/9; background: var(--cream-deep); position: relative; overflow: hidden;
+    }
+    .video-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .video-thumb-placeholder {
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; background: linear-gradient(135deg, var(--cream-deep), var(--sage-mist));
+    }
+    .play-icon {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 48px; height: 48px; background: rgba(255,255,255,0.9); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s;
+    }
+    .play-icon svg { width: 18px; height: 18px; fill: var(--sage-dark); margin-left: 2px; }
+    .video-card:hover .play-icon { opacity: 1; }
+    .video-info { padding: 1.2rem; }
+    .video-cat { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.4rem; }
+    .video-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 400; color: var(--ink); margin-bottom: 0.4rem; line-height: 1.3; }
+    .video-meta { font-size: 0.75rem; color: var(--stone); }
+
+    /* EMPTY / LOADING */
+    .state-msg {
+      grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;
+      font-size: 0.9rem; color: var(--stone);
+    }
+    .spinner { display: inline-block; width: 28px; height: 28px; border: 2px solid rgba(122,145,113,0.2); border-top-color: var(--sage); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 1rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(46,40,32,0.7); backdrop-filter: blur(6px);
+      z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--white); border-radius: 1.2rem; max-width: 860px; width: 100%;
+      overflow: hidden; transform: translateY(20px); transition: transform 0.25s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-video-wrap { position: relative; width: 100%; padding-top: 56.25%; background: var(--ink); }
+    .modal-video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .modal-video-wrap video { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .modal-info { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: flex-start; }
+    .modal-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 300; }
+    .modal-meta { font-size: 0.8rem; color: var(--stone); margin-top: 0.3rem; }
+    .modal-close {
+      background: none; border: none; cursor: pointer; font-size: 1.4rem;
+      color: var(--stone); padding: 0.2rem 0.5rem; transition: color 0.2s; flex-shrink: 0;
+    }
+    .modal-close:hover { color: var(--ink); }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.2rem; }
+      .library-header, .filter-bar, .video-grid { padding-left: 1.2rem; padding-right: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../" class="nav-logo">RW <span>Move</span></a>
+    <div class="nav-right">
+      <a href="../account/" class="nav-account">My account</a>
+      <button class="nav-signout" onclick="signOut()">Sign out</button>
+    </div>
+  </nav>
+
+  <div class="library-header">
+    <h1>Your <em>Classes</em></h1>
+  </div>
+
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn active" data-cat="all" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" data-cat="Dance" onclick="setFilter('Dance', this)">Dance</button>
+    <button class="filter-btn" data-cat="Step" onclick="setFilter('Step', this)">Step</button>
+    <button class="filter-btn" data-cat="Box2theBeat" onclick="setFilter('Box2theBeat', this)">Box2theBeat</button>
+    <button class="filter-btn" data-cat="Workout" onclick="setFilter('Workout', this)">Workout</button>
+  </div>
+
+  <div class="video-grid" id="video-grid">
+    <div class="state-msg">
+      <div class="spinner"></div><br>Loading your classes…
+    </div>
+  </div>
+
+  <!-- Video modal -->
+  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal" id="modal-box">
+      <div class="modal-video-wrap" id="modal-player"></div>
+      <div class="modal-info">
+        <div>
+          <p class="modal-meta" id="modal-meta"></p>
+          <h2 class="modal-title" id="modal-title"></h2>
+        </div>
+        <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── CONFIG ────────────────────────────────────────────────────────────────
+    const SUPABASE_URL = 'https://mwsqbkggccryjudjromn.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13c3Fia2dnY2NyeWp1ZGpyb21uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3ODc1MTIsImV4cCI6MjEwNzM2MzUxMn0.vZX7-SCCWUu40PUnh3sa9HOiiJEKfCgvSAUnck5Cq1g';
+    // Netlify function endpoint for secure Bunny video tokens
+    const TOKEN_ENDPOINT = '/.netlify/functions/get-video-token';
+    // ──────────────────────────────────────────────────────────────────────────
+
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let allVideos = [];
+    let currentFilter = 'all';
+
+    // Auth gate
+    (async () => {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) { window.location.href = '../login/'; return; }
+      const { data: profile } = await sb.from('profiles').select('is_member').eq('id', session.user.id).single();
+      if (!profile?.is_member) { window.location.href = '../login/'; return; }
+      loadVideos();
+    })();
+
+    async function loadVideos() {
+      const { data, error } = await sb
+        .from('videos')
+        .select('id, title, description, category, duration_seconds, bunny_video_id, thumbnail_url, published_at')
+        .order('published_at', { ascending: false });
+
+      if (error || !data) {
+        document.getElementById('video-grid').innerHTML = '<div class="state-msg">Could not load classes. Please refresh.</div>';
+        return;
+      }
+      allVideos = data;
+      render();
+    }
+
+    function setFilter(cat, btn) {
+      currentFilter = cat;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    }
+
+    function render() {
+      const grid = document.getElementById('video-grid');
+      const filtered = currentFilter === 'all' ? allVideos : allVideos.filter(v => v.category === currentFilter);
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="state-msg">No classes in this category yet — check back soon.</div>';
+        return;
+      }
+      grid.innerHTML = filtered.map(v => {
+        const dur = v.duration_seconds ? formatDuration(v.duration_seconds) : '';
+        const thumb = v.thumbnail_url ? `<img src="${esc(v.thumbnail_url)}" alt="${esc(v.title)}" loading="lazy" />` : `<div class="video-thumb-placeholder">${categoryEmoji(v.category)}</div>`;
+        return `
+          <div class="video-card" onclick="openVideo('${esc(v.bunny_video_id)}', '${esc(v.title)}', '${esc(v.category)}', '${dur}')">
+            <div class="video-thumb">
+              ${thumb}
+              <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+            </div>
+            <div class="video-info">
+              <p class="video-cat">${esc(v.category)}</p>
+              <p class="video-title">${esc(v.title)}</p>
+              <p class="video-meta">${dur}</p>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    async function openVideo(bunnyId, title, category, dur) {
+      // Show modal immediately with a loading state
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-meta').textContent = category + (dur ? ' · ' + dur : '');
+      document.getElementById('modal-player').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div class="spinner"></div></div>';
+      document.getElementById('modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      try {
+        // Fetch a signed token from our Netlify function
+        const { data: { session } } = await sb.auth.getSession();
+        const res = await fetch(TOKEN_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+          body: JSON.stringify({ videoId: bunnyId })
+        });
+        if (!res.ok) throw new Error('Could not get video token');
+        const { embedUrl } = await res.json();
+        document.getElementById('modal-player').innerHTML = `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      } catch {
+        document.getElementById('modal-player').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.85rem;">Could not load video. Please try again.</div>';
+      }
+    }
+
+    function closeModal(e) {
+      if (e.target === document.getElementById('modal')) closeModalDirect();
+    }
+    function closeModalDirect() {
+      document.getElementById('modal').classList.remove('open');
+      document.body.style.overflow = '';
+      document.getElementById('modal-player').innerHTML = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+    async function signOut() {
+      await sb.auth.signOut();
+      window.location.href = '../login/';
+    }
+
+    function formatDuration(s) {
+      const m = Math.floor(s / 60);
+      const sec = s % 60;
+      return m + ':' + String(sec).padStart(2, '0');
+    }
+    function categoryEmoji(c) {
+      return { Dance: '💃', Step: '👟', Box2theBeat: '🥊', Workout: '🏋️' }[c] || '🎬';
+    }
+    function esc(s) {
+      return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+  </script>
+</body>
+</html>

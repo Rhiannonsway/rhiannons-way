@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account | RW Move On Demand</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #f7f3ed; --cream-deep: #ede7dc; --sage: #7a9171; --sage-mist: #e8efe6;
+      --sage-dark: #4d6b47; --stone: #6b6259; --ink: #2e2820; --white: #fff;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+    body { background: #faf8f4; color: var(--ink); font-family: var(--font-body); font-weight: 300; min-height: 100vh; }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(250,248,244,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 1.25rem; font-weight: 400; color: var(--ink); text-decoration: none; }
+    .nav-logo span { color: var(--sage); font-style: italic; }
+    .nav-library { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--stone); text-decoration: none; }
+    .nav-library:hover { color: var(--sage-dark); }
+
+    .page-wrap { max-width: 620px; margin: 0 auto; padding: 3.5rem 2rem 5rem; }
+    h1 { font-family: var(--font-display); font-size: 2.4rem; font-weight: 300; margin-bottom: 2.5rem; }
+    h1 em { font-style: italic; color: var(--sage); }
+
+    .card {
+      background: var(--white); border-radius: 1.2rem; border: 1px solid rgba(180,165,150,0.25);
+      padding: 1.8rem 2rem; margin-bottom: 1.2rem;
+    }
+    .card-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone); margin-bottom: 0.6rem; }
+    .card-value { font-size: 1rem; color: var(--ink); }
+    .card-value.member { color: var(--sage-dark); font-weight: 400; }
+    .card-action {
+      margin-top: 1.2rem; display: inline-block; padding: 0.65rem 1.6rem;
+      border-radius: 2rem; font-family: var(--font-body); font-size: 0.78rem;
+      letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+      cursor: pointer; border: 1px solid rgba(180,165,150,0.4); color: var(--stone);
+      background: none; transition: all 0.2s;
+    }
+    .card-action:hover { border-color: var(--sage); color: var(--sage-dark); }
+    .card-action.primary { background: var(--sage-dark); color: var(--white); border-color: var(--sage-dark); }
+    .card-action.primary:hover { background: var(--sage); border-color: var(--sage); }
+    .card-action.danger { color: #c0392b; border-color: rgba(192,57,43,0.3); }
+    .card-action.danger:hover { background: #fdecea; }
+
+    .divider { border: none; border-top: 1px solid rgba(180,165,150,0.25); margin: 2rem 0; }
+
+    .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.8rem; border-radius: 2rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .badge.active { background: var(--sage-mist); color: var(--sage-dark); }
+    .badge.inactive { background: #fdecea; color: #c0392b; }
+    .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="nav-logo">RW <span>Move</span></a>
+    <a href="../library/" class="nav-library">← Back to library</a>
+  </nav>
+
+  <div class="page-wrap">
+    <h1>My <em>Account</em></h1>
+
+    <div class="card" id="card-member">
+      <p class="card-label">Membership</p>
+      <p class="card-value" id="membership-status">Loading…</p>
+    </div>
+
+    <div class="card" id="card-email">
+      <p class="card-label">Email address</p>
+      <p class="card-value" id="user-email">Loading…</p>
+    </div>
+
+    <div class="card">
+      <p class="card-label">Manage subscription</p>
+      <p class="card-value" style="font-size:0.88rem; color:var(--stone); margin-bottom:0.4rem;">Update payment method, view invoices, or cancel your membership. You'll keep access until the end of your billing period.</p>
+      <button class="card-action primary" onclick="manageSubscription()">Billing &amp; subscription</button>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="card">
+      <p class="card-label">Change password</p>
+      <p class="card-value" style="font-size:0.88rem; color:var(--stone); margin-bottom:0.4rem;">We'll send a password reset link to your email address.</p>
+      <button class="card-action" onclick="resetPassword()">Send reset link</button>
+      <div id="reset-msg" style="font-size:0.8rem; margin-top:0.8rem; color:var(--sage-dark); display:none;"></div>
+    </div>
+
+    <hr class="divider" />
+
+    <button class="card-action danger" style="width:100%; text-align:center;" onclick="signOut()">Sign out</button>
+  </div>
+
+  <script>
+    // ── CONFIG ────────────────────────────────────────────────────────────────
+    const SUPABASE_URL = 'https://mwsqbkggccryjudjromn.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13c3Fia2dnY2NyeWp1ZGpyb21uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3ODc1MTIsImV4cCI6MjEwNzM2MzUxMn0.vZX7-SCCWUu40PUnh3sa9HOiiJEKfCgvSAUnck5Cq1g';
+    // Your Stripe Customer Portal link (configured in Stripe dashboard)
+    const STRIPE_PORTAL_URL = 'https://billing.stripe.com/p/login/fZe8yG7KremaaROfYY';
+    // ──────────────────────────────────────────────────────────────────────────
+
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    (async () => {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) { window.location.href = '../login/'; return; }
+
+      document.getElementById('user-email').textContent = session.user.email;
+
+      const { data: profile } = await sb.from('profiles').select('is_member, stripe_customer_id').eq('id', session.user.id).single();
+      const memberEl = document.getElementById('membership-status');
+      if (profile?.is_member) {
+        memberEl.innerHTML = '<span class="badge active">Active</span>';
+      } else {
+        memberEl.innerHTML = '<span class="badge inactive">Inactive</span> <a href="../login/?signup=true" style="margin-left:0.8rem;font-size:0.82rem;color:var(--sage-dark);">Subscribe now →</a>';
+      }
+    })();
+
+    function manageSubscription() {
+      window.location.href = STRIPE_PORTAL_URL;
+    }
+
+    async function resetPassword() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) return;
+      const { error } = await sb.auth.resetPasswordForEmail(session.user.email, {
+        redirectTo: window.location.origin + '/on-demand/login/reset/'
+      });
+      const msg = document.getElementById('reset-msg');
+      msg.style.display = 'block';
+      if (error) { msg.style.color = '#c0392b'; msg.textContent = error.message; }
+      else { msg.textContent = 'Reset link sent — check your inbox.'; }
+    }
+
+    async function signOut() {
+      await sb.auth.signOut();
+      window.location.href = '../login/';
+    }
+  </script>
+</body>
+</html>

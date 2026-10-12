@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RW Move On Demand | Rhiannon's Way</title>
+  <meta name="description" content="Members-only fitness library. Dance, Step, Box2theBeat and full workouts with new classes every month. £4.99/month." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #f7f3ed;
+      --cream-deep: #ede7dc;
+      --sage: #7a9171;
+      --sage-light: #a8be9e;
+      --sage-mist: #e8efe6;
+      --sage-dark: #4d6b47;
+      --stone: #6b6259;
+      --ink: #2e2820;
+      --white: #fff;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: #faf8f4; color: var(--ink); font-family: var(--font-body); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(250,248,244,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(122,145,113,0.15);
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 1.35rem; font-weight: 400; color: var(--ink); text-decoration: none; }
+    .nav-logo span { color: var(--sage); font-style: italic; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-link { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); text-decoration: none; transition: color 0.2s; }
+    .nav-link:hover { color: var(--sage-dark); }
+    .nav-cta {
+      background: var(--sage); color: var(--white); padding: 0.55rem 1.4rem;
+      border-radius: 2rem; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--sage-dark); }
+
+    /* HERO */
+    .hero {
+      min-height: 85vh; display: flex; align-items: center;
+      padding: 9rem 3rem 5rem; background: #faf8f4; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 55% 65% at 75% 45%, rgba(168,190,158,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 15% 75%, rgba(122,145,113,0.07) 0%, transparent 55%);
+    }
+    .hero-inner {
+      position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    }
+    .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--sage); margin-bottom: 1rem; }
+    .hero-title { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 300; line-height: 1.08; margin-bottom: 1.4rem; }
+    .hero-title em { font-style: italic; color: var(--sage); }
+    .hero-sub { font-size: 1rem; color: var(--stone); line-height: 1.8; margin-bottom: 2rem; max-width: 440px; }
+    .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--sage-dark); color: var(--white); padding: 0.9rem 2.2rem;
+      border-radius: 2rem; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none; transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--sage); transform: translateY(-2px); }
+    .btn-ghost {
+      color: var(--stone); font-size: 0.85rem; text-decoration: none;
+      border-bottom: 1px solid rgba(107,98,89,0.3); padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--sage-dark); border-color: var(--sage); }
+    .hero-price-tag {
+      display: inline-flex; align-items: baseline; gap: 0.3rem;
+      background: var(--sage-mist); border: 1px solid rgba(122,145,113,0.25);
+      border-radius: 2rem; padding: 0.4rem 1rem; margin-bottom: 1.6rem;
+    }
+    .price-amount { font-family: var(--font-display); font-size: 1.6rem; font-weight: 400; color: var(--sage-dark); }
+    .price-period { font-size: 0.78rem; color: var(--stone); letter-spacing: 0.06em; }
+
+    /* HERO VISUAL */
+    .hero-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .hero-card {
+      background: var(--cream); border-radius: 1.2rem; overflow: hidden;
+      border: 1px solid rgba(180,165,150,0.25); padding: 1.8rem 1.4rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .hero-card:first-child { grid-column: 1 / -1; }
+    .hero-card-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .hero-card-name { font-family: var(--font-display); font-size: 1.3rem; font-weight: 400; color: var(--ink); }
+    .hero-card-desc { font-size: 0.78rem; color: var(--stone); line-height: 1.6; }
+    .hero-card-tag { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sage-dark); margin-top: 0.4rem; }
+
+    /* SECTION BASE */
+    .section-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+    .section-label { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.8rem; }
+    .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.15; color: var(--ink); margin-bottom: 3rem; }
+    .section-title em { font-style: italic; color: var(--sage); }
+
+    /* HOW IT WORKS */
+    .how-section { background: var(--cream-deep); border-top: 1px solid rgba(180,165,150,0.25); }
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .step { padding: 2rem; background: #faf8f4; border-radius: 1.2rem; border: 1px solid rgba(180,165,150,0.2); }
+    .step-num { font-family: var(--font-display); font-size: 3rem; font-weight: 300; color: rgba(122,145,113,0.25); line-height: 1; margin-bottom: 1rem; }
+    .step-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 400; color: var(--ink); margin-bottom: 0.6rem; }
+    .step-desc { font-size: 0.88rem; color: var(--stone); line-height: 1.7; }
+
+    /* CATEGORIES */
+    .categories-section { background: #faf8f4; }
+    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+    .cat-card {
+      background: var(--cream); border-radius: 1.2rem; padding: 2rem 1.5rem; text-align: center;
+      border: 1px solid rgba(180,165,150,0.25); transition: transform 0.25s, border-color 0.25s;
+    }
+    .cat-card:hover { transform: translateY(-3px); border-color: var(--sage-light); }
+    .cat-icon { font-size: 2.2rem; margin-bottom: 0.8rem; display: block; }
+    .cat-name { font-family: var(--font-display); font-size: 1.3rem; font-weight: 400; color: var(--ink); margin-bottom: 0.3rem; }
+    .cat-desc { font-size: 0.78rem; color: var(--stone); line-height: 1.6; }
+
+    /* PRICING */
+    .pricing-section { background: var(--sage-mist); border-top: 1px solid rgba(122,145,113,0.15); }
+    .pricing-card {
+      max-width: 480px; margin: 0 auto;
+      background: #faf8f4; border-radius: 1.6rem; padding: 3rem;
+      border: 1px solid rgba(122,145,113,0.2); box-shadow: 0 20px 60px rgba(46,40,32,0.08);
+      text-align: center;
+    }
+    .pricing-amount { font-family: var(--font-display); font-size: 4rem; font-weight: 300; color: var(--sage-dark); line-height: 1; }
+    .pricing-period { font-size: 0.82rem; color: var(--stone); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem; display: block; }
+    .pricing-features { list-style: none; text-align: left; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .pricing-features li { font-size: 0.9rem; color: var(--ink); display: flex; gap: 0.8rem; align-items: flex-start; }
+    .pricing-features li::before { content: '✓'; color: var(--sage); font-weight: 400; flex-shrink: 0; margin-top: 0.1rem; }
+    .pricing-cta {
+      display: block; width: 100%; background: var(--sage-dark); color: var(--white);
+      padding: 1rem; border-radius: 2rem; font-size: 0.88rem; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.2s;
+    }
+    .pricing-cta:hover { background: var(--sage); transform: translateY(-2px); }
+    .pricing-note { font-size: 0.75rem; color: var(--stone); margin-top: 1rem; }
+
+    /* FAQ */
+    .faq-section { background: #faf8f4; }
+    .faq-list { max-width: 700px; display: flex; flex-direction: column; gap: 0; }
+    .faq-item { border-bottom: 1px solid rgba(180,165,150,0.3); }
+    .faq-q {
+      width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+      padding: 1.4rem 0; display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-body); font-size: 0.95rem; color: var(--ink); font-weight: 400;
+    }
+    .faq-q::after { content: '+'; font-size: 1.3rem; color: var(--sage); transition: transform 0.2s; }
+    .faq-q.open::after { transform: rotate(45deg); }
+    .faq-a { font-size: 0.88rem; color: var(--stone); line-height: 1.8; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; }
+    .faq-a.open { max-height: 200px; padding-bottom: 1.2rem; }
+
+    /* CTA STRIP */
+    .cta-strip { background: var(--sage-dark); padding: 5rem 3rem; text-align: center; }
+    .cta-strip-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; color: var(--white); margin-bottom: 1rem; }
+    .cta-strip-title em { font-style: italic; color: var(--sage-light); }
+    .cta-strip-sub { font-size: 0.95rem; color: rgba(255,255,255,0.65); margin-bottom: 2rem; }
+    .btn-cream {
+      display: inline-block; background: var(--cream); color: var(--sage-dark);
+      padding: 0.9rem 2.4rem; border-radius: 2rem; font-size: 0.82rem; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none; font-weight: 400; transition: background 0.2s, transform 0.2s;
+    }
+    .btn-cream:hover { background: var(--white); transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.4); padding: 2rem 3rem;
+      display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; flex-wrap: wrap; gap: 0.5rem;
+    }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: var(--sage-light); }
+    .footer-links { display: flex; gap: 1.5rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links .nav-link { display: none; }
+      .hero { padding: 8rem 1.5rem 4rem; }
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { display: none; }
+      .section-inner { padding: 4rem 1.5rem; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/index.html" class="nav-logo">RW <span>Move</span></a>
+    <div class="nav-links">
+      <a href="#how" class="nav-link">How it works</a>
+      <a href="#classes" class="nav-link">Classes</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="login/" class="nav-cta">Log in</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div>
+        <p class="hero-eyebrow">RW Move — On Demand</p>
+        <h1 class="hero-title">Move more.<br/><em>Your way.</em></h1>
+        <p class="hero-sub">A members-only fitness library packed with dance, step, boxing and full workouts. New classes added every month. No gym required.</p>
+        <div class="hero-price-tag">
+          <span class="price-amount">£4.99</span>
+          <span class="price-period">/ month</span>
+        </div>
+        <div class="hero-actions">
+          <a href="login/?signup=true" class="btn-primary">Start your membership</a>
+          <a href="#how" class="btn-ghost">See how it works</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <span class="hero-card-icon">💃</span>
+          <p class="hero-card-name">Dance</p>
+          <p class="hero-card-desc">Feel-good choreography for all levels. Just press play and move.</p>
+          <p class="hero-card-tag">New classes monthly</p>
+        </div>
+        <div class="hero-card">
+          <span class="hero-card-icon">🥊</span>
+          <p class="hero-card-name">Box2theBeat</p>
+          <p class="hero-card-desc">High energy boxing to great music.</p>
+        </div>
+        <div class="hero-card">
+          <span class="hero-card-icon">👟</span>
+          <p class="hero-card-name">Step</p>
+          <p class="hero-card-desc">Classic step aerobics, modern style.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="how">
+    <div class="section-inner">
+      <p class="section-label">Simple as that</p>
+      <h2 class="section-title">How it <em>works</em></h2>
+      <div class="steps-grid">
+        <div class="step">
+          <p class="step-num">01</p>
+          <p class="step-title">Create your account</p>
+          <p class="step-desc">Sign up with your email and choose a password. Takes about 30 seconds.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">02</p>
+          <p class="step-title">Subscribe for £4.99/month</p>
+          <p class="step-desc">Secure payment via Stripe. Cancel any time from your account page, no questions asked.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">03</p>
+          <p class="step-title">Access the full library</p>
+          <p class="step-desc">Unlimited access to every class, on any device. New content drops every month.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLASSES -->
+  <section class="categories-section" id="classes">
+    <div class="section-inner">
+      <p class="section-label">What's inside</p>
+      <h2 class="section-title">The <em>Classes</em></h2>
+      <div class="cat-grid">
+        <div class="cat-card">
+          <span class="cat-icon">💃</span>
+          <p class="cat-name">Dance</p>
+          <p class="cat-desc">Upbeat choreography that doesn't take itself too seriously. Just fun movement.</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">👟</span>
+          <p class="cat-name">Step</p>
+          <p class="cat-desc">Classic step aerobics brought into the modern day. Great for cardio and coordination.</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">🥊</span>
+          <p class="cat-name">Box2theBeat</p>
+          <p class="cat-desc">Boxing combinations set to music. A full body workout that flies by.</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">🏋️</span>
+          <p class="cat-name">Workout</p>
+          <p class="cat-desc">Strength and conditioning sessions you can do at home with minimal equipment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing-section" id="pricing">
+    <div class="section-inner">
+      <p class="section-label" style="text-align:center;">Simple pricing</p>
+      <h2 class="section-title" style="text-align:center; margin-bottom:2rem;">One plan, <em>full access</em></h2>
+      <div class="pricing-card">
+        <p class="pricing-amount">£4.99</p>
+        <span class="pricing-period">per month</span>
+        <ul class="pricing-features">
+          <li>Unlimited access to the full class library</li>
+          <li>Dance, Step, Box2theBeat and Workout classes</li>
+          <li>New classes added every month</li>
+          <li>Watch on any device, any time</li>
+          <li>Cancel any time from your account</li>
+        </ul>
+        <a href="login/?signup=true" class="pricing-cta">Start your membership</a>
+        <p class="pricing-note">Secure payment via Stripe. No commitment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="section-inner">
+      <p class="section-label">Questions</p>
+      <h2 class="section-title">Good to <em>know</em></h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Can I cancel any time?</button>
+          <div class="faq-a">Yes, absolutely. You can cancel from your account page at any time and you won't be charged again. You'll keep access until the end of your billing period.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What equipment do I need?</button>
+          <div class="faq-a">Most classes need no equipment at all. Some workout sessions may use light hand weights or a resistance band, but there's always a no-equipment option.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How often is new content added?</button>
+          <div class="faq-a">New classes are added 2-3 times per month across the different categories.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What devices can I use?</button>
+          <div class="faq-a">Any device with a web browser - phone, tablet, laptop or smart TV. No app download needed.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Is this suitable for beginners?</button>
+          <div class="faq-a">Yes. Classes are designed to be accessible and fun regardless of your fitness level. All levels are welcome.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-strip">
+    <h2 class="cta-strip-title">Ready to <em>move?</em></h2>
+    <p class="cta-strip-sub">Join for £4.99 a month. Cancel any time.</p>
+    <a href="login/?signup=true" class="btn-cream">Start your membership</a>
+  </section>
+
+  <footer>
+    <p>© 2025 Rhiannon's Way / RW Move</p>
+    <div class="footer-links">
+      <a href="privacy/">Privacy Policy</a>
+      <a href="terms/">Terms</a>
+      <a href="login/">Log in</a>
+      <a href="/index.html">Main site</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const isOpen = btn.classList.contains('open');
+      document.querySelectorAll('.faq-q.open').forEach(q => {
+        q.classList.remove('open');
+        q.nextElementSibling.classList.remove('open');
+      });
+      if (!isOpen) {
+        btn.classList.add('open');
+        answer.classList.add('open');
+      }
+    }
+  </script>
+</body>
+</html>
