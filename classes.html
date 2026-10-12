@@ -311,24 +311,6 @@
     }
     .month-tab:hover { border-color: var(--sage); color: var(--sage-dark); }
     .month-tab.active { background: var(--sage); color: var(--white); border-color: var(--sage); }
-    .pill-cover {
-      background: rgba(147,51,234,0.15);
-      color: #9333ea;
-      border: 1px solid rgba(147,51,234,0.35);
-    }
-    .pill-event {
-      background: rgba(61,219,111,0.15);
-      color: #3ddb6f;
-      border: 1px solid rgba(61,219,111,0.4);
-      text-decoration: none;
-      display: inline-block;
-    }
-    .pill-event-note {
-      background: transparent;
-      color: #3ddb6f;
-      border: none;
-      font-size: 0.7rem;
-    }
 
     .timetable-section {
       background: var(--sage-mist);
@@ -599,124 +581,9 @@
       </div>
 
       <div class="month-tabs reveal">
-        <button class="month-tab" onclick="showMonth('august')">August 2026</button>
-        <button class="month-tab" onclick="showMonth('september')">September 2026</button>
         <button class="month-tab active" onclick="showMonth('october')">October 2026</button>
         <button class="month-tab" onclick="showMonth('november')">November 2026</button>
         <button class="month-tab" onclick="showMonth('december')">December 2026</button>
-      </div>
-
-      <div id="timetable-august" class="timetable-embed reveal" style="display:none;">
-        <p class="timetable-month">August</p>
-        <p class="timetable-year">2026</p>
-        <div class="timetable-scroll">
-        <table class="timetable-table">
-          <thead><tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr></thead>
-          <tbody>
-            <tr>
-              <td></td><td></td><td></td><td></td><td></td>
-              <td><span class="date-num">1</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">2</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">3</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">4</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">5</span></td>
-              <td><span class="date-num">6</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
-              <td><span class="date-num">7</span></td>
-              <td><span class="date-num">8</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">9</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">10</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">11</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">12</span></td>
-              <td><span class="date-num">13</span></td>
-              <td><span class="date-num">14</span></td>
-              <td><span class="date-num">15</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">16</span><span class="class-pill pill-cover">Core 6.30pm</span><br/><span class="class-pill pill-cover">Step 7.15pm</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">17</span><span class="class-pill pill-bark">Dance 5.30pm</span><br/><span class="class-pill pill-cover">Step 7.15pm</span></td>
-              <td><span class="date-num">18</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">19</span></td>
-              <td><span class="date-num">20</span><span class="class-pill pill-bark">Dance 7.15pm</span><br/><span class="class-pill pill-cover">Step 8.15pm</span></td>
-              <td><span class="date-num">21</span></td>
-              <td><span class="date-num">22</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">23</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">24</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">25</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">26</span></td>
-              <td><span class="date-num">27</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
-              <td><span class="date-num">28</span></td>
-              <td><span class="date-num">29</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">30</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">31</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td></td><td></td><td></td><td></td><td></td><td></td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
-        <p class="timetable-note">🟢 Box2theBeat at Motiv8 Chippenham &nbsp;&nbsp; 🟠 Dance Fit and Step Fit at Snap Fitness Melksham &nbsp;&nbsp; 🟣 Cover classes</p>
-      </div>
-
-      <div id="timetable-september" class="timetable-embed reveal" style="display:none;">
-        <p class="timetable-month">September</p>
-        <p class="timetable-year">2026</p>
-        <div class="timetable-scroll">
-        <table class="timetable-table">
-          <thead><tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr></thead>
-          <tbody>
-            <tr>
-              <td></td>
-              <td><span class="date-num">1</span></td>
-              <td><span class="date-num">2</span></td>
-              <td><span class="date-num">3</span></td>
-              <td><span class="date-num">4</span></td>
-              <td><span class="date-num">5</span><a href="events.html" class="class-pill pill-event" target="_blank">Move &amp; Groove Event</a><br/><span class="class-pill pill-event-note">No classes</span></td>
-              <td><span class="date-num">6</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">7</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">8</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">9</span></td>
-              <td><span class="date-num">10</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
-              <td><span class="date-num">11</span></td>
-              <td><span class="date-num">12</span></td>
-              <td><span class="date-num">13</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">14</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">15</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">16</span></td>
-              <td><span class="date-num">17</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
-              <td><span class="date-num">18</span></td>
-              <td><span class="date-num">19</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">20</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">21</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">22</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">23</span></td>
-              <td><span class="date-num">24</span><span class="class-pill pill-bark">Dance 7.15pm</span></td>
-              <td><span class="date-num">25</span></td>
-              <td><span class="date-num">26</span><span class="class-pill pill-bark">Dance 8.15am</span><br/><span class="class-pill pill-bark">Step 9am</span></td>
-              <td><span class="date-num">27</span></td>
-            </tr>
-            <tr>
-              <td><span class="date-num">28</span><span class="class-pill pill-bark">Dance 5.30pm</span></td>
-              <td><span class="date-num">29</span><a href="https://www.picktime.com/RWMOVE" class="class-pill pill-sage" target="_blank">Box2theBeat 6pm</a></td>
-              <td><span class="date-num">30</span></td>
-              <td></td><td></td><td></td><td></td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
-        <p class="timetable-note">🟢 Box2theBeat at Motiv8 Chippenham &nbsp;&nbsp; 🟠 Dance Fit and Step Fit at Snap Fitness Melksham &nbsp;&nbsp; ⭐ RW Move &amp; Groove Event</p>
       </div>
 
       <div id="timetable-october" class="timetable-embed reveal">
