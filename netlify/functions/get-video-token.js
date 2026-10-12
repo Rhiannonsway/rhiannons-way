@@ -27,19 +27,34 @@ exports.handler = async (event) => {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
-  const sb = createClient(
+  // Client for auth verification (uses service role to verify the JWT)
+  const sbAdmin = createClient(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    { auth: { autoRefreshToken: false, persistSession: false } }
   );
 
   // Get user from token
-  const { data: { user }, error: authError } = await sb.auth.getUser(token);
+  const { data: { user }, error: authError } = await sbAdmin.auth.getUser(token);
   if (authError || !user) {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Invalid token', debug_auth_error: authError?.message }) };
   }
 
-  // Check membership
-  const { data: profile, error: profileError } = await sb.from('profiles').select('is_member').eq('id', user.id).single();
+  // ── 2. Check membership using a fresh admin client ─────────────────────
+  // Create a separate client to query the database, bypassing any context
+  // that might have been set by auth.getUser()
+  const sbDb = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  );
+
+  const { data: profile, error: profileError } = await sbDb
+    .from('profiles')
+    .select('is_member')
+    .eq('id', user.id)
+    .maybeSingle();
+
   if (!profile?.is_member) {
     return {
       statusCode: 403,
@@ -53,7 +68,7 @@ exports.handler = async (event) => {
     };
   }
 
-  // ── 2. Parse and validate request body ────────────────────────────────────
+  // ── 3. Parse and validate request body ────────────────────────────────────
   let videoId;
   try {
     ({ videoId } = JSON.parse(event.body || '{}'));
@@ -65,12 +80,12 @@ exports.handler = async (event) => {
   }
 
   // Confirm the videoId exists in our videos table
-  const { data: video } = await sb.from('videos').select('id').eq('bunny_video_id', videoId).single();
+  const { data: video } = await sbDb.from('videos').select('id').eq('bunny_video_id', videoId).single();
   if (!video) {
     return { statusCode: 404, headers, body: JSON.stringify({ error: 'Video not found' }) };
   }
 
-  // ── 3. Generate Bunny Stream token-signed embed URL ────────────────────────
+  // ── 4. Generate Bunny Stream token-signed embed URL ────────────────────────
   const BUNNY_LIBRARY_ID = process.env.BUNNY_LIBRARY_ID;
   const BUNNY_TOKEN_KEY  = process.env.BUNNY_TOKEN_AUTH_KEY;
   const expires = Math.floor(Date.now() / 1000) + 60 * 60 * 2; // 2-hour expiry
