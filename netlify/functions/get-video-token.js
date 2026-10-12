@@ -67,9 +67,9 @@ exports.handler = async (event) => {
   const BUNNY_TOKEN_KEY  = process.env.BUNNY_TOKEN_AUTH_KEY;  // Token Authentication Key from Bunny dashboard
   const expires = Math.floor(Date.now() / 1000) + 60 * 60 * 2; // 2-hour expiry
 
-  // Bunny token hash: SHA256(securityKey + videoId + expires)
-  const tokenString = BUNNY_TOKEN_KEY + videoId + expires;
-  const securityToken = crypto.createHash('sha256').update(tokenString).digest('hex');
+  // Bunny token hash: SHA256(securityKey + videoId + expires)// CORRECT Bunny token hash: SHA256(securityKey + libraryId + expires + videoId)
+const tokenString = BUNNY_TOKEN_KEY + BUNNY_LIBRARY_ID + expires + videoId;
+const securityToken = crypto.createHash('sha256').update(tokenString).digest('hex');
 
   const embedUrl = `https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${videoId}?token=${securityToken}&expires=${expires}`;
 
