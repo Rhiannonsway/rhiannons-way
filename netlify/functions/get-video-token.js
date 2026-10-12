@@ -20,29 +20,27 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
-  // ── 1. Verify Supabase JWT ──────────────────────────────────────────────
+  // 1. Verify Supabase JWT
   const authHeader = event.headers['authorization'] || '';
   const token = authHeader.replace('Bearer ', '').trim();
   if (!token) {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
-  // Client for auth verification (uses service role to verify the JWT)
+  // Client for auth verification
   const sbAdmin = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY,
     { auth: { autoRefreshToken: false, persistSession: false } }
   );
 
-  // Get user from token
   const { data: { user }, error: authError } = await sbAdmin.auth.getUser(token);
   if (authError || !user) {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Invalid token', debug_auth_error: authError?.message }) };
   }
 
-  // ── 2. Check membership using a fresh admin client ─────────────────────
-  // Create a separate client to query the database, bypassing any context
-  // that might have been set by auth.getUser()
+  // 2. Check membership using a fresh admin client
+  // Separate client so auth.getUser() context does not bleed into DB queries
   const sbDb = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY,
@@ -68,7 +66,7 @@ exports.handler = async (event) => {
     };
   }
 
-  // ── 3. Parse and validate request body ────────────────────────────────────
+  // 3. Parse and validate request body
   let videoId;
   try {
     ({ videoId } = JSON.parse(event.body || '{}'));
@@ -85,7 +83,7 @@ exports.handler = async (event) => {
     return { statusCode: 404, headers, body: JSON.stringify({ error: 'Video not found' }) };
   }
 
-  // ── 4. Generate Bunny Stream token-signed embed URL ────────────────────────
+  // 4. Generate Bunny Stream token-signed embed URL
   const BUNNY_LIBRARY_ID = process.env.BUNNY_LIBRARY_ID;
   const BUNNY_TOKEN_KEY  = process.env.BUNNY_TOKEN_AUTH_KEY;
   const expires = Math.floor(Date.now() / 1000) + 60 * 60 * 2; // 2-hour expiry
