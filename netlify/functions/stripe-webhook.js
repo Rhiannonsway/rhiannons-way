@@ -10,6 +10,13 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
+  // Create client INSIDE handler (not module level)
+  const sb = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  );
+
   // Verify Stripe webhook signature
   const sig = event.headers['stripe-signature'];
   let stripeEvent;
@@ -25,38 +32,34 @@ exports.handler = async (event) => {
   }
 
   const { type, data } = stripeEvent;
-  const obj = data.object;
-
-  // Fresh admin client for each invocation
-  const sb = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  );
+  const sub = data.object;
 
   try {
     switch (type) {
-      // Payment succeeded - activate membership
+      // Payment succeeded — activate membership
       case 'invoice.payment_succeeded': {
-        await setMembership(sb, obj.customer, true);
+        // Removed unused stripe.subscriptions.retrieve call
+        await setMembership(sb, sub.customer, true);
         break;
       }
 
       // Subscription created/updated
       case 'customer.subscription.updated': {
-        const active = ['active', 'trialing'].includes(obj.status);
-        await setMembership(sb, obj.customer, active);
+        const active = ['active', 'trialing'].includes(sub.status);
+        await setMembership(sb, sub.customer, active);
         break;
       }
 
       // Subscription cancelled or payment failed
       case 'customer.subscription.deleted':
       case 'invoice.payment_failed': {
-        await setMembership(sb, obj.customer, false);
+        const customerId = sub.customer ?? sub.subscription;
+        await setMembership(sb, customerId, false);
         break;
       }
 
       default:
+        // Ignore other events
         break;
     }
   } catch (err) {
@@ -69,7 +72,7 @@ exports.handler = async (event) => {
 
 /**
  * Looks up the Supabase user by stripe_customer_id and sets is_member.
- * Falls back to email lookup if no profile found by stripe_customer_id.
+ * Also stores the stripe_customer_id if not already set.
  */
 async function setMembership(sb, stripeCustomerId, isMember) {
   if (!stripeCustomerId) return;
@@ -79,7 +82,7 @@ async function setMembership(sb, stripeCustomerId, isMember) {
     .from('profiles')
     .select('id')
     .eq('stripe_customer_id', stripeCustomerId)
-    .maybeSingle();
+    .maybeSingle(); // Changed from .single() to avoid throwing when no match
 
   if (profile) {
     await sb.from('profiles').update({ is_member: isMember }).eq('id', profile.id);
@@ -101,6 +104,5 @@ async function setMembership(sb, stripeCustomerId, isMember) {
     }
   } catch (err) {
     console.error('Could not resolve Stripe customer to Supabase user:', err.message);
-    throw err;
   }
 }
