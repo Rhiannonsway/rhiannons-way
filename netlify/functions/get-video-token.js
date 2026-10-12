@@ -40,8 +40,9 @@ exports.handler = async (event) => {
 
   // Check membership
   const { data: profile } = await sb.from('profiles').select('is_member').eq('id', user.id).single();
-  if (!profile?.is_member) {
-    return { statusCode: 403, headers, body: JSON.stringify({ error: 'Active membership required' }) };
+if (!profile?.is_member) {
+  return { statusCode: 403, headers, body: JSON.stringify({ error: 'Active membership required', debug_user_id: user.id, debug_profile: profile }) };
+}
   }
 
   // ── 2. Parse and validate request body ────────────────────────────────────
