@@ -1,9 +1,4 @@
-// netlify/functions/get-video-token.js
-// Returns a time-limited Bunny Stream embed URL for a given videoId.
-// Only accessible to authenticated Supabase members.
-
 const crypto = require('crypto');
-const { createClient } = require('@supabase/supabase-js');
 
 exports.handler = async (event) => {
   const headers = {
@@ -20,53 +15,63 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
-  // 1. Verify Supabase JWT
   const authHeader = event.headers['authorization'] || '';
   const token = authHeader.replace('Bearer ', '').trim();
   if (!token) {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
-  // Client for auth verification
-  const sbAdmin = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  );
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  const { data: { user }, error: authError } = await sbAdmin.auth.getUser(token);
-  if (authError || !user) {
-    return { statusCode: 401, headers, body: JSON.stringify({ error: 'Invalid token', debug_auth_error: authError?.message }) };
+  // Verify the user JWT via Supabase auth endpoint
+  const authRes = await fetch(SUPABASE_URL + '/auth/v1/user', {
+    headers: {
+      'apikey': SERVICE_KEY,
+      'Authorization': 'Bearer ' + token,
+    },
+  });
+
+  if (!authRes.ok) {
+    const authErr = await authRes.text();
+    return { statusCode: 401, headers, body: JSON.stringify({ error: 'Invalid token', debug_auth_status: authRes.status, debug_auth_error: authErr.substring(0, 200) }) };
   }
 
-  // 2. Check membership using a fresh admin client
-  // Separate client so auth.getUser() context does not bleed into DB queries
-  const sbDb = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
-    { auth: { autoRefreshToken: false, persistSession: false } }
+  const authUser = await authRes.json();
+  const userId = authUser.id;
+  if (!userId) {
+    return { statusCode: 401, headers, body: JSON.stringify({ error: 'No user id in token' }) };
+  }
+
+  // Check membership via plain REST fetch with service role key (bypasses JS client context issues)
+  const profileRes = await fetch(
+    SUPABASE_URL + '/rest/v1/profiles?id=eq.' + userId + '&select=is_member&limit=1',
+    {
+      headers: {
+        'apikey': SERVICE_KEY,
+        'Authorization': 'Bearer ' + SERVICE_KEY,
+        'Accept': 'application/json',
+      },
+    }
   );
 
-  const { data: profile, error: profileError } = await sbDb
-    .from('profiles')
-    .select('is_member')
-    .eq('id', user.id)
-    .maybeSingle();
+  const profileData = await profileRes.json();
+  const profile = Array.isArray(profileData) ? profileData[0] : null;
 
-  if (!profile?.is_member) {
+  if (!profile || !profile.is_member) {
     return {
       statusCode: 403,
       headers,
       body: JSON.stringify({
         error: 'Active membership required',
-        debug_user_id: user.id,
+        debug_user_id: userId,
         debug_profile: profile,
-        debug_profile_error: profileError?.message,
+        debug_profile_status: profileRes.status,
+        debug_profile_count: Array.isArray(profileData) ? profileData.length : -1,
       }),
     };
   }
 
-  // 3. Parse and validate request body
   let videoId;
   try {
     ({ videoId } = JSON.parse(event.body || '{}'));
@@ -77,22 +82,30 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'videoId required' }) };
   }
 
-  // Confirm the videoId exists in our videos table
-  const { data: video } = await sbDb.from('videos').select('id').eq('bunny_video_id', videoId).single();
-  if (!video) {
+  // Verify videoId exists in videos table
+  const videoRes = await fetch(
+    SUPABASE_URL + '/rest/v1/videos?bunny_video_id=eq.' + videoId + '&select=id&limit=1',
+    {
+      headers: {
+        'apikey': SERVICE_KEY,
+        'Authorization': 'Bearer ' + SERVICE_KEY,
+        'Accept': 'application/json',
+      },
+    }
+  );
+  const videoData = await videoRes.json();
+  if (!Array.isArray(videoData) || videoData.length === 0) {
     return { statusCode: 404, headers, body: JSON.stringify({ error: 'Video not found' }) };
   }
 
-  // 4. Generate Bunny Stream token-signed embed URL
   const BUNNY_LIBRARY_ID = process.env.BUNNY_LIBRARY_ID;
   const BUNNY_TOKEN_KEY  = process.env.BUNNY_TOKEN_AUTH_KEY;
-  const expires = Math.floor(Date.now() / 1000) + 60 * 60 * 2; // 2-hour expiry
+  const expires = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
 
-  // Bunny token hash: SHA256(securityKey + libraryId + expires + videoId)
   const tokenString = BUNNY_TOKEN_KEY + BUNNY_LIBRARY_ID + expires + videoId;
   const securityToken = crypto.createHash('sha256').update(tokenString).digest('hex');
 
-  const embedUrl = `https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${videoId}?token=${securityToken}&expires=${expires}`;
+  const embedUrl = 'https://iframe.mediadelivery.net/embed/' + BUNNY_LIBRARY_ID + '/' + videoId + '?token=' + securityToken + '&expires=' + expires;
 
   return {
     statusCode: 200,
