@@ -179,6 +179,8 @@
     (async () => {
       const { data: { session } } = await sb.auth.getSession();
       if (!session) { window.location.href = '../login/'; return; }
+const OWNER_EMAIL = 'rhiannonsway90@gmail.com';
+if (session.user.email === OWNER_EMAIL) { loadVideos(); return; }
       const { data: profile } = await sb.from('profiles').select('is_member').eq('id', session.user.id).single();
       if (!profile?.is_member) { window.location.href = '../login/'; return; }
       loadVideos();
