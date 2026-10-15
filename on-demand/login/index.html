@@ -171,7 +171,17 @@
         // Logged in but no active membership — send to checkout
         const userId = data.user.id;
         showMsg('msg-login', 'success', 'Account found. Taking you to subscribe…');
-        setTimeout(() => { window.location.href = STRIPE_CHECKOUwindow.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email) + '&client_reference_id=' + encodeURIComponent(userId); }, 1200);ndleSignup(e) {
+        setTimeout(() => { window.location.href = STRIPE_CHECKOUconst OWNER_EMAIL = 'rhiannonsway90@gmail.com';
+        if (data.user.email === OWNER_EMAIL) {
+          window.location.href = '/on-demand/library/';
+          return;
+        }
+        const { data: profile } = await sb.from('profiles').select('is_member').eq('id', userId).single();
+        if (profile?.is_member) {
+          window.location.href = '/on-demand/library/';
+        } else {
+          window.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email) + '&client_reference_id=' + encodeURIComponent(userId);
+        } }, 1200);ndleSignup(e) {
       e.preventDefault();
       const btn = document.getElementById('btn-signup');
       btn.disabled = true; btn.textContent = 'Creating account…';
@@ -184,7 +194,17 @@
       }
       showMsg('msg-signup', 'success', 'Accconst userId = data.user.id;
         ount created! Taking you to subscribe…');
-      setTimeout(() => { window.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeUwindow.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email) + '&client_reference_id=' + encodeURIComponent(userId); }, 1200);   const email = document.getElementById('login-email').value.trim();
+      setTimeout(() => { window.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeUconst OWNER_EMAIL = 'rhiannonsway90@gmail.com';
+        if (data.user.email === OWNER_EMAIL) {
+          window.location.href = '/on-demand/library/';
+          return;
+        }
+        const { data: profile } = await sb.from('profiles').select('is_member').eq('id', userId).single();
+        if (profile?.is_member) {
+          window.location.href = '/on-demand/library/';
+        } else {
+          window.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email) + '&client_reference_id=' + encodeURIComponent(userId);
+        } }, 1200);   const email = document.getElementById('login-email').value.trim();
       if (!email) { showMsg('msg-login', 'error', 'Enter your email above first.'); return; }
       const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/on-demand/login/reset/' });
       if (error) { showMsg('msg-login', 'error', error.message); }
