@@ -152,7 +152,7 @@
       el.textContent = text;
     }
 
-    async function handleLogin(e) {
+    async function async handleLogin(e) {
       e.preventDefault();
       const btn = document.getElementById('btn-login');
       btn.disabled = true; btn.textContent = 'Logging in…';
@@ -181,7 +181,9 @@
           window.location.href = '/on-demand/library/';
         } else {
           window.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email) + '&client_reference_id=' + encodeURIComponent(userId);
-        } }, 1200);ndleSignup(e) {
+        } }, 1200);
+
+    async handleSignup(e) {
       e.preventDefault();
       const btn = document.getElementById('btn-signup');
       btn.disabled = true; btn.textContent = 'Creating account…';
