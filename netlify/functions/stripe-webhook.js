@@ -58,7 +58,14 @@ exports.handler = async (event) => {
         break;
       }
 
-      default:
+     // Checkout completed — most reliable event; carries client_reference_id (Supabase user ID)
+    case 'checkout.session.completed': {
+      const supabaseUserId = sub.client_reference_id || null;
+      await setMembership(sb, sub.customer, true, supabaseUserId);
+      break;
+    }
+
+     default:
         // Ignore other events
         break;
     }
@@ -82,10 +89,20 @@ async function setMembership(sb, stripeCustomerId, isMember) {
     .from('profiles')
     .select('id')
     .eq('stripe_customer_id', stripeCustomerId)
-    .maybeSingle(); // Changed from .single() to avoid throwing when no match
+    .mayasync function setMembership(sb, stripeCustomerId, isMember, supabaseUserId = null) no match
 
   if (profile) {
-    await sb.from('profiles').update({ is_member: isMember }).eq('id', profile.id);
+    await sb.from('profiles').up  // Direct lookup by Supabase user ID (most reliable — passed via client_reference_id)
+  if (supabaseUserId) {
+    await sb.from('profiles').upsert({
+      id: supabaseUserId,
+      stripe_customer_id: stripeCustomerId,
+      is_member: isMember,
+    });
+    return;
+  }
+
+  date({ is_member: isMember }).eq('id', profile.id);
     return;
   }
 
