@@ -169,12 +169,9 @@
         window.location.href = '../library/';
       } else {
         // Logged in but no active membership — send to checkout
+        const userId = data.user.id;
         showMsg('msg-login', 'success', 'Account found. Taking you to subscribe…');
-        setTimeout(() => { window.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email); }, 1200);
-      }
-    }
-
-    async function handleSignup(e) {
+        setTimeout(() => { window.location.href = STRIPE_CHECKOUwindow.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email) + '&client_reference_id=' + encodeURIComponent(userId); }, 1200);ndleSignup(e) {
       e.preventDefault();
       const btn = document.getElementById('btn-signup');
       btn.disabled = true; btn.textContent = 'Creating account…';
@@ -185,13 +182,9 @@
         showMsg('msg-signup', 'error', error.message || 'Sign-up failed. Please try again.');
         btn.disabled = false; btn.textContent = 'Create account & subscribe'; return;
       }
-      showMsg('msg-signup', 'success', 'Account created! Taking you to subscribe…');
-      setTimeout(() => { window.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email); }, 1200);
-    }
-
-    async function handleForgot(e) {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
+      showMsg('msg-signup', 'success', 'Accconst userId = data.user.id;
+        ount created! Taking you to subscribe…');
+      setTimeout(() => { window.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeUwindow.location.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email) + '&client_reference_id=' + encodeURIComponent(userId); }, 1200);   const email = document.getElementById('login-email').value.trim();
       if (!email) { showMsg('msg-login', 'error', 'Enter your email above first.'); return; }
       const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/on-demand/login/reset/' });
       if (error) { showMsg('msg-login', 'error', error.message); }
