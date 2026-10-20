@@ -114,17 +114,17 @@
     (async () => {
       const { data: { session } } = await sb.auth.getSession();
       if (!session) { window.location.href = '../login/'; return; }
-        const OWNER_EMAIL = 'rhiannonsway90@gmail.com';
-        const isOwner = session.user.email === OWNER_EMAIL;
+      const OWNER_EMAIL = 'rhiannonsway90@gmail.com';
+      const isOwner = session.user.email === OWNER_EMAIL;
 
       document.getElementById('user-email').textContent = session.user.email;
 
       const { data: profile } = await sb.from('profiles').select('is_member, stripe_customer_id').eq('id', session.user.id).single();
       const memberEl = document.getElementById('membership-status');
-      if (profile?.is_member) {
+      if (isOwner || profile?.is_member) {
         memberEl.innerHTML = '<span class="badge active">Active</span>';
       } else {
-  if (isOwner || profile?.is_member) {= '<span class="badge inactive">Inactive</span> <a href="../login/?signup=true" style="margin-left:0.8rem;font-size:0.82rem;color:var(--sage-dark);">Subscribe now →</a>';
+        memberEl.innerHTML = '<span class="badge inactive">Inactive</span> <a href="../login/?signup=true" style="margin-left:0.8rem;font-size:0.82rem;color:var(--sage-dark);">Subscribe now →</a>';
       }
     })();
 
