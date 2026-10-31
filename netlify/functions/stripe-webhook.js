@@ -119,10 +119,44 @@ async function setMembership(sb, { customerId, userId = null, email = null, isMe
     return;
   }
 
-  const update = { is_member: isMember };
-  if (customerId) update.stripe_customer_id = customerId;
+  // Before removing access, make sure this person has no OTHER active subscription
+  // (e.g. a duplicate signup under a second Stripe customer was cancelled).
+  if (!isMember && (await hasAnyActiveSubscription(customerId))) {
+    console.log(`Kept profile ${profileId} active: another active subscription exists`);
+    return;
+  }
 
-  const { error } = await sb.from('profiles').update(update).eq('id', profileId);
+  const update = { is_member: isMember };
+  // Only store the customer ID when activating, so a cancelled duplicate never overwrites the live one
+  if (customerId && isMember) update.stripe_customer_id = customerId;
+
+  const { data: updated, error } = await sb.from('profiles').update(update).eq('id', profileId).select('id');
   if (error) throw new Error(`Supabase update failed: ${error.message}`);
+  if (!updated || updated.length === 0) {
+    // Row exists but nothing changed: almost always means the key is not the service role key
+    throw new Error('Supabase update matched 0 rows - check SUPABASE_SERVICE_ROLE_KEY in Netlify');
+  }
   console.log(`Set is_member=${isMember} for profile ${profileId} (customer ${customerId || 'none'})`);
+}
+
+/**
+ * True if any Stripe customer sharing this customer's email has an active or trialing subscription.
+ */
+async function hasAnyActiveSubscription(customerId) {
+  if (!customerId) return false;
+  try {
+    const customer = await stripe.customers.retrieve(customerId);
+    const ids = new Set([customerId]);
+    if (customer?.email) {
+      const list = await stripe.customers.list({ email: customer.email, limit: 20 });
+      list.data.forEach((c) => ids.add(c.id));
+    }
+    for (const id of ids) {
+      const subs = await stripe.subscriptions.list({ customer: id, status: 'all', limit: 20 });
+      if (subs.data.some((s) => ['active', 'trialing', 'past_due'].includes(s.status))) return true;
+    }
+  } catch (err) {
+    console.error('Active subscription check failed:', err.message);
+  }
+  return false;
 }
