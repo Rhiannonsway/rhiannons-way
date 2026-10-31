@@ -1,6 +1,8 @@
 // netlify/functions/stripe-webhook.js
 // Listens for Stripe subscription events and updates Supabase membership status.
-// Endpoint to register in Stripe dashboard: https://YOUR_SITE/.netlify/functions/stripe-webhook
+// Endpoint registered in Stripe: https://rhiannonsway.com/.netlify/functions/stripe-webhook
+// Secrets (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+// live ONLY in Netlify environment variables.
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { createClient } = require('@supabase/supabase-js');
@@ -10,7 +12,6 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  // Create client INSIDE handler (not module level)
   const sb = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY,
@@ -19,54 +20,59 @@ exports.handler = async (event) => {
 
   // Verify Stripe webhook signature
   const sig = event.headers['stripe-signature'];
+  const rawBody = event.isBase64Encoded
+    ? Buffer.from(event.body, 'base64').toString('utf8')
+    : event.body;
+
   let stripeEvent;
   try {
-    stripeEvent = stripe.webhooks.constructEvent(
-      event.body,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
+    stripeEvent = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
     return { statusCode: 400, body: `Webhook Error: ${err.message}` };
   }
 
   const { type, data } = stripeEvent;
-  const sub = data.object;
+  const obj = data.object;
 
   try {
     switch (type) {
-      // Payment succeeded — activate membership
+      // Checkout completed: carries client_reference_id (the Supabase user ID)
+      case 'checkout.session.completed': {
+        await setMembership(sb, {
+          customerId: obj.customer,
+          userId: obj.client_reference_id || null,
+          email: obj.customer_details?.email || obj.customer_email || null,
+          isMember: true,
+        });
+        break;
+      }
+
+      // Payment succeeded: activate / keep active
       case 'invoice.payment_succeeded': {
-        // Removed unused stripe.subscriptions.retrieve call
-        await setMembership(sb, sub.customer, true);
+        await setMembership(sb, {
+          customerId: obj.customer,
+          email: obj.customer_email || null,
+          isMember: true,
+        });
         break;
       }
 
-      // Subscription created/updated
+      // Subscription created or changed
+      case 'customer.subscription.created':
       case 'customer.subscription.updated': {
-        const active = ['active', 'trialing'].includes(sub.status);
-        await setMembership(sb, sub.customer, active);
+        const active = ['active', 'trialing'].includes(obj.status);
+        await setMembership(sb, { customerId: obj.customer, isMember: active });
         break;
       }
 
-      // Subscription cancelled or payment failed
-      case 'customer.subscription.deleted':
-      case 'invoice.payment_failed': {
-        const customerId = sub.customer ?? sub.subscription;
-        await setMembership(sb, customerId, false);
+      // Subscription cancelled
+      case 'customer.subscription.deleted': {
+        await setMembership(sb, { customerId: obj.customer, isMember: false });
         break;
       }
 
-     // Checkout completed — most reliable event; carries client_reference_id (Supabase user ID)
-    case 'checkout.session.completed': {
-      const supabaseUserId = sub.client_reference_id || null;
-      await setMembership(sb, sub.customer, true, supabaseUserId);
-      break;
-    }
-
-     default:
-        // Ignore other events
+      default:
         break;
     }
   } catch (err) {
@@ -78,48 +84,45 @@ exports.handler = async (event) => {
 };
 
 /**
- * Looks up the Supabase user by stripe_customer_id and sets is_member.
- * Also stores the stripe_customer_id if not already set.
+ * Finds the member's Supabase profile and sets is_member.
+ * Match order: Supabase user ID (client_reference_id) -> stripe_customer_id -> email.
+ * Always stores the stripe_customer_id so later events (renewals, cancellations) match.
  */
-async function setMembership(sb, stripeCustomerId, isMember) {
-  if (!stripeCustomerId) return;
+async function setMembership(sb, { customerId, userId = null, email = null, isMember }) {
+  let profileId = userId;
 
-  // Try to find user in profiles by stripe_customer_id
-  const { data: profile } = await sb
-    .from('profiles')
-    .select('id')
-    .eq('stripe_customer_id', stripeCustomerId)
-    .mayasync function setMembership(sb, stripeCustomerId, isMember, supabaseUserId = null) no match
-
-  if (profile) {
-    await sb.from('profiles').up  // Direct lookup by Supabase user ID (most reliable — passed via client_reference_id)
-  if (supabaseUserId) {
-    await sb.from('profiles').upsert({
-      id: supabaseUserId,
-      stripe_customer_id: stripeCustomerId,
-      is_member: isMember,
-    });
-    return;
+  // 1. Match on stored Stripe customer ID
+  if (!profileId && customerId) {
+    const { data } = await sb.from('profiles').select('id').eq('stripe_customer_id', customerId).maybeSingle();
+    if (data) profileId = data.id;
   }
 
-  date({ is_member: isMember }).eq('id', profile.id);
-    return;
-  }
-
-  // Fallback: look up email from Stripe and match to Supabase auth user
-  try {
-    const customer = await stripe.customers.retrieve(stripeCustomerId);
-    if (customer.email) {
-      const { data: authUser } = await sb.auth.admin.getUserByEmail(customer.email);
-      if (authUser?.user) {
-        await sb.from('profiles').upsert({
-          id: authUser.user.id,
-          stripe_customer_id: stripeCustomerId,
-          is_member: isMember,
-        });
+  // 2. Match on email (from the event, or looked up from Stripe)
+  if (!profileId) {
+    let lookupEmail = email;
+    if (!lookupEmail && customerId) {
+      try {
+        const customer = await stripe.customers.retrieve(customerId);
+        lookupEmail = customer?.email || null;
+      } catch (err) {
+        console.error('Could not retrieve Stripe customer:', err.message);
       }
     }
-  } catch (err) {
-    console.error('Could not resolve Stripe customer to Supabase user:', err.message);
+    if (lookupEmail) {
+      const { data } = await sb.from('profiles').select('id').ilike('email', lookupEmail.trim()).maybeSingle();
+      if (data) profileId = data.id;
+    }
   }
+
+  if (!profileId) {
+    console.error(`No Supabase profile found for customer ${customerId} / ${email}`);
+    return;
+  }
+
+  const update = { is_member: isMember };
+  if (customerId) update.stripe_customer_id = customerId;
+
+  const { error } = await sb.from('profiles').update(update).eq('id', profileId);
+  if (error) throw new Error(`Supabase update failed: ${error.message}`);
+  console.log(`Set is_member=${isMember} for profile ${profileId} (customer ${customerId || 'none'})`);
 }
