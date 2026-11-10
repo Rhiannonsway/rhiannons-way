@@ -39,12 +39,19 @@ exports.handler = async (event) => {
     switch (type) {
       // Checkout completed: carries client_reference_id (the Supabase user ID)
       case 'checkout.session.completed': {
-        await setMembership(sb, {
+        const email = obj.customer_details?.email || obj.customer_email || null;
+        const profileId = await setMembership(sb, {
           customerId: obj.customer,
           userId: obj.client_reference_id || null,
-          email: obj.customer_details?.email || obj.customer_email || null,
+          email,
           isMember: true,
         });
+        // Welcome email: a failure here is logged but never blocks membership
+        try {
+          await sendWelcomeEmail(sb, profileId, email, obj.customer_details?.name);
+        } catch (err) {
+          console.error('Welcome email failed:', err.message);
+        }
         break;
       }
 
@@ -123,7 +130,7 @@ async function setMembership(sb, { customerId, userId = null, email = null, isMe
   // (e.g. a duplicate signup under a second Stripe customer was cancelled).
   if (!isMember && (await hasAnyActiveSubscription(customerId))) {
     console.log(`Kept profile ${profileId} active: another active subscription exists`);
-    return;
+    return profileId;
   }
 
   const update = { is_member: isMember };
@@ -137,6 +144,118 @@ async function setMembership(sb, { customerId, userId = null, email = null, isMe
     throw new Error('Supabase update matched 0 rows - check SUPABASE_SERVICE_ROLE_KEY in Netlify');
   }
   console.log(`Set is_member=${isMember} for profile ${profileId} (customer ${customerId || 'none'})`);
+  return profileId;
+}
+
+// ── Welcome email ────────────────────────────────────────────────────────────
+// Sent once per member via Resend (RESEND_API_KEY lives only in Netlify env vars).
+const WELCOME_FROM = 'RW Move <move@rhiannonsway.com>';
+const WELCOME_REPLY_TO = 'move@rhiannonsway.com';
+const WELCOME_PDF_URL = 'https://rhiannonsway.com/on-demand/RW-Move-On-Demand-Welcome.pdf';
+
+async function sendWelcomeEmail(sb, profileId, email, fullName) {
+  if (!profileId || !email) return;
+  if (!process.env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY not set; skipping welcome email');
+    return;
+  }
+
+  // Atomically claim the send so a member can only ever get one welcome email,
+  // even if Stripe delivers the same event twice.
+  const { data: claimed, error } = await sb
+    .from('profiles')
+    .update({ welcome_email_sent_at: new Date().toISOString() })
+    .eq('id', profileId)
+    .is('welcome_email_sent_at', null)
+    .select('id');
+  if (error) throw new Error(`Could not claim welcome email: ${error.message}`);
+  if (!claimed || claimed.length === 0) return; // already sent
+
+  const firstName = (fullName || '').trim().split(/\s+/)[0] || '';
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+      'Idempotency-Key': `welcome-${profileId}`,
+    },
+    body: JSON.stringify({
+      from: WELCOME_FROM,
+      to: [email],
+      reply_to: WELCOME_REPLY_TO,
+      subject: 'Welcome to RW Move On Demand',
+      html: welcomeHtml(firstName),
+      text: welcomeText(firstName),
+      attachments: [{ filename: 'RW-Move-On-Demand-Welcome.pdf', path: WELCOME_PDF_URL }],
+    }),
+  });
+
+  if (!res.ok) {
+    // Release the claim so a Stripe retry can try again
+    await sb.from('profiles').update({ welcome_email_sent_at: null }).eq('id', profileId);
+    throw new Error(`Resend ${res.status}: ${await res.text()}`);
+  }
+  console.log(`Welcome email sent to profile ${profileId}`);
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function welcomeText(firstName) {
+  return [
+    `Hi ${firstName || 'there'},`,
+    '',
+    "Welcome in! You're officially part of the RW Move community and I'm so happy you're here.",
+    '',
+    "I've attached your welcome guide with everything you need to get moving. The short version:",
+    '',
+    '1. Log in at rhiannonsway.com/on-demand/login with the email and password you joined with',
+    '2. Open your class library and filter by Dance, Step, Box2theBeat or Workout',
+    '3. Press play',
+    '',
+    "2 to 3 new classes land every month, so there's always something fresh to try.",
+    '',
+    "Got a question or stuck on anything? Just reply to this email, I read every message. And if you try a class, tag @rhiannons_way so I can see you moving!",
+    '',
+    'Rhi x',
+    '',
+    'RW Move On Demand | rhiannonsway.com/on-demand',
+  ].join('\n');
+}
+
+function welcomeHtml(firstName) {
+  const name = escapeHtml(firstName || 'there');
+  return `<!DOCTYPE html>
+<html><body style="margin:0;padding:0;background:#faf8f4;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#faf8f4;">
+<tr><td align="center" style="padding:24px 12px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;overflow:hidden;font-family:Helvetica,Arial,sans-serif;color:#2e2820;">
+  <tr><td style="background:#3f5e4f;padding:32px 32px 28px;">
+    <p style="margin:0 0 12px;font-size:11px;letter-spacing:3px;color:#cfdccf;">RW MOVE ON DEMAND</p>
+    <h1 style="margin:0;font-size:32px;line-height:1.1;color:#ffffff;">Welcome in.</h1>
+    <p style="margin:8px 0 0;font-size:18px;color:#e6efe6;">Move more. <em style="font-family:Georgia,serif;">Your way.</em></p>
+  </td></tr>
+  <tr><td style="padding:28px 32px 8px;font-size:15px;line-height:1.6;">
+    <p style="margin:0 0 16px;">Hi ${name},</p>
+    <p style="margin:0 0 16px;">Welcome in! You're officially part of the RW Move community and I'm so happy you're here.</p>
+    <p style="margin:0 0 16px;">I've attached your welcome guide with everything you need to get moving. The short version:</p>
+    <ol style="margin:0 0 16px;padding-left:20px;">
+      <li style="margin-bottom:6px;"><strong>Log in</strong> with the email and password you joined with</li>
+      <li style="margin-bottom:6px;"><strong>Open your class library</strong> and filter by Dance, Step, Box2theBeat or Workout</li>
+      <li><strong>Press play</strong></li>
+    </ol>
+    <p style="margin:0 0 24px;">2 to 3 new classes land every month, so there's always something fresh to try.</p>
+    <p style="margin:0 0 28px;"><a href="https://rhiannonsway.com/on-demand/login/" style="display:inline-block;background:#c7756d;color:#ffffff;text-decoration:none;padding:12px 26px;border-radius:30px;font-size:14px;">Open the class library</a></p>
+    <p style="margin:0 0 16px;">Got a question or stuck on anything? Just reply to this email, I read every message. And if you try a class, tag <a href="https://instagram.com/rhiannons_way" style="color:#c7756d;">@rhiannons_way</a> so I can see you moving!</p>
+    <p style="margin:0 0 28px;font-family:Georgia,serif;font-style:italic;font-size:20px;color:#3f5e4f;">Rhi x</p>
+  </td></tr>
+  <tr><td style="padding:16px 32px;border-top:1px solid #eee6dc;font-size:12px;color:#6b6259;">
+    RW Move On Demand | <a href="https://rhiannonsway.com/on-demand/" style="color:#6b6259;">rhiannonsway.com/on-demand</a> | @rhiannons_way
+  </td></tr>
+</table>
+</td></tr></table>
+</body></html>`;
 }
 
 /**
